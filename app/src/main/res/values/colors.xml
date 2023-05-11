@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="orange">#CD6231</color>
+    <color name="dark_orange">#FF7E4125</color>
+    <color name="light_orange">#FFDA845D</color>
+    <color name="blank_cell">#D59476</color>
+    <color name="visted_cell">#CC5C29</color>
+    <color name="here_cell">#803816</color>
+    <color name="border">#FF000000</color>
+    <color name="purple_1">#B598DA</color>
+    <color name="purple_2">#7E51BF</color>
+    <color name="purple_3">#4D00F8</color>
+    <color name="purple_4">#3C2F57</color>
+
+</resources>
