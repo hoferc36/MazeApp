@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
             (r * rows + c)
         }
     }
-    var cellSize = 100
+    var cellSize = 50
     val margin = 8
 
     override fun onCreate(savedInstanceState: Bundle?) {
