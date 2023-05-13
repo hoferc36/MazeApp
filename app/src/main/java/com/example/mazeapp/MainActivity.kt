@@ -32,13 +32,61 @@ class MainActivity : AppCompatActivity() {
         cellSize = if(cellSize < 50) 50 else cellSize
 
         board.forEachIndexed{ rowIndex, row ->
-            row.forEach{col ->
+            row.forEachIndexed{colIndex, col ->
                 val cell = ImageView(this)
                 cell.minimumHeight = cellSize
                 cell.minimumWidth = cellSize
                 cell.x = 1F * cellSize * (col - rowIndex * rows) + margin
                 cell.y = 1F * cellSize * rowIndex + margin
-                cell.setBackgroundResource(R.drawable.cell)
+
+                when (rowIndex) {
+                    0 -> {
+                        when (colIndex) {
+                            0 -> {
+                                cell.setBackgroundResource(R.drawable.cell_2path_right_bottom)
+                            }
+
+                            cols-1 -> {
+                                cell.setBackgroundResource(R.drawable.cell_2path_left_bottom)
+                            }
+
+                            else -> {
+                                cell.setBackgroundResource(R.drawable.cell_3path_notop)
+                            }
+                        }
+                    }
+                    rows-1 -> {
+                        when (colIndex) {
+                            0 -> {
+                                cell.setBackgroundResource(R.drawable.cell_2path_top_right)
+                            }
+
+                            cols-1 -> {
+                                cell.setBackgroundResource(R.drawable.cell_2path_top_left)
+                            }
+
+                            else -> {
+                                cell.setBackgroundResource(R.drawable.cell_3path_nobottom)
+                            }
+                        }
+                    }
+                    else -> {
+                        when (colIndex) {
+                            0 -> {
+                                cell.setBackgroundResource(R.drawable.cell_3path_noleft)
+                            }
+
+                            cols-1 -> {
+                                cell.setBackgroundResource(R.drawable.cell_3path_noright)
+                            }
+
+                            else -> {
+                                cell.setBackgroundResource(R.drawable.cell_4path)
+                            }
+                        }
+                    }
+                }
+//                cell.setBackgroundResource(R.drawable.cell)
                 //cell.setBackgroundResource(R.color.orange)
                 //cell.setImageDrawable(R.drawable.cell.toDrawable())
                 bind.main1.addView(cell)
