@@ -13,5 +13,6 @@
     <color name="purple_2">#7E51BF</color>
     <color name="purple_3">#4D00F8</color>
     <color name="purple_4">#3C2F57</color>
+    <color name="transparent">#00000000</color>
 
 </resources>

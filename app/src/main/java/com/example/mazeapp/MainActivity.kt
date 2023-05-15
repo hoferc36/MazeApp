@@ -1,5 +1,6 @@
 package com.example.mazeapp
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.widget.ImageView
@@ -39,6 +40,7 @@ class MainActivity : AppCompatActivity() {
                 cell.x = 1F * cellSize * (col - rowIndex * rows) + margin
                 cell.y = 1F * cellSize * rowIndex + margin
 
+                cell.setBackgroundColor(Color.RED)
                 when (rowIndex) {
                     0 -> {
                         when (colIndex) {
@@ -87,7 +89,8 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
 //                cell.setBackgroundResource(R.drawable.cell)
-                //cell.setBackgroundResource(R.color.orange)
+//                cell.setBackgroundResource(R.drawable.cell)
+//                cell.setBackgroundResource(R.color.orange)
                 //cell.setImageDrawable(R.drawable.cell.toDrawable())
                 bind.main1.addView(cell)
             }
