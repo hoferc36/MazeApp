@@ -7,6 +7,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.mazeapp.databinding.ActivityMainBinding
 import android.content.*
+import android.view.MotionEvent
 
 
 class MainActivity : AppCompatActivity() {
@@ -22,7 +23,21 @@ class MainActivity : AppCompatActivity() {
         buttonStartBoard = bind.startBoardButton
         buttonStartBoard.setOnClickListener {
             val intent = Intent(this, BoardActivity::class.java)
-            startActivity(intent)
+
+            val heightText = if(bind.editTextHeight.text.toString() != "") bind.editTextHeight.text.toString() else "5"
+            val height:Int = heightText.toInt()
+            val widthText = if(bind.editTextWidth.text.toString() != "") bind.editTextWidth.text.toString() else "5"
+            val width:Int = widthText.toInt()
+
+            if(height in 5..21 && width in 5..21){
+                intent.putExtra("heightMaze", height)
+                intent.putExtra("widthMaze", width)
+                startActivity(intent)
+            }else{
+                Toast.makeText(applicationContext, "Number need to be between 5 and 21", Toast.LENGTH_SHORT).show()
+
+            }
         }
+
     }
 }
