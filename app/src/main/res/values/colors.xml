@@ -14,5 +14,7 @@
     <color name="purple_3">#4D00F8</color>
     <color name="purple_4">#3C2F57</color>
     <color name="transparent">#00000000</color>
+    <color name="gray">#4C4949</color>
+    <color name="green">#69803C</color>
 
 </resources>

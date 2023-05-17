@@ -1,9 +1,22 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.MazeApp" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/green</item>
+        <item name="colorPrimaryDark">@color/purple_4</item>
+        <item name="colorAccent">@color/purple_3</item>
+<!--        <item name="background">@color/gray</item>-->
+<!--        <item name="backgroundColor">@color/gray</item>-->
+        <item name="android:colorBackground">@color/gray</item>
+<!--        <item name="android:background">@color/gray</item>-->
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
     <style name="Theme.MazeApp" parent="Base.Theme.MazeApp" />
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/purple_2</item>
+        <item name="colorPrimaryDark">@color/purple_4</item>
+        <item name="colorAccent">@color/purple_3</item>
+    </style>
 </resources>
