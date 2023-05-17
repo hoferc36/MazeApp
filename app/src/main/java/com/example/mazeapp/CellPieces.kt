@@ -8,6 +8,7 @@ class CellPieces {
     var bottom:Boolean = true
     var visited:Boolean = false
     var here:Boolean = false
+    var dead:Boolean = false
 }
 
 enum class PATH {
