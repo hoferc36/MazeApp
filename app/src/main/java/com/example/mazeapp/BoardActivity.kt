@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.util.DisplayMetrics
+import android.util.Log
 import android.widget.ImageView
 import com.example.mazeapp.databinding.ActivityBoardBinding
 import java.util.Stack
@@ -13,75 +14,79 @@ class BoardActivity : AppCompatActivity() {
     private lateinit var bind: ActivityBoardBinding
     private lateinit var displayMetrics: DisplayMetrics
 
-    private var rows = 5 //19
-    private var cols = 5 //21 //10
-    private lateinit var board: Array<Array<CellPieces>>
-    private var cellSizeMin = 50
-    private var cellSize = cellSizeMin
+    private var cellSize = 5
     private val margin = 8
-
+    private var rows = 2
+    private var cols = 2
+    private lateinit var board: Array<Array<CellPieces>>
     private lateinit var stack: Stack<Pair<Int, Int>>
     private var visitedCellCount = 0
+
+    private val startCellCoords = Pair(0,0)
+    private var endCellCoords = Pair(0,0)
+
     private var hereCell = CellPieces()
-    private var hereCoords = Pair(0,0)
-    private var herePosi = 0
+    private var hereCoords = startCellCoords
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bind = ActivityBoardBinding.inflate(layoutInflater)
         setContentView(bind.board1)
 
-        displayMetrics = DisplayMetrics()
-        windowManager.defaultDisplay.getMetrics(displayMetrics)
-
-        rows = intent.getIntExtra("heightMaze", 5) // 2 .. 42
-        cols = intent.getIntExtra("widthMaze", 5) // 2 .. 21
-
-        board = Array(rows) { Array(cols) { CellPieces() } }
-
         cellCreation()
+        boardCreation()
+    }
 
-//        val cell = CellPieces()
-//        cell.top = false
-//        cell.left = false
-//        cell.right = false
-//        cell.bottom = false
-//        cellOrientation(cell, bind.boardForeground.getChildAt(rows*cols/2))
-//        cell.visited = true
-//        cell.here = false
-//        cell.dead = true
-//        setCellBackgroundColor(cell, bind.boardBackground.getChildAt(rows*cols/2))
+    private fun boardCreation() {
+        //Start and end points set
+        board[startCellCoords.first][startCellCoords.second].start = true
+        endCellCoords = Pair(rows - 1, cols - 1)
+        board[endCellCoords.first][endCellCoords.second].end = true
 
+        //stack initialization
         stack = Stack<Pair<Int, Int>>()
         stack.push(hereCoords)
         visitedCellCount = 1
 
-        setHereCell()
-
-        for(i in 0..rows*cols*2) {
-                Handler().postDelayed({
-                    if (visitedCellCount < rows*cols) {
-                        pathSelector(hereCoords.first, hereCoords.second)
-                        hereCell.here = false
-                        setCellBackgroundColor(hereCell, herePosi)
-                        setHereCell()
-                    }
-                }, 100L * i)
-        }
-    }
-
-    private fun setHereCell() {
+        //current position in the maze
         hereCoords = stack.peek()//hereCoord.first = row, hereCoord.second = col
         hereCell = board[hereCoords.first][hereCoords.second]
-        herePosi = hereCoords.first * rows + hereCoords.second
         hereCell.here = true
         hereCell.visited = true
-        setCellBackgroundColor(hereCell, herePosi)
+        setCellBackgroundColor(hereCell)
+
+        //make a maze path until visited count == maze size
+        while (visitedCellCount < rows * cols) {
+            //selects next cell
+            pathSelector(hereCoords.first, hereCoords.second)
+            hereCell.here = false
+            setCellBackgroundColor(hereCell)
+            hereCoords = stack.peek()//hereCoord.first = row, hereCoord.second = col
+            hereCell = board[hereCoords.first][hereCoords.second]
+            hereCell.here = true
+            hereCell.visited = true
+            setCellBackgroundColor(hereCell)
+        }
+        //return to start
+        hereCell.here = false
+        hereCoords = startCellCoords
+        hereCell = board[hereCoords.first][hereCoords.second]
+        hereCell.here = true
+
+        //reset all visited cells to unvisited
+        board.forEachIndexed { rowIndex, row ->
+            row.forEachIndexed { colIndex, cell ->
+                cell.visited = false
+                setCellBackgroundColor(cell)
+            }
+        }
     }
 
     private fun pathSelector(row:Int, col:Int) {
         val availablePaths = mutableListOf<PATH>()
 
+        //check in the path is to the border of the cell is visited
+        //add it to a list to randomly chose
         if (row > 0 && !board[row - 1][col].visited) {
             availablePaths.add(PATH.TOP)
         }
@@ -95,37 +100,37 @@ class BoardActivity : AppCompatActivity() {
             availablePaths.add(PATH.RIGHT)
         }
 
+        //path selector or to pop of stack to find a new path
         if (availablePaths.size > 0) {
             when (availablePaths[Random.nextInt(0, availablePaths.size)]) {
                 PATH.TOP -> {
                     board[row][col].top = true
                     board[row - 1][col].bottom = true
                     stack.push(Pair(row - 1, col))
-                    cellOrientation(board[row - 1][col], (row - 1) * rows + col)
+                    cellOrientation(board[row - 1][col])
                 }
                 PATH.LEFT -> {
                     board[row][col].left = true
                     board[row][col - 1].right = true
                     stack.push(Pair(row, col - 1))
-                    cellOrientation(board[row][col - 1], row * rows + (col - 1))
+                    cellOrientation(board[row][col - 1])
                 }
                 PATH.RIGHT -> {
                     board[row][col].right = true
                     board[row][col + 1].left = true
                     stack.push(Pair(row, col + 1))
-                    cellOrientation(board[row][col + 1], row * rows + (col + 1))
+                    cellOrientation(board[row][col + 1])
                 }
                 PATH.BOTTOM -> {
                     board[row][col].bottom = true
                     board[row + 1][col].top = true
                     stack.push(Pair(row + 1, col))
-                    cellOrientation(board[row + 1][col], (row + 1) * rows + col)
+                    cellOrientation(board[row + 1][col])
                 }
             }
-            cellOrientation(board[row][col], row * rows + col)
+            cellOrientation(board[row][col])
             visitedCellCount++
-        }
-        else{
+        }else{
             if(!stack.empty()){
                 stack.pop()
             }
@@ -133,32 +138,53 @@ class BoardActivity : AppCompatActivity() {
     }
 
     private fun cellCreation() {
-        val height = (displayMetrics.heightPixels - margin * 2) / rows
-        val width = (displayMetrics.widthPixels - margin * 2) / cols
-        cellSize = if (width < height) width else height
-        cellSize = if (cellSize < cellSizeMin) cellSizeMin else cellSize
+        //get the size of the screen
+        displayMetrics = DisplayMetrics()
+        windowManager.defaultDisplay.getMetrics(displayMetrics)
 
+        //get input value from user
+        rows = intent.getIntExtra("heightMaze", 5) // 2 .. 42
+        cols = intent.getIntExtra("widthMaze", 5) // 2 .. 21
+
+        //initialize maze array
+        board = Array(rows) { Array(cols) { CellPieces() } }
+
+        //set the size of cells, cells are square
+        var height = (displayMetrics.heightPixels - 100)/rows
+        height = if(height < 10) 10 else height
+        var width = (displayMetrics.widthPixels - 100) /cols
+        width = if (width < 10) 10 else width
+        cellSize = if (width < height) width else height
+
+        Log.d("chandra", "h:"+ height+" w:"+ width+" c:"+ cellSize)//maxWidth
+
+        //creates view for foreground(borders) and view background color for each cell
         board.forEachIndexed { rowIndex, row ->
-            row.forEachIndexed { colIndex, col ->
-//                borderCellOrientation(rowIndex, colIndex, col)
-                backgroundSetup(colIndex, rowIndex, col)
-                foregroundSetup(colIndex, rowIndex, col)
+            row.forEachIndexed { colIndex, cell ->
+                cell.position = rowIndex * cols + colIndex
+                cell.coords = Pair(rowIndex, colIndex)
+
+                val cellBackground = ImageView(this)
+                cellBackground.minimumHeight = cellSize
+                cellBackground.minimumWidth = cellSize
+                cellBackground.y = 1F * cellSize * cell.coords.first + margin
+                cellBackground.x = 1F * cellSize * cell.coords.second + margin
+                bind.boardBackground.addView(cellBackground)
+                setCellBackgroundColor(cell)
+
+                val cellForeground = ImageView(this)
+                cellForeground.minimumHeight = cellSize
+                cellForeground.minimumWidth = cellSize
+                cellForeground.y = 1F * cellSize * cell.coords.first + margin
+                cellForeground.x = 1F * cellSize * cell.coords.second + margin
+                bind.boardForeground.addView(cellForeground)
+                cellOrientation(cell)
             }
         }
     }
 
-    private fun foregroundSetup(colIndex: Int, rowIndex: Int, cell: CellPieces) {
-        val cellForeground = ImageView(this)
-        cellForeground.minimumHeight = cellSize
-        cellForeground.minimumWidth = cellSize
-        cellForeground.x = 1F * cellSize * colIndex + margin
-        cellForeground.y = 1F * cellSize * rowIndex + margin
-        bind.boardForeground.addView(cellForeground)
-        cellOrientation(cell, rowIndex * rows + colIndex)
-    }
-
-    private fun cellOrientation(cell: CellPieces, cellPosition: Int) {
-        var cellForeground = bind.boardForeground.getChildAt(cellPosition)
+    private fun cellOrientation(cell: CellPieces) {
+        val cellForeground = bind.boardForeground.getChildAt(cell.position)
         if (cell.top) {
             if (cell.left) {
                 if (cell.right) {
@@ -220,34 +246,27 @@ class BoardActivity : AppCompatActivity() {
                 }
             }
         }
-//        setCellBackgroundColor(cell, cellPosition)
     }
 
-    private fun backgroundSetup(colIndex: Int, rowIndex: Int, cell: CellPieces) {
-        val cellBackground = ImageView(this)
-        cellBackground.minimumHeight = cellSize
-        cellBackground.minimumWidth = cellSize
-        cellBackground.x = 1F * cellSize * colIndex + margin
-        cellBackground.y = 1F * cellSize * rowIndex + margin
-        bind.boardBackground.addView(cellBackground)
-        setCellBackgroundColor(cell, rowIndex * rows + colIndex)
-    }
-
-    private fun setCellBackgroundColor(cell: CellPieces, cellPosition: Int) {
-        var cellBackground = bind.boardBackground.getChildAt(cellPosition)
-        if (!cell.here) {
-            if (cell.visited) {
-                if (cell.dead) {
-                    cellBackground.setBackgroundResource(R.color.red)
-                } else {
-                    cellBackground.setBackgroundResource(R.color.light_orange)
-                }
-            } else {
-                cellBackground.setBackgroundResource(R.color.dark_orange)
-            }
-        } else {
-            cellBackground.setBackgroundResource(R.color.green)
+    private fun setCellBackgroundColor(cell: CellPieces) {
+        val cellBackground = bind.boardBackground.getChildAt(cell.position)
+        if(cell.here) {
+            cellBackground.setBackgroundResource(R.color.here_cell)
         }
+        else {
+            if(cell.start){
+                cellBackground.setBackgroundResource(R.color.start_cell)
+            }else if(cell.end){
+                cellBackground.setBackgroundResource(R.color.end_cell)
+            }else if(cell.dead){
+                cellBackground.setBackgroundResource(R.color.dead_cell)
+            }else if(cell.visited){
+                cellBackground.setBackgroundResource(R.color.visited_cell)
+            }else{
+                cellBackground.setBackgroundResource(R.color.unvisited_cell)
+            }
+        }
+
     }
 
 }

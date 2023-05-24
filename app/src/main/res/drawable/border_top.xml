@@ -11,6 +11,9 @@
     <path android:strokeColor="@color/border"
         android:pathData="M0,0.5L1,0.5"
         android:strokeWidth="1"/>
+    <path android:strokeColor="@color/border"
+        android:pathData="M1,0.5L4,0.5"
+        android:strokeWidth="1"/>
 <!--    <path android:strokeColor="@color/border"-->
 <!--        android:pathData="M4,0.5L5,0.5"-->
 <!--        android:strokeWidth="1"/>-->
@@ -24,9 +27,6 @@
 <!--    <path android:strokeColor="@color/purple_1"-->
 <!--        android:pathData="M0.5,1L0.5,4"-->
 <!--        android:strokeWidth="1"/>-->
-    <path android:strokeColor="@color/purple_2"
-        android:pathData="M1,0.5L4,0.5"
-        android:strokeWidth="1"/>
 <!--    <path android:strokeColor="@color/purple_4"-->
 <!--        android:pathData="M4.5,1L4.5,4"-->
 <!--        android:strokeWidth="1" />-->

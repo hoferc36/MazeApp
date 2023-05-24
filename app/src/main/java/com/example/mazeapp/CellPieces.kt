@@ -6,15 +6,17 @@ class CellPieces {
     var left:Boolean = false
     var right:Boolean = false
     var bottom:Boolean = false
+
     var visited:Boolean = false
     var here:Boolean = false
     var dead:Boolean = false
 
-    // used for map generation
-    var usedTop:Boolean = false
-    var usedLeft:Boolean = false
-    var usedRight:Boolean = false
-    var usedBottom:Boolean = false
+    var start:Boolean = false
+    var end:Boolean = false
+
+    var position: Int = 0
+    var coords: Pair<Int, Int> = Pair(0,0)
+
 }
 
 enum class PATH {

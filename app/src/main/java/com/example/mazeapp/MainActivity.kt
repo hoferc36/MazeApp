@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
             val widthText = if(bind.editTextWidth.text.toString() != "") bind.editTextWidth.text.toString() else "5"
             val width:Int = widthText.toInt()
 
-            if(height in 5..21 && width in 5..21){
+            if(height in 1..40 && width in 1..40){
                 intent.putExtra("heightMaze", height)
                 intent.putExtra("widthMaze", width)
                 startActivity(intent)

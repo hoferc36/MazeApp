@@ -1,22 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="hint">#72FFFFFF</color>
-    <color name="orange">#CD6231</color>
-    <color name="dark_orange">#FF7E4125</color>
-    <color name="light_orange">#FFDA845D</color>
-    <color name="blank_cell">#D59476</color>
-    <color name="visted_cell">#CC5C29</color>
-    <color name="here_cell">#803816</color>
+    <color name="hint_text">#72FFFFFF</color>
+    <color name="text">#FFFFFFFF</color>
+    <color name="background">#4C4949</color>
+    <color name="button">#69803C</color>
+    <color name="bar">#3C2F57</color>
+    <color name="accent">#CD6231</color>
+
     <color name="border">#FF000000</color>
-    <color name="purple_1">#B598DA</color>
-    <color name="purple_2">#7E51BF</color>
-    <color name="purple_3">#4D00F8</color>
-    <color name="purple_4">#3C2F57</color>
     <color name="transparent">#00000000</color>
-    <color name="gray">#4C4949</color>
-    <color name="green">#69803C</color>
-    <color name="red">#9E1A16</color>
+
+<!--    <color name="black">#FF000000</color>-->
+<!--    <color name="white">#FFFFFFFF</color>-->
+<!--    <color name="orange">#CD6231</color>-->
+<!--    <color name="dark_orange">#FF7E4125</color>-->
+<!--    <color name="light_orange">#FFDA845D</color>-->
+<!--    <color name="purple_1">#B598DA</color>-->
+<!--    <color name="purple_2">#7E51BF</color>-->
+<!--    <color name="purple_3">#4D00F8</color>-->
+<!--    <color name="purple_4">#3C2F57</color>-->
+<!--    <color name="gray">#4C4949</color>-->
+<!--    <color name="green">#69803C</color>-->
+<!--    <color name="red">#9E1A16</color>-->
+
+    <color name="unvisited_cell">#813F21</color>
+    <color name="visited_cell">#CC7D5A</color>
+    <color name="dead_cell">#773D3B</color>
+    <color name="here_cell">#69803C</color>
+    <color name="start_cell">#51A3E4</color>
+    <color name="end_cell">#6B37C8</color>
 
 </resources>
