@@ -7,7 +7,6 @@
     android:layout_height="match_parent"
     tools:context=".BoardActivity">
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/board_background"
         android:layout_width="match_parent"
@@ -28,42 +27,36 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-<!--    <Button-->
-<!--        android:id="@+id/button_up"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="50dp"-->
-<!--        android:text="up"-->
-<!--        app:layout_constraintBottom_toTopOf="@+id/button_left"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent" />-->
+    <Button
+        android:id="@+id/button_up"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:layout_constraintBottom_toTopOf="@+id/button_left"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-<!--    <Button-->
-<!--        android:id="@+id/button_left"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="50dp"-->
-<!--        android:text="left"-->
-<!--        app:layout_constraintBottom_toTopOf="@+id/button_down"-->
-<!--        app:layout_constraintEnd_toStartOf="@+id/button_right"-->
-<!--        app:layout_constraintStart_toStartOf="parent" />-->
+    <Button
+        android:id="@+id/button_left"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:layout_constraintBottom_toTopOf="@+id/button_down"
+        app:layout_constraintEnd_toStartOf="@+id/button_up" />
 
-<!--    <Button-->
-<!--        android:id="@+id/button_right"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="50dp"-->
-<!--        android:text="right"-->
-<!--        app:layout_constraintBottom_toTopOf="@+id/button_down"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toEndOf="@+id/button_left" />-->
+    <Button
+        android:id="@+id/button_right"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:layout_constraintBottom_toTopOf="@+id/button_down"
+        app:layout_constraintStart_toEndOf="@+id/button_up" />
 
-<!--    <Button-->
-<!--        android:id="@+id/button_down"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="50dp"-->
-<!--        android:layout_marginBottom="8dp"-->
-<!--        android:text="down"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent" />-->
+    <Button
+        android:id="@+id/button_down"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

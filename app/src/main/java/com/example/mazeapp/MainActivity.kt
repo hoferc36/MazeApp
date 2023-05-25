@@ -34,8 +34,8 @@ class MainActivity : AppCompatActivity() {
                 intent.putExtra("widthMaze", width)
                 startActivity(intent)
             }else{
-                Toast.makeText(applicationContext, "Number need to be between 5 and 21", Toast.LENGTH_SHORT).show()
-
+                Toast.makeText(applicationContext, "Number need to be between 2 and 40", Toast.LENGTH_SHORT).show()
+                finish()
             }
         }
 

@@ -1,11 +1,15 @@
 package com.example.mazeapp
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.util.DisplayMetrics
 import android.util.Log
+import android.view.View
+import android.widget.Button
 import android.widget.ImageView
+import android.widget.Toast
 import com.example.mazeapp.databinding.ActivityBoardBinding
 import java.util.Stack
 import kotlin.random.Random
@@ -28,6 +32,12 @@ class BoardActivity : AppCompatActivity() {
     private var hereCell = CellPieces()
     private var hereCoords = startCellCoords
 
+    private lateinit var upButton: Button
+    private lateinit var leftButton: Button
+    private lateinit var rightButton: Button
+    private lateinit var downButton: Button
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bind = ActivityBoardBinding.inflate(layoutInflater)
@@ -35,11 +45,88 @@ class BoardActivity : AppCompatActivity() {
 
         cellCreation()
         boardCreation()
+
+        upButton = bind.buttonUp
+        leftButton = bind.buttonLeft
+        rightButton = bind.buttonRight
+        downButton = bind.buttonDown
+
+        upButton.setOnClickListener{upButtonPress()}
+        leftButton.setOnClickListener{leftButtonPress()}
+        rightButton.setOnClickListener{rightButtonPress()}
+        downButton.setOnClickListener{downButtonPress()}
+    }
+
+    private fun upButtonPress(){
+        if (board[hereCoords.first][hereCoords.second].top) {
+            hereCell.here = false
+            setCellBackgroundColor(hereCell)
+            hereCoords = Pair(hereCoords.first - 1, hereCoords.second)
+            hereCell = board[hereCoords.first][hereCoords.second]
+            hereCell.here = true
+            hereCell.visited = true
+            setCellBackgroundColor(hereCell)
+            if (hereCell.end) {
+                Toast.makeText(applicationContext, "You win", Toast.LENGTH_SHORT).show()
+                finish()
+            }
+        }
+    }
+    private fun leftButtonPress(){
+        if(board[hereCoords.first][hereCoords.second].left){
+            hereCell.here = false
+            setCellBackgroundColor(hereCell)
+            hereCoords = Pair(hereCoords.first, hereCoords.second-1)
+            hereCell = board[hereCoords.first][hereCoords.second]
+            hereCell.here = true
+            hereCell.visited = true
+            setCellBackgroundColor(hereCell)
+            if(hereCell.end){
+                Toast.makeText(applicationContext, "You win", Toast.LENGTH_SHORT).show()
+                finish()
+            }
+        }
+    }
+    private fun rightButtonPress(){
+        if(board[hereCoords.first][hereCoords.second].right){
+            hereCell.here = false
+            setCellBackgroundColor(hereCell)
+            hereCoords = Pair(hereCoords.first, hereCoords.second+1)
+            hereCell = board[hereCoords.first][hereCoords.second]
+            hereCell.here = true
+            hereCell.visited = true
+            setCellBackgroundColor(hereCell)
+            if(hereCell.end){
+                Toast.makeText(applicationContext, "You win", Toast.LENGTH_SHORT).show()
+                finish()
+            }
+        }
+    }
+
+    private fun downButtonPress(){
+        if(board[hereCoords.first][hereCoords.second].bottom){
+            hereCell.here = false
+            setCellBackgroundColor(hereCell)
+            hereCoords = Pair(hereCoords.first+1, hereCoords.second)
+            hereCell = board[hereCoords.first][hereCoords.second]
+            hereCell.here = true
+            hereCell.visited = true
+            setCellBackgroundColor(hereCell)
+            if(hereCell.end){
+                Toast.makeText(applicationContext, "You win", Toast.LENGTH_SHORT).show()
+                finish()
+            }
+        }
     }
 
     private fun boardCreation() {
         //Start and end points set
-        board[startCellCoords.first][startCellCoords.second].start = true
+        hereCell = board[startCellCoords.first][startCellCoords.second]
+        hereCell.start = true
+        hereCell.here = true
+        hereCell.visited = true
+        setCellBackgroundColor(hereCell)
+
         endCellCoords = Pair(rows - 1, cols - 1)
         board[endCellCoords.first][endCellCoords.second].end = true
 
@@ -48,38 +135,40 @@ class BoardActivity : AppCompatActivity() {
         stack.push(hereCoords)
         visitedCellCount = 1
 
-        //current position in the maze
-        hereCoords = stack.peek()//hereCoord.first = row, hereCoord.second = col
+//        for(i in 1..rows*cols*2){
+//            Handler().postDelayed({
+//            if(visitedCellCount < rows * cols) {
+
+        //make a maze path until visited count == maze size
+        while (visitedCellCount < rows * cols) {
+                //selects next cell
+                pathSelector(hereCoords.first, hereCoords.second)
+                hereCell.here = false
+                setCellBackgroundColor(hereCell)
+                hereCoords = stack.peek()//hereCoord.first = row, hereCoord.second = col
+                hereCell = board[hereCoords.first][hereCoords.second]
+                hereCell.here = true
+                hereCell.visited = true
+                setCellBackgroundColor(hereCell)
+//            }},50L*i)
+        }
+        //return to start
+        hereCell.here = false
+
+        //reset all visited cells to unvisited
+        board.forEach { row ->
+            row.forEach { cell ->
+                cell.visited = false
+                setCellBackgroundColor(cell)
+            }
+        }
+
+        hereCoords = startCellCoords
         hereCell = board[hereCoords.first][hereCoords.second]
         hereCell.here = true
         hereCell.visited = true
         setCellBackgroundColor(hereCell)
 
-        //make a maze path until visited count == maze size
-        while (visitedCellCount < rows * cols) {
-            //selects next cell
-            pathSelector(hereCoords.first, hereCoords.second)
-            hereCell.here = false
-            setCellBackgroundColor(hereCell)
-            hereCoords = stack.peek()//hereCoord.first = row, hereCoord.second = col
-            hereCell = board[hereCoords.first][hereCoords.second]
-            hereCell.here = true
-            hereCell.visited = true
-            setCellBackgroundColor(hereCell)
-        }
-        //return to start
-        hereCell.here = false
-        hereCoords = startCellCoords
-        hereCell = board[hereCoords.first][hereCoords.second]
-        hereCell.here = true
-
-        //reset all visited cells to unvisited
-        board.forEachIndexed { rowIndex, row ->
-            row.forEachIndexed { colIndex, cell ->
-                cell.visited = false
-                setCellBackgroundColor(cell)
-            }
-        }
     }
 
     private fun pathSelector(row:Int, col:Int) {
@@ -143,20 +232,20 @@ class BoardActivity : AppCompatActivity() {
         windowManager.defaultDisplay.getMetrics(displayMetrics)
 
         //get input value from user
-        rows = intent.getIntExtra("heightMaze", 5) // 2 .. 42
-        cols = intent.getIntExtra("widthMaze", 5) // 2 .. 21
+        rows = intent.getIntExtra("heightMaze", 5)
+        cols = intent.getIntExtra("widthMaze", 5)
 
         //initialize maze array
         board = Array(rows) { Array(cols) { CellPieces() } }
 
         //set the size of cells, cells are square
-        var height = (displayMetrics.heightPixels - 100)/rows
+        var height = (displayMetrics.heightPixels - 200)/rows
         height = if(height < 10) 10 else height
         var width = (displayMetrics.widthPixels - 100) /cols
         width = if (width < 10) 10 else width
         cellSize = if (width < height) width else height
 
-        Log.d("chandra", "h:"+ height+" w:"+ width+" c:"+ cellSize)//maxWidth
+//        Log.d("chandra", "h:"+ height+" w:"+ width+" c:"+ cellSize)//maxWidth
 
         //creates view for foreground(borders) and view background color for each cell
         board.forEachIndexed { rowIndex, row ->
