@@ -1,17 +1,17 @@
 package com.example.mazeapp
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
 import android.util.DisplayMetrics
-import android.util.Log
-import android.view.View
+import android.view.GestureDetector
+import android.view.MotionEvent
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.core.view.GestureDetectorCompat
 import com.example.mazeapp.databinding.ActivityBoardBinding
 import java.util.Stack
+import kotlin.math.abs
 import kotlin.random.Random
 
 class BoardActivity : AppCompatActivity() {
@@ -32,11 +32,7 @@ class BoardActivity : AppCompatActivity() {
     private var hereCell = CellPieces()
     private var hereCoords = startCellCoords
 
-    private lateinit var upButton: Button
-    private lateinit var leftButton: Button
-    private lateinit var rightButton: Button
-    private lateinit var downButton: Button
-
+    private lateinit var gestureDetector: GestureDetectorCompat
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,18 +42,56 @@ class BoardActivity : AppCompatActivity() {
         cellCreation()
         boardCreation()
 
-        upButton = bind.buttonUp
-        leftButton = bind.buttonLeft
-        rightButton = bind.buttonRight
-        downButton = bind.buttonDown
-
-        upButton.setOnClickListener{upButtonPress()}
-        leftButton.setOnClickListener{leftButtonPress()}
-        rightButton.setOnClickListener{rightButtonPress()}
-        downButton.setOnClickListener{downButtonPress()}
+        gestureDetector = GestureDetectorCompat(this, GestureListener1())
     }
 
-    private fun upButtonPress(){
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        return if (gestureDetector.onTouchEvent(event)) {
+            true
+        } else {
+            super.onTouchEvent(event)
+        }
+    }
+
+    inner class GestureListener1 : GestureDetector.SimpleOnGestureListener(){
+        private val SWIPE_THRESHOLD: Int = 100
+        private val SWIPE_VELOCITY_THRESHOLD: Int = 100
+
+        override fun onFling(downEvent: MotionEvent, moveEvent: MotionEvent,
+                             velocityX: Float, velocityY: Float): Boolean {
+
+            val diffX = moveEvent?.x?.minus(downEvent!!.x) ?: 0.0F
+            val diffY = moveEvent?.y?.minus(downEvent!!.y) ?: 0.0F
+
+            return if (abs(diffX) > abs(diffY)) {
+                // this is a left or right swipe
+                if (abs(diffX) > SWIPE_THRESHOLD && abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
+                    if (diffX > 0 ) {
+                        moveRight()
+                    } else {
+                        moveLeft()
+                    }
+                    true
+                } else  {
+                    super.onFling(downEvent, moveEvent, velocityX, velocityY)
+                }
+            } else {
+                // this is either a bottom or top swipe.
+                if (abs(diffY) > SWIPE_THRESHOLD && abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
+                    if (diffY > 0) {
+                        moveDown()
+                    } else {
+                        moveUp()
+                    }
+                    true
+                } else {
+                    super.onFling(downEvent, moveEvent, velocityX, velocityY)
+                }
+            }
+        }
+    }
+
+    private fun moveUp(){
         if (board[hereCoords.first][hereCoords.second].top) {
             hereCell.here = false
             setCellBackgroundColor(hereCell)
@@ -72,7 +106,7 @@ class BoardActivity : AppCompatActivity() {
             }
         }
     }
-    private fun leftButtonPress(){
+    private fun moveLeft(){
         if(board[hereCoords.first][hereCoords.second].left){
             hereCell.here = false
             setCellBackgroundColor(hereCell)
@@ -87,7 +121,7 @@ class BoardActivity : AppCompatActivity() {
             }
         }
     }
-    private fun rightButtonPress(){
+    private fun moveRight(){
         if(board[hereCoords.first][hereCoords.second].right){
             hereCell.here = false
             setCellBackgroundColor(hereCell)
@@ -103,7 +137,7 @@ class BoardActivity : AppCompatActivity() {
         }
     }
 
-    private fun downButtonPress(){
+    private fun moveDown(){
         if(board[hereCoords.first][hereCoords.second].bottom){
             hereCell.here = false
             setCellBackgroundColor(hereCell)
