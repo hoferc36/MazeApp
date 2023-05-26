@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.GestureDetector
+import android.view.KeyEvent
 import android.view.MotionEvent
 import android.widget.Button
 import android.widget.ImageView
@@ -43,6 +44,22 @@ class BoardActivity : AppCompatActivity() {
         boardCreation()
 
         gestureDetector = GestureDetectorCompat(this, GestureListener1())
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        return if (keyCode == KeyEvent.KEYCODE_DPAD_UP){
+            moveUp()
+            true
+        }else if(keyCode == KeyEvent.KEYCODE_DPAD_LEFT){
+            moveLeft()
+            true
+        }else if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT){
+            moveRight()
+            true
+        }else if(keyCode == KeyEvent.KEYCODE_DPAD_DOWN){
+            moveDown()
+            true
+        }else { super.onKeyDown(keyCode, event)}
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
