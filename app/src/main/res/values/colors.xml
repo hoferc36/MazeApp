@@ -1,33 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="hint_text">#72FFFFFF</color>
-    <color name="text">#FFFFFFFF</color>
-    <color name="background">#4C4949</color>
-    <color name="button">#69803C</color>
-    <color name="bar">#3C2F57</color>
-    <color name="accent">#CD6231</color>
+    <color name="base">#667F33</color>
+    <color name="base_dark">#465623</color>
+    <color name="base_light">#86A64B</color>
 
-    <color name="border">#FF000000</color>
+    <color name="success">#338080</color>
+    <color name="success_dark">#0C4A4A</color>
+    <color name="success_light">#7CBDBD</color>
+    <color name="warning">#804D33</color>
+    <color name="warning_dark">#573524</color>
+    <color name="warning_light">#B3633B</color>
+    <color name="danger">#803333</color>
+    <color name="danger_dark">#572424</color>
+    <color name="danger_light">#B33B3B</color>
+    <color name="information">#4C3380</color>
+    <color name="information_dark">#301B59</color>
+    <color name="information_light">#927DBD</color>
+
+    <color name="neutral">#4B4D49</color>
+    <color name="neutral_dark">#2E302D</color>
+    <color name="neutral_light">#8E8F8D</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="black">#FF000000</color>
     <color name="transparent">#00000000</color>
 
-<!--    <color name="black">#FF000000</color>-->
-<!--    <color name="white">#FFFFFFFF</color>-->
-<!--    <color name="orange">#CD6231</color>-->
-<!--    <color name="dark_orange">#FF7E4125</color>-->
-<!--    <color name="light_orange">#FFDA845D</color>-->
-<!--    <color name="purple_1">#B598DA</color>-->
-<!--    <color name="purple_2">#7E51BF</color>-->
-<!--    <color name="purple_3">#4D00F8</color>-->
-<!--    <color name="purple_4">#3C2F57</color>-->
-<!--    <color name="gray">#4C4949</color>-->
-<!--    <color name="green">#69803C</color>-->
-<!--    <color name="red">#9E1A16</color>-->
+    <!--layout colors-->
+    <color name="button">#667F33</color>
+    <color name="background">#4B4D49</color>
+    <color name="accent">#804D33</color>
+    <color name="text">#FFFFFFFF</color>
+    <color name="hint_text">#8E8F8D</color>
+    <color name="bar">#301B59</color>
 
-    <color name="unvisited_cell">#813F21</color>
-    <color name="visited_cell">#CC7D5A</color>
-    <color name="dead_cell">#773D3B</color>
-    <color name="here_cell">#69803C</color>
-    <color name="start_cell">#51A3E4</color>
-    <color name="end_cell">#6B37C8</color>
+    <color name="border">#FF000000</color>
+
+    <!--maze colors-->
+    <color name="unvisited_cell">#465623</color>
+    <color name="visited_cell">#86A64B</color>
+    <color name="end_cell">#7CBDBD</color>
+    <color name="start_cell">#4C3380</color>
+    <color name="dead_cell">#803333</color>
+    <color name="here_cell">#B3633B</color>
 
 </resources>

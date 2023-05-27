@@ -1,22 +1,24 @@
 package com.example.mazeapp
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
 import android.util.DisplayMetrics
-import android.util.Log
-import android.view.View
+import android.view.GestureDetector
+import android.view.KeyEvent
+import android.view.MotionEvent
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.core.view.GestureDetectorCompat
 import com.example.mazeapp.databinding.ActivityBoardBinding
 import java.util.Stack
+import kotlin.math.abs
 import kotlin.random.Random
 
 class BoardActivity : AppCompatActivity() {
     private lateinit var bind: ActivityBoardBinding
     private lateinit var displayMetrics: DisplayMetrics
+    private lateinit var gestureDetector: GestureDetectorCompat
 
     private var cellSize = 5
     private val margin = 8
@@ -32,10 +34,10 @@ class BoardActivity : AppCompatActivity() {
     private var hereCell = CellPieces()
     private var hereCoords = startCellCoords
 
-    private lateinit var upButton: Button
-    private lateinit var leftButton: Button
-    private lateinit var rightButton: Button
-    private lateinit var downButton: Button
+//    private lateinit var upButton: Button
+//    private lateinit var leftButton: Button
+//    private lateinit var rightButton: Button
+//    private lateinit var downButton: Button
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,19 +48,47 @@ class BoardActivity : AppCompatActivity() {
         cellCreation()
         boardCreation()
 
-        upButton = bind.buttonUp
-        leftButton = bind.buttonLeft
-        rightButton = bind.buttonRight
-        downButton = bind.buttonDown
+        gestureDetector = GestureDetectorCompat(this, GestureListener1())
 
-        upButton.setOnClickListener{upButtonPress()}
-        leftButton.setOnClickListener{leftButtonPress()}
-        rightButton.setOnClickListener{rightButtonPress()}
-        downButton.setOnClickListener{downButtonPress()}
+//        upButton = bind.buttonUp
+//        leftButton = bind.buttonLeft
+//        rightButton = bind.buttonRight
+//        downButton = bind.buttonDown
+//
+//        upButton.setOnClickListener{moveUp()}
+//        leftButton.setOnClickListener{moveLeft()}
+//        rightButton.setOnClickListener{moveRight()}
+//        downButton.setOnClickListener{moveDown()}
     }
 
-    private fun upButtonPress(){
-        if (board[hereCoords.first][hereCoords.second].top) {
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        return when (keyCode) {
+            KeyEvent.KEYCODE_DPAD_UP -> {
+                moveUp()
+                true
+            }KeyEvent.KEYCODE_DPAD_LEFT -> {
+                moveLeft()
+                true
+            }KeyEvent.KEYCODE_DPAD_RIGHT -> {
+                moveRight()
+                true
+            }KeyEvent.KEYCODE_DPAD_DOWN -> {
+                moveDown()
+                true
+            }else -> { super.onKeyDown(keyCode, event)}
+        }
+    }
+
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        return if (gestureDetector.onTouchEvent(event)) {
+            true
+        } else {
+            super.onTouchEvent(event)
+        }
+    }
+
+    private fun moveUp(){
+        if (hereCell.top) {
             hereCell.here = false
             setCellBackgroundColor(hereCell)
             hereCoords = Pair(hereCoords.first - 1, hereCoords.second)
@@ -67,13 +97,16 @@ class BoardActivity : AppCompatActivity() {
             hereCell.visited = true
             setCellBackgroundColor(hereCell)
             if (hereCell.end) {
-                Toast.makeText(applicationContext, "You win", Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext, "You WIN", Toast.LENGTH_SHORT).show()
                 finish()
+            }
+            if(hereCell.top && !hereCell.left && !hereCell.right && !hereCell.bottom){
+                moveUp()
             }
         }
     }
-    private fun leftButtonPress(){
-        if(board[hereCoords.first][hereCoords.second].left){
+    private fun moveLeft(){
+        if(hereCell.left){
             hereCell.here = false
             setCellBackgroundColor(hereCell)
             hereCoords = Pair(hereCoords.first, hereCoords.second-1)
@@ -85,10 +118,13 @@ class BoardActivity : AppCompatActivity() {
                 Toast.makeText(applicationContext, "You win", Toast.LENGTH_SHORT).show()
                 finish()
             }
+            if(!hereCell.top && hereCell.left && !hereCell.right && !hereCell.bottom){
+                moveLeft()
+            }
         }
     }
-    private fun rightButtonPress(){
-        if(board[hereCoords.first][hereCoords.second].right){
+    private fun moveRight(){
+        if(hereCell.right){
             hereCell.here = false
             setCellBackgroundColor(hereCell)
             hereCoords = Pair(hereCoords.first, hereCoords.second+1)
@@ -100,11 +136,14 @@ class BoardActivity : AppCompatActivity() {
                 Toast.makeText(applicationContext, "You win", Toast.LENGTH_SHORT).show()
                 finish()
             }
+            if(!hereCell.top && !hereCell.left && hereCell.right && !hereCell.bottom){
+                moveRight()
+            }
         }
     }
 
-    private fun downButtonPress(){
-        if(board[hereCoords.first][hereCoords.second].bottom){
+    private fun moveDown(){
+        if(hereCell.bottom){
             hereCell.here = false
             setCellBackgroundColor(hereCell)
             hereCoords = Pair(hereCoords.first+1, hereCoords.second)
@@ -115,6 +154,9 @@ class BoardActivity : AppCompatActivity() {
             if(hereCell.end){
                 Toast.makeText(applicationContext, "You win", Toast.LENGTH_SHORT).show()
                 finish()
+            }
+            if(!hereCell.top && !hereCell.left && !hereCell.right && hereCell.bottom){
+                moveDown()
             }
         }
     }
@@ -356,6 +398,44 @@ class BoardActivity : AppCompatActivity() {
             }
         }
 
+    }
+
+    inner class GestureListener1 : GestureDetector.SimpleOnGestureListener(){
+        private val SWIPE_THRESHOLD: Int = 100
+        private val SWIPE_VELOCITY_THRESHOLD: Int = 100
+
+        override fun onFling(downEvent: MotionEvent, moveEvent: MotionEvent,
+                             velocityX: Float, velocityY: Float): Boolean {
+
+            val diffX = moveEvent?.x?.minus(downEvent!!.x) ?: 0.0F
+            val diffY = moveEvent?.y?.minus(downEvent!!.y) ?: 0.0F
+
+            return if (abs(diffX) > abs(diffY)) {
+                // this is a left or right swipe
+                if (abs(diffX) > SWIPE_THRESHOLD && abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
+                    if (diffX > 0 ) {
+                        moveRight()
+                    } else {
+                        moveLeft()
+                    }
+                    true
+                } else  {
+                    super.onFling(downEvent, moveEvent, velocityX, velocityY)
+                }
+            } else {
+                // this is either a bottom or top swipe.
+                if (abs(diffY) > SWIPE_THRESHOLD && abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
+                    if (diffY > 0) {
+                        moveDown()
+                    } else {
+                        moveUp()
+                    }
+                    true
+                } else {
+                    super.onFling(downEvent, moveEvent, velocityX, velocityY)
+                }
+            }
+        }
     }
 
 }

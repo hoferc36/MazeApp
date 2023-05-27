@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">MazeApp</string>
-    <string name="go_to_board">Go to Board</string>
+    <string name="start_button">Go to Maze</string>
     <string name="width_text">Width of the Maze</string>
     <string name="default_size">5</string>
     <string name="height_text">Height of the Maze</string>
