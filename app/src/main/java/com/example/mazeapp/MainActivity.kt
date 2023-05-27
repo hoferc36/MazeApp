@@ -1,14 +1,10 @@
 package com.example.mazeapp
 
 import android.os.Bundle
-import android.util.DisplayMetrics
-import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.mazeapp.databinding.ActivityMainBinding
 import android.content.*
-import android.view.MotionEvent
-
 
 class MainActivity : AppCompatActivity() {
     private lateinit var bind: ActivityMainBinding
@@ -35,7 +31,7 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
             }else{
                 Toast.makeText(applicationContext, "Number need to be between 2 and 40", Toast.LENGTH_SHORT).show()
-                finish()
+//                finish()
             }
         }
 

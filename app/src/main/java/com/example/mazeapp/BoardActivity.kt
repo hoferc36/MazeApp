@@ -3,12 +3,8 @@ package com.example.mazeapp
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.view.GestureDetector
-import android.view.KeyEvent
-import android.view.MotionEvent
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.Toast
+import android.view.*
+import android.widget.*
 import androidx.core.view.GestureDetectorCompat
 import com.example.mazeapp.databinding.ActivityBoardBinding
 import java.util.Stack
@@ -38,7 +34,6 @@ class BoardActivity : AppCompatActivity() {
 //    private lateinit var leftButton: Button
 //    private lateinit var rightButton: Button
 //    private lateinit var downButton: Button
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
