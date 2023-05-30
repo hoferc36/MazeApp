@@ -104,7 +104,7 @@ class BoardActivity : AppCompatActivity() {
         var heightButtons = 50 * (displayMetrics.densityDpi/160)
         heightButtons = 0
         val heightRow = (displayMetrics.heightPixels - marginP*2 - heightButtons*3) /boardMaze.rows
-        val widthCol = displayMetrics.widthPixels /boardMaze.cols
+        val widthCol = (displayMetrics.widthPixels - marginP*2) /boardMaze.cols
         cellSize = if (widthCol < heightRow) widthCol else heightRow
         //centre maze
         val marginPwidth =  (displayMetrics.widthPixels - cellSize*boardMaze.cols)/2
