@@ -47,7 +47,8 @@
         android:inputType="number"
         android:minHeight="50dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        android:autofillHints="to 5" />
 
     <TextView
         android:id="@+id/textHeight"
@@ -75,7 +76,8 @@
         android:gravity="end"
         android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextWidth"/>
+        app:layout_constraintTop_toBottomOf="@+id/editTextWidth"
+        android:autofillHints="5" />
 
     <TextView
         android:id="@+id/textButtonToggle"
@@ -108,7 +110,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="@string/text_startpoint"
+        android:text="@string/text_start_point"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textButtonToggle" />
 
@@ -137,7 +139,8 @@
         android:inputType="number"
         android:gravity="end"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toggleButton" />
+        app:layout_constraintTop_toBottomOf="@+id/toggleButton"
+        android:autofillHints="0" />
 
     <EditText
         android:id="@+id/editTextStartY"
@@ -152,7 +155,8 @@
         android:textColorHint="@color/hint_text"
         android:gravity="end"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextStartX" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextStartX"
+        android:autofillHints="0" />
 
     <EditText
         android:id="@+id/editTextEndX"
@@ -167,7 +171,8 @@
         android:textColor="@color/text"
         android:textColorHint="@color/hint_text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextStartY" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextStartY"
+        android:autofillHints="0" />
 
     <EditText
         android:id="@+id/editTextEndY"
@@ -182,6 +187,7 @@
         android:textColor="@color/text"
         android:textColorHint="@color/hint_text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextEndX" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextEndX"
+        android:autofillHints="0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

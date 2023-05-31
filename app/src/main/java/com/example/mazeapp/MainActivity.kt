@@ -1,15 +1,11 @@
 package com.example.mazeapp
 
-import android.app.ActionBar.LayoutParams
 import android.os.Bundle
 import android.widget.*
+import android.content.*
+import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.mazeapp.databinding.ActivityMainBinding
-import android.content.*
-import android.text.Layout
-import android.view.View
-import android.view.Window
-import android.view.WindowManager
 
 class MainActivity : AppCompatActivity() {
     private lateinit var bind: ActivityMainBinding
@@ -39,7 +35,7 @@ class MainActivity : AppCompatActivity() {
             if (getInputForMaze(intent))startActivity(intent)
         }
 
-        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
     }
 
     private fun getInputForMaze(intent: Intent): Boolean {

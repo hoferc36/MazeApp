@@ -3,33 +3,33 @@ package com.example.mazeapp
 import java.util.Stack
 import kotlin.random.Random
 
-class BoardMaze (val rows:Int = 2, val cols:Int = 2, val activity: BoardActivity) {
+class BoardMaze (val rows:Int = 2, val cols:Int = 2, private val activity: BoardActivity) {
     val board: Array<Array<CellPieces>> = Array(rows) { Array(cols) { CellPieces() } }
 
     private val stack: Stack<Pair<Int, Int>> = Stack<Pair<Int, Int>>()
     private var visitedCellCount = 0
 
-    private var hereCoords = Pair(0,0)
+    private var hereCoord = Pair(0,0)
     private var hereCell = CellPieces()
 
-    var startCellCoords: Pair<Int,Int> = Pair(0,0)
+    var startCellCoord: Pair<Int,Int> = Pair(0,0)
         set(value) {
             if(value.first in 0 until rows && value.second in 0 until cols) {
-                board[startCellCoords.first][startCellCoords.second].start = false
+                board[startCellCoord.first][startCellCoord.second].start = false
                 hereCell.here = false
                 hereCell.visited = false
                 field = value
-                hereCoords = value
-                hereCell = board[hereCoords.first][hereCoords.second]
+                hereCoord = value
+                hereCell = board[hereCoord.first][hereCoord.second]
                 hereCell.start = true
                 hereCell.here = true
                 hereCell.visited = true
             }
         }
-    var endCellCoords = Pair(0, 0)
+    var endCellCoord = Pair(0, 0)
         set(value) {
             if(value.first in 0 until rows && value.second in 0 until cols) {
-                board[endCellCoords.first][endCellCoords.second].end = false
+                board[endCellCoord.first][endCellCoord.second].end = false
                 field = value
                 board[value.first][value.second].end = true
             }
@@ -37,28 +37,28 @@ class BoardMaze (val rows:Int = 2, val cols:Int = 2, val activity: BoardActivity
         }
 
     init {
-        board.forEachIndexed() { rowIndex, row ->
+        board.forEachIndexed { rowIndex, row ->
             row.forEachIndexed { colIndex, cell ->
                 cell.position = rowIndex * cols + colIndex
-                cell.coords = Pair(rowIndex, colIndex)
+                cell.coord = Pair(rowIndex, colIndex)
             }
 
         }
-        hereCell = board[startCellCoords.first][startCellCoords.second]
+        hereCell = board[startCellCoord.first][startCellCoord.second]
         hereCell.start = true
         hereCell.here = true
         hereCell.visited = true
 
-        endCellCoords = Pair(rows - 1, cols - 1)
-        board[endCellCoords.first][endCellCoords.second].end = true
+        endCellCoord = Pair(rows - 1, cols - 1)
+        board[endCellCoord.first][endCellCoord.second].end = true
 
-        stack.push(hereCoords)
+        stack.push(hereCoord)
         visitedCellCount = 1
         while (visitedCellCount < rows * cols) {
-            pathSelector(hereCoords.first, hereCoords.second)
+            pathSelector(hereCoord.first, hereCoord.second)
             hereCell.here = false
-            hereCoords = stack.peek()//hereCoord.first = row, hereCoord.second = col
-            hereCell = board[hereCoords.first][hereCoords.second]
+            hereCoord = stack.peek()//hereCoord.first = row, hereCoord.second = col
+            hereCell = board[hereCoord.first][hereCoord.second]
             hereCell.here = true
             hereCell.visited = true
         }
@@ -70,8 +70,8 @@ class BoardMaze (val rows:Int = 2, val cols:Int = 2, val activity: BoardActivity
             }
         }
 
-        hereCoords = Pair(0,0)
-        hereCell = board[hereCoords.first][hereCoords.second]
+        hereCoord = Pair(0,0)
+        hereCell = board[hereCoord.first][hereCoord.second]
         hereCell.here = true
         hereCell.visited = true
     }
@@ -123,7 +123,7 @@ class BoardMaze (val rows:Int = 2, val cols:Int = 2, val activity: BoardActivity
     }
     fun moveUp(){
         if (hereCell.top) {
-            moveCharacter(hereCoords.first-1, hereCoords.second)
+            moveCharacter(hereCoord.first-1, hereCoord.second)
             if(hereCell.top && !hereCell.left && !hereCell.right){
                 moveUp()
             }
@@ -134,7 +134,7 @@ class BoardMaze (val rows:Int = 2, val cols:Int = 2, val activity: BoardActivity
     }
     fun moveLeft(){
         if(hereCell.left){
-            moveCharacter(hereCoords.first, hereCoords.second-1)
+            moveCharacter(hereCoord.first, hereCoord.second-1)
             if(!hereCell.top && hereCell.left && !hereCell.bottom){
                 moveLeft()
             }
@@ -145,7 +145,7 @@ class BoardMaze (val rows:Int = 2, val cols:Int = 2, val activity: BoardActivity
     }
     fun moveRight(){
         if(hereCell.right){
-            moveCharacter(hereCoords.first, hereCoords.second+1)
+            moveCharacter(hereCoord.first, hereCoord.second+1)
             if(!hereCell.top && hereCell.right && !hereCell.bottom){
                 moveRight()
             }
@@ -157,7 +157,7 @@ class BoardMaze (val rows:Int = 2, val cols:Int = 2, val activity: BoardActivity
 
     fun moveDown(){
         if(hereCell.bottom){
-            moveCharacter(hereCoords.first+1, hereCoords.second)
+            moveCharacter(hereCoord.first+1, hereCoord.second)
             if(!hereCell.left && !hereCell.right && hereCell.bottom){
                 moveDown()
             }
@@ -168,8 +168,8 @@ class BoardMaze (val rows:Int = 2, val cols:Int = 2, val activity: BoardActivity
     }
     private fun moveCharacter(newRow:Int, newCol:Int){
         hereCell.here = false
-        hereCoords = Pair(newRow, newCol)
-        hereCell = board[hereCoords.first][hereCoords.second]
+        hereCoord = Pair(newRow, newCol)
+        hereCell = board[hereCoord.first][hereCoord.second]
         hereCell.here = true
         hereCell.visited = true
         if (hereCell.end) {

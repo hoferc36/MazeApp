@@ -5,7 +5,7 @@
     <string name="default_size">5</string>
     <string name="height_text">Height of the Maze</string>
     <string name="button_toggle_text">Turn on Buttons</string>
-    <string name="text_startpoint">Chose Start Point</string>
+    <string name="text_start_point">Chose Start Point</string>
     <string name="text_endpoint">Chose End Point</string>
     <string name="default_position">0</string>
     <string name="text_column">Column</string>

@@ -1,16 +1,14 @@
 package com.example.mazeapp
 
+import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.core.view.GestureDetectorCompat
 import com.example.mazeapp.databinding.ActivityBoardBinding
-import java.util.Stack
 import kotlin.math.abs
-import kotlin.random.Random
 
 class BoardActivity : AppCompatActivity() {
     private lateinit var bind: ActivityBoardBinding
@@ -44,11 +42,11 @@ class BoardActivity : AppCompatActivity() {
             intent.getIntExtra("heightMaze", 5),
             intent.getIntExtra("widthMaze", 5), this
         )
-        boardMaze.startCellCoords = Pair(
+        boardMaze.startCellCoord = Pair(
             intent.getIntExtra("startCoordX", 0),
             intent.getIntExtra("startCoordY", 0)
         )
-        boardMaze.endCellCoords = Pair(
+        boardMaze.endCellCoord = Pair(
             intent.getIntExtra("endCoordX", boardMaze.rows - 1),
             intent.getIntExtra("endCoordY", boardMaze.cols - 1)
         )
@@ -122,11 +120,10 @@ class BoardActivity : AppCompatActivity() {
     }
 
     private fun cellCreation() {
-        displayMetrics = DisplayMetrics()
-        windowManager.defaultDisplay.getMetrics(displayMetrics)
+        displayMetrics = Resources.getSystem().displayMetrics
 
 //        val dpi = displayMetrics.densityDpi
-        val marginP = marginDP * (displayMetrics.densityDpi/160)
+        val marginPixel = marginDP * (displayMetrics.densityDpi/160)
 
 //        val heightDP = displayMetrics.heightPixels * 160 / dpi
 //        val heightP = displayMetrics.heightPixels
@@ -134,11 +131,11 @@ class BoardActivity : AppCompatActivity() {
         if(isButtonOn) {
             heightButtons = 40 * (displayMetrics.densityDpi / 160)
         }
-        val heightRow = (displayMetrics.heightPixels - marginP*2 - heightButtons*3) /boardMaze.rows
-        val widthCol = (displayMetrics.widthPixels - marginP*2) /boardMaze.cols
+        val heightRow = (displayMetrics.heightPixels - marginPixel*2 - heightButtons*3) /boardMaze.rows
+        val widthCol = (displayMetrics.widthPixels - marginPixel*2) /boardMaze.cols
         cellSize = if (widthCol < heightRow) widthCol else heightRow
         //centre maze
-        val marginPwidth =  (displayMetrics.widthPixels - cellSize*boardMaze.cols)/2
+        val marginPixelWidth =  (displayMetrics.widthPixels - cellSize*boardMaze.cols)/2
 
 //        Log.d("chandra", "mdp:$marginDP mp:$marginP w:$displayMetrics.widthPixels cw:$cellSize")//maxWidth
 
@@ -147,16 +144,16 @@ class BoardActivity : AppCompatActivity() {
                 val cellBackground = ImageView(this)
                 cellBackground.minimumHeight = cellSize
                 cellBackground.minimumWidth = cellSize
-                cellBackground.y = 1F * cellSize * cell.coords.first + marginP
-                cellBackground.x = 1F * cellSize * cell.coords.second + marginPwidth
+                cellBackground.y = 1F * cellSize * cell.coord.first + marginPixel
+                cellBackground.x = 1F * cellSize * cell.coord.second + marginPixelWidth
                 bind.boardBackground.addView(cellBackground)
                 setCellBackgroundColor(cell)
 
                 val cellForeground = ImageView(this)
                 cellForeground.minimumHeight = cellSize
                 cellForeground.minimumWidth = cellSize
-                cellForeground.y = 1F * cellSize * cell.coords.first + marginP
-                cellForeground.x = 1F * cellSize * cell.coords.second + marginPwidth
+                cellForeground.y = 1F * cellSize * cell.coord.first + marginPixel
+                cellForeground.x = 1F * cellSize * cell.coord.second + marginPixelWidth
                 bind.boardForeground.addView(cellForeground)
                 cellOrientation(cell)
             }
@@ -250,18 +247,18 @@ class BoardActivity : AppCompatActivity() {
     }
 
     inner class GestureListener1 : GestureDetector.SimpleOnGestureListener(){
-        private val SWIPE_THRESHOLD: Int = 100
-        private val SWIPE_VELOCITY_THRESHOLD: Int = 100
+        private val swipeThreshold: Int = 100
+        private val swipeVelocityThreshold: Int = 100
 
         override fun onFling(downEvent: MotionEvent, moveEvent: MotionEvent,
                              velocityX: Float, velocityY: Float): Boolean {
 
-            val diffX = moveEvent?.x?.minus(downEvent!!.x) ?: 0.0F
-            val diffY = moveEvent?.y?.minus(downEvent!!.y) ?: 0.0F
+            val diffX = moveEvent.x.minus(downEvent.x)
+            val diffY = moveEvent.y.minus(downEvent.y)
 
             return if (abs(diffX) > abs(diffY)) {
                 // this is a left or right swipe
-                if (abs(diffX) > SWIPE_THRESHOLD && abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
+                if (abs(diffX) > swipeThreshold && abs(velocityX) > swipeVelocityThreshold) {
                     if (diffX > 0 ) {
                         boardMaze.moveRight()
                     } else {
@@ -273,7 +270,7 @@ class BoardActivity : AppCompatActivity() {
                 }
             } else {
                 // this is either a bottom or top swipe.
-                if (abs(diffY) > SWIPE_THRESHOLD && abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
+                if (abs(diffY) > swipeThreshold && abs(velocityY) > swipeVelocityThreshold) {
                     if (diffY > 0) {
                         boardMaze.moveDown()
                     } else {

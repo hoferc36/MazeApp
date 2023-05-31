@@ -15,7 +15,7 @@ class CellPieces {
     var end:Boolean = false
 
     var position: Int = 0
-    var coords: Pair<Int, Int> = Pair(0,0)
+    var coord: Pair<Int, Int> = Pair(0,0)
 
 }
 
