@@ -127,6 +127,9 @@ class BoardMaze (val rows:Int = 2, val cols:Int = 2, val activity: BoardActivity
             if(hereCell.top && !hereCell.left && !hereCell.right){
                 moveUp()
             }
+            else {
+                activity.boardRefresh()
+            }
         }
     }
     fun moveLeft(){
@@ -134,6 +137,9 @@ class BoardMaze (val rows:Int = 2, val cols:Int = 2, val activity: BoardActivity
             moveCharacter(hereCoords.first, hereCoords.second-1)
             if(!hereCell.top && hereCell.left && !hereCell.bottom){
                 moveLeft()
+            }
+            else {
+                activity.boardRefresh()
             }
         }
     }
@@ -143,6 +149,9 @@ class BoardMaze (val rows:Int = 2, val cols:Int = 2, val activity: BoardActivity
             if(!hereCell.top && hereCell.right && !hereCell.bottom){
                 moveRight()
             }
+            else {
+                activity.boardRefresh()
+            }
         }
     }
 
@@ -151,6 +160,9 @@ class BoardMaze (val rows:Int = 2, val cols:Int = 2, val activity: BoardActivity
             moveCharacter(hereCoords.first+1, hereCoords.second)
             if(!hereCell.left && !hereCell.right && hereCell.bottom){
                 moveDown()
+            }
+            else {
+                activity.boardRefresh()
             }
         }
     }

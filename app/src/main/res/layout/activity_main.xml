@@ -19,7 +19,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/textEndPoint" />
 
     <TextView
         android:id="@+id/textWidth"
@@ -47,8 +47,7 @@
         android:inputType="number"
         android:minHeight="50dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:autofillHints="10" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
         android:id="@+id/textHeight"
@@ -76,6 +75,113 @@
         android:gravity="end"
         android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextWidth"
-        android:autofillHints="10" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextWidth"/>
+
+    <TextView
+        android:id="@+id/textButtonToggle"
+        android:layout_width="wrap_content"
+        android:minHeight="50dp"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/button_toggle_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textHeight" />
+
+    <ToggleButton
+        android:id="@+id/toggleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/warning"
+        android:gravity="center"
+        app:layout_constraintStart_toEndOf="@+id/textButtonToggle"
+        app:layout_constraintTop_toBottomOf="@+id/editTextHeight" />
+
+    <TextView
+        android:id="@+id/textStartPoint"
+        android:layout_width="wrap_content"
+        android:minHeight="50dp"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/text_startpoint"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textButtonToggle" />
+
+    <TextView
+        android:id="@+id/textEndPoint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:minHeight="50dp"
+        android:text="@string/text_endpoint"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextStartY" />
+
+    <EditText
+        android:id="@+id/editTextStartX"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:ems="2"
+        android:hint="@string/text_row"
+        android:textColorHint="@color/hint_text"
+        android:textColor="@color/text"
+        android:inputType="number"
+        android:gravity="end"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toggleButton" />
+
+    <EditText
+        android:id="@+id/editTextStartY"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:ems="4"
+        android:hint="@string/text_column"
+        android:inputType="number"
+        android:textColor="@color/text"
+        android:textColorHint="@color/hint_text"
+        android:gravity="end"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextStartX" />
+
+    <EditText
+        android:id="@+id/editTextEndX"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:ems="2"
+        android:gravity="end"
+        android:hint="@string/text_row"
+        android:inputType="number"
+        android:textColor="@color/text"
+        android:textColorHint="@color/hint_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextStartY" />
+
+    <EditText
+        android:id="@+id/editTextEndY"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:ems="4"
+        android:gravity="end"
+        android:hint="@string/text_column"
+        android:inputType="number"
+        android:textColor="@color/text"
+        android:textColorHint="@color/hint_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextEndX" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

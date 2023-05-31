@@ -22,39 +22,72 @@ class BoardActivity : AppCompatActivity() {
 
     private lateinit var boardMaze: BoardMaze
 
-//    private lateinit var upButton: Button
-//    private lateinit var leftButton: Button
-//    private lateinit var rightButton: Button
-//    private lateinit var downButton: Button
+    private var isButtonOn: Boolean = false
+    private lateinit var upButton: Button
+    private lateinit var leftButton: Button
+    private lateinit var rightButton: Button
+    private lateinit var downButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bind = ActivityBoardBinding.inflate(layoutInflater)
         setContentView(bind.board1)
 
-        boardMaze = BoardMaze(intent.getIntExtra("heightMaze", 5),
-            intent.getIntExtra("widthMaze", 5), this)
-//        boardMaze.startCellCoords = Pair(1,0)
-//        boardMaze.endCellCoords = Pair(1, 1)
+        boardSetUp()
+        buttonSetUp()
         cellCreation()
         gestureDetector = GestureDetectorCompat(this, GestureListener1())
-
-//        upButton = bind.buttonUp
-//        leftButton = bind.buttonLeft
-//        rightButton = bind.buttonRight
-//        downButton = bind.buttonDown
-//
-//        upButton.setOnClickListener{moveUp()}
-//        leftButton.setOnClickListener{moveLeft()}
-//        rightButton.setOnClickListener{moveRight()}
-//        downButton.setOnClickListener{moveDown()}
     }
+
+    private fun boardSetUp() {
+        boardMaze = BoardMaze(
+            intent.getIntExtra("heightMaze", 5),
+            intent.getIntExtra("widthMaze", 5), this
+        )
+        boardMaze.startCellCoords = Pair(
+            intent.getIntExtra("startCoordX", 0),
+            intent.getIntExtra("startCoordY", 0)
+        )
+        boardMaze.endCellCoords = Pair(
+            intent.getIntExtra("endCoordX", boardMaze.rows - 1),
+            intent.getIntExtra("endCoordY", boardMaze.cols - 1)
+        )
+    }
+
+    private fun buttonSetUp() {
+        isButtonOn = intent.getBooleanExtra("isButtonOn", false)
+
+        upButton = bind.buttonUp
+        upButton.visibility = if (isButtonOn) View.VISIBLE else View.GONE
+        upButton.setOnClickListener {
+            boardMaze.moveUp()
+        }
+
+        leftButton = bind.buttonLeft
+        leftButton.visibility = if (isButtonOn) View.VISIBLE else View.GONE
+        leftButton.setOnClickListener {
+            boardMaze.moveLeft()
+        }
+
+        rightButton = bind.buttonRight
+        rightButton.visibility = if (isButtonOn) View.VISIBLE else View.GONE
+        rightButton.setOnClickListener {
+            boardMaze.moveRight()
+        }
+
+        downButton = bind.buttonDown
+        downButton.visibility = if (isButtonOn) View.VISIBLE else View.INVISIBLE
+        downButton.setOnClickListener {
+            boardMaze.moveDown()
+        }
+    }
+
     fun endGame(){
         Toast.makeText(applicationContext, "You WIN", Toast.LENGTH_SHORT).show()
         finish()
     }
 
-    private fun boardRefresh() {
+    fun boardRefresh() {
         boardMaze.board.forEach { row ->
             row.forEach { cell ->
                 setCellBackgroundColor(cell)
@@ -66,19 +99,15 @@ class BoardActivity : AppCompatActivity() {
         return when (keyCode) {
             KeyEvent.KEYCODE_DPAD_UP -> {
                 boardMaze.moveUp()
-                boardRefresh()
                 true
             }KeyEvent.KEYCODE_DPAD_LEFT -> {
                 boardMaze.moveLeft()
-                boardRefresh()
                 true
             }KeyEvent.KEYCODE_DPAD_RIGHT -> {
                 boardMaze.moveRight()
-                boardRefresh()
                 true
             }KeyEvent.KEYCODE_DPAD_DOWN -> {
                 boardMaze.moveDown()
-                boardRefresh()
                 true
             }else -> { super.onKeyDown(keyCode, event)}
         }
@@ -101,8 +130,10 @@ class BoardActivity : AppCompatActivity() {
 
 //        val heightDP = displayMetrics.heightPixels * 160 / dpi
 //        val heightP = displayMetrics.heightPixels
-        var heightButtons = 50 * (displayMetrics.densityDpi/160)
-        heightButtons = 0
+        var heightButtons = 0
+        if(isButtonOn) {
+            heightButtons = 40 * (displayMetrics.densityDpi / 160)
+        }
         val heightRow = (displayMetrics.heightPixels - marginP*2 - heightButtons*3) /boardMaze.rows
         val widthCol = (displayMetrics.widthPixels - marginP*2) /boardMaze.cols
         cellSize = if (widthCol < heightRow) widthCol else heightRow
@@ -233,10 +264,8 @@ class BoardActivity : AppCompatActivity() {
                 if (abs(diffX) > SWIPE_THRESHOLD && abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
                     if (diffX > 0 ) {
                         boardMaze.moveRight()
-                        boardRefresh()
                     } else {
                         boardMaze.moveLeft()
-                        boardRefresh()
                     }
                     true
                 } else  {
@@ -247,10 +276,8 @@ class BoardActivity : AppCompatActivity() {
                 if (abs(diffY) > SWIPE_THRESHOLD && abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
                     if (diffY > 0) {
                         boardMaze.moveDown()
-                        boardRefresh()
                     } else {
                         boardMaze.moveUp()
-                        boardRefresh()
                     }
                     true
                 } else {
