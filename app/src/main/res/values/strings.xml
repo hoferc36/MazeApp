@@ -10,4 +10,9 @@
     <string name="default_position">0</string>
     <string name="text_column">Column</string>
     <string name="text_row">Row</string>
+    <string name="nothing" />
+    <string name="up_button">up button</string>
+    <string name="down_button">down button</string>
+    <string name="left_button">left button</string>
+    <string name="right_button">right button</string>
 </resources>

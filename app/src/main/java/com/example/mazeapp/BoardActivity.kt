@@ -129,7 +129,7 @@ class BoardActivity : AppCompatActivity() {
 //        val heightP = displayMetrics.heightPixels
         var heightButtons = 0
         if(isButtonOn) {
-            heightButtons = 40 * (displayMetrics.densityDpi / 160)
+            heightButtons = 70 * (displayMetrics.densityDpi/ 160)
         }
         val heightRow = (displayMetrics.heightPixels - marginPixel*2 - heightButtons*3) /boardMaze.rows
         val widthCol = (displayMetrics.widthPixels - marginPixel*2) /boardMaze.cols

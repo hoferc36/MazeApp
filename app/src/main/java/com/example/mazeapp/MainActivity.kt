@@ -72,8 +72,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         //maze end coord
-        val endCoordX = getIntFromView(bind.editTextEndX, height-1)
-        val endCoordY = getIntFromView(bind.editTextEndY, width-1)
+        val endCoordX = getIntFromView(bind.editTextEndX, width-1)
+        val endCoordY = getIntFromView(bind.editTextEndY, height-1)
         if (endCoordX in 0 until width && endCoordY in 0 until height) {
             intent.putExtra("endCoordX", endCoordX)
             intent.putExtra("endCoordY", endCoordY)
