@@ -15,4 +15,5 @@
     <string name="down_button">down button</string>
     <string name="left_button">left button</string>
     <string name="right_button">right button</string>
+    <string name="text_seed">Enter Maze Seed</string>
 </resources>

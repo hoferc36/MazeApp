@@ -83,6 +83,16 @@ class MainActivity : AppCompatActivity() {
             return false
         }
 
+        //maze width
+        val seed = getIntFromView(bind.editTextSeed, 0)
+        if (seed >= 0 ) {
+            intent.putExtra("mazeSeed", seed)
+        } else {
+            Toast.makeText(applicationContext, "Maze Seed needs to be >= 0",
+                Toast.LENGTH_SHORT).show()
+            return false
+        }
+
         intent.putExtra("isButtonOn", bind.toggleButton.isChecked)
         return true
     }

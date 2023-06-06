@@ -14,12 +14,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
+        android:layout_marginBottom="32dp"
         android:text="@string/button_start"
         android:textColor="@color/text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textEndPoint" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textWidth"
@@ -39,7 +39,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:ems="2"
+        android:ems="3"
+        android:maxLength="3"
         android:hint="@string/default_size"
         android:textColorHint="@color/hint_text"
         android:textColor="@color/text"
@@ -69,7 +70,8 @@
         android:minHeight="50dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:ems="2"
+        android:ems="3"
+        android:maxLength="3"
         android:hint="@string/default_size"
         android:textColorHint="@color/hint_text"
         android:textColor="@color/text"
@@ -132,7 +134,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:ems="2"
+        android:ems="3"
+        android:maxLength="3"
         android:hint="@string/text_row"
         android:textColorHint="@color/hint_text"
         android:textColor="@color/text"
@@ -149,6 +152,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:ems="4"
+        android:maxLength="3"
         android:hint="@string/text_column"
         android:inputType="number"
         android:textColor="@color/text"
@@ -164,7 +168,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:ems="2"
+        android:ems="3"
+        android:maxLength="3"
         android:gravity="end"
         android:hint="@string/text_row"
         android:inputType="number"
@@ -181,6 +186,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:ems="4"
+        android:maxLength="3"
         android:gravity="end"
         android:hint="@string/text_column"
         android:inputType="number"
@@ -189,5 +195,35 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextEndX"
         android:autofillHints="0" />
+
+    <TextView
+        android:id="@+id/textSeed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:minHeight="50dp"
+        android:text="@string/text_seed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextEndY" />
+
+    <EditText
+        android:id="@+id/editTextSeed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:autofillHints="0"
+        android:ems="7"
+        android:maxEms="3"
+        android:maxLength="10"
+        android:gravity="end"
+        android:hint="85"
+        android:inputType="none"
+        android:textColor="@color/text"
+        android:textColorHint="@color/hint_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextEndY" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

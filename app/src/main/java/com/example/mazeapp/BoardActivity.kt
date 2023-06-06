@@ -40,7 +40,9 @@ class BoardActivity : AppCompatActivity() {
     private fun boardSetUp() {
         boardMaze = BoardMaze(
             intent.getIntExtra("heightMaze", 5),
-            intent.getIntExtra("widthMaze", 5), this
+            intent.getIntExtra("widthMaze", 5),
+            this,
+            intent.getIntExtra("mazeSeed", 0)
         )
         boardMaze.startCellCoord = Pair(
             intent.getIntExtra("startCoordX", 0),

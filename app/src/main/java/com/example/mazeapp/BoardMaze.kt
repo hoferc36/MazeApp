@@ -1,9 +1,13 @@
 package com.example.mazeapp
 
+import android.util.Log
 import java.util.Stack
 import kotlin.random.Random
 
-class BoardMaze (val rows:Int = 2, val cols:Int = 2, private val activity: BoardActivity) {
+class BoardMaze (val rows:Int = 2,
+                 val cols:Int = 2,
+                 private val activity: BoardActivity,
+                 val seed:Int = 0) {
     val board: Array<Array<CellPieces>> = Array(rows) { Array(cols) { CellPieces() } }
 
     private val stack: Stack<Pair<Int, Int>> = Stack<Pair<Int, Int>>()
@@ -11,6 +15,8 @@ class BoardMaze (val rows:Int = 2, val cols:Int = 2, private val activity: Board
 
     private var hereCoord = Pair(0,0)
     private var hereCell = CellPieces()
+
+    private var currentSeed = 2029L + rows - cols
 
     var startCellCoord: Pair<Int,Int> = Pair(0,0)
         set(value) {
@@ -37,21 +43,17 @@ class BoardMaze (val rows:Int = 2, val cols:Int = 2, private val activity: Board
         }
 
     init {
-        board.forEachIndexed { rowIndex, row ->
-            row.forEachIndexed { colIndex, cell ->
-                cell.position = rowIndex * cols + colIndex
-                cell.coord = Pair(rowIndex, colIndex)
-            }
+        currentSeed *= if (seed <= 0) Random.nextInt(1, 3000) else seed
+        boardSetUp()
+        pathSetUp()
 
-        }
-        hereCell = board[startCellCoord.first][startCellCoord.second]
-        hereCell.start = true
+        hereCoord = Pair(0,0)
+        hereCell = board[hereCoord.first][hereCoord.second]
         hereCell.here = true
         hereCell.visited = true
+    }
 
-        endCellCoord = Pair(rows - 1, cols - 1)
-        board[endCellCoord.first][endCellCoord.second].end = true
-
+    private fun pathSetUp() {
         stack.push(hereCoord)
         visitedCellCount = 1
         while (visitedCellCount < rows * cols) {
@@ -69,12 +71,25 @@ class BoardMaze (val rows:Int = 2, val cols:Int = 2, private val activity: Board
                 cell.visited = false
             }
         }
+    }
 
-        hereCoord = Pair(0,0)
-        hereCell = board[hereCoord.first][hereCoord.second]
+    private fun boardSetUp() {
+        board.forEachIndexed { rowIndex, row ->
+            row.forEachIndexed { colIndex, cell ->
+                cell.position = rowIndex * cols + colIndex
+                cell.coord = Pair(rowIndex, colIndex)
+            }
+
+        }
+        hereCell = board[startCellCoord.first][startCellCoord.second]
+        hereCell.start = true
         hereCell.here = true
         hereCell.visited = true
+
+        endCellCoord = Pair(rows - 1, cols - 1)
+        board[endCellCoord.first][endCellCoord.second].end = true
     }
+
     private fun pathSelector(row:Int, col:Int) {
         val availablePaths = mutableListOf<PATH>()
 
@@ -91,8 +106,9 @@ class BoardMaze (val rows:Int = 2, val cols:Int = 2, private val activity: Board
             availablePaths.add(PATH.RIGHT)
         }
 
+        currentSeed += Random(currentSeed).nextInt(1, 3000)
         if (availablePaths.size > 0) {
-            when (availablePaths[Random.nextInt(0, availablePaths.size)]) {
+            when (availablePaths[Random(currentSeed).nextInt(0, availablePaths.size)]) {
                 PATH.TOP -> {
                     board[row][col].top = true
                     board[row - 1][col].bottom = true
@@ -114,6 +130,9 @@ class BoardMaze (val rows:Int = 2, val cols:Int = 2, private val activity: Board
                     stack.push(Pair(row + 1, col))
                 }
             }
+//            Log.d("chandra", "seed: ${Random.nextInt(0, availablePaths.size)}" +
+//                    " random number ${Random(currentSeed).nextInt(0, availablePaths.size)}")
+
             visitedCellCount++
         }else{
             if(!stack.empty()){
