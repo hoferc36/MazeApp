@@ -9,6 +9,7 @@ import com.example.mazeapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private lateinit var bind: ActivityMainBinding
+    private lateinit var database: DatabaseHelper
 
     private lateinit var buttonStartBoard: Button
 
@@ -19,6 +20,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         bind = ActivityMainBinding.inflate(layoutInflater)
         setContentView(bind.main1)
+        database = DatabaseHelper(this)
 
         val buttonToggle = bind.toggleButton
         buttonToggle.setOnClickListener {
