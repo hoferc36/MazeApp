@@ -6,7 +6,6 @@
     android:id="@+id/main1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="8dp"
     tools:context=".MainActivity">
 
     <Button
@@ -27,8 +26,7 @@
         android:minHeight="50dp"
         android:gravity="center"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_margin="8dp"
         android:text="@string/width_text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -37,19 +35,17 @@
         android:id="@+id/editTextWidth"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_margin="8dp"
         android:ems="3"
-        android:maxLength="3"
-        android:hint="@string/default_size"
-        android:textColorHint="@color/hint_text"
-        android:textColor="@color/text"
         android:gravity="end"
+        android:hint="@string/default_size"
         android:inputType="number"
+        android:maxLength="3"
         android:minHeight="50dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:autofillHints="to 5" />
+        tools:ignore="DuplicateSpeakableTextCheck"
+        android:autofillHints="5" />
 
     <TextView
         android:id="@+id/textHeight"
@@ -57,8 +53,7 @@
         android:minHeight="50dp"
         android:gravity="center"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_margin="8dp"
         android:text="@string/height_text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textWidth" />
@@ -67,19 +62,16 @@
         android:id="@+id/editTextHeight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:minHeight="50dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_margin="8dp"
+        android:autofillHints="5"
         android:ems="3"
-        android:maxLength="3"
-        android:hint="@string/default_size"
-        android:textColorHint="@color/hint_text"
-        android:textColor="@color/text"
         android:gravity="end"
+        android:hint="@string/default_size"
         android:inputType="number"
+        android:maxLength="3"
+        android:minHeight="50dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextWidth"
-        android:autofillHints="5" />
+        app:layout_constraintTop_toBottomOf="@+id/textWidth" />
 
     <TextView
         android:id="@+id/textButtonToggle"
@@ -87,8 +79,7 @@
         android:minHeight="50dp"
         android:gravity="center"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_margin="8dp"
         android:text="@string/button_toggle_text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textHeight" />
@@ -97,12 +88,12 @@
         android:id="@+id/toggleButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_margin="8dp"
         android:background="@color/warning"
         android:gravity="center"
         app:layout_constraintStart_toEndOf="@+id/textButtonToggle"
-        app:layout_constraintTop_toBottomOf="@+id/editTextHeight" />
+        app:layout_constraintTop_toBottomOf="@+id/textHeight"
+        tools:ignore="TextSizeCheck" />
 
     <TextView
         android:id="@+id/textStartPoint"
@@ -110,8 +101,7 @@
         android:minHeight="50dp"
         android:gravity="center"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_margin="8dp"
         android:text="@string/text_start_point"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textButtonToggle" />
@@ -120,8 +110,7 @@
         android:id="@+id/textEndPoint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_margin="8dp"
         android:gravity="center"
         android:minHeight="50dp"
         android:text="@string/text_endpoint"
@@ -132,76 +121,66 @@
         android:id="@+id/editTextStartX"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_margin="8dp"
+        android:autofillHints="0"
         android:ems="3"
-        android:maxLength="3"
-        android:hint="@string/text_row"
-        android:textColorHint="@color/hint_text"
-        android:textColor="@color/text"
-        android:inputType="number"
         android:gravity="end"
+        android:hint="@string/text_row"
+        android:inputType="number"
+        android:maxLength="3"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toggleButton"
-        android:autofillHints="0" />
+        app:layout_constraintTop_toBottomOf="@+id/textButtonToggle"
+        tools:ignore="DuplicateSpeakableTextCheck" />
 
     <EditText
         android:id="@+id/editTextStartY"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_margin="8dp"
+        android:autofillHints="0"
         android:ems="4"
-        android:maxLength="3"
+        android:gravity="end"
         android:hint="@string/text_column"
         android:inputType="number"
-        android:textColor="@color/text"
-        android:textColorHint="@color/hint_text"
-        android:gravity="end"
+        android:maxLength="3"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextStartX"
-        android:autofillHints="0" />
+        app:layout_constraintTop_toBottomOf="@+id/textStartPoint"
+        tools:ignore="TextSizeCheck,TextSizeCheck,DuplicateSpeakableTextCheck" />
 
     <EditText
         android:id="@+id/editTextEndX"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_margin="8dp"
+        android:autofillHints="0"
         android:ems="3"
-        android:maxLength="3"
         android:gravity="end"
         android:hint="@string/text_row"
         android:inputType="number"
-        android:textColor="@color/text"
-        android:textColorHint="@color/hint_text"
+        android:maxLength="3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextStartY"
-        android:autofillHints="0" />
+        tools:ignore="TextSizeCheck,TextSizeCheck" />
 
     <EditText
         android:id="@+id/editTextEndY"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_margin="8dp"
+        android:autofillHints="0"
         android:ems="4"
-        android:maxLength="3"
         android:gravity="end"
         android:hint="@string/text_column"
         android:inputType="number"
-        android:textColor="@color/text"
-        android:textColorHint="@color/hint_text"
+        android:maxLength="3"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextEndX"
-        android:autofillHints="0" />
+        app:layout_constraintTop_toBottomOf="@+id/textEndPoint" />
 
     <TextView
         android:id="@+id/textSeed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_margin="8dp"
         android:gravity="center"
         android:minHeight="50dp"
         android:text="@string/text_seed"
@@ -212,17 +191,14 @@
         android:id="@+id/editTextSeed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_margin="8dp"
         android:autofillHints="0"
         android:ems="7"
         android:maxEms="3"
         android:maxLength="10"
         android:gravity="end"
-        android:hint="85"
+        android:hint="@string/seed_hint"
         android:inputType="text"
-        android:textColor="@color/text"
-        android:textColorHint="@color/hint_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextEndY" />
 

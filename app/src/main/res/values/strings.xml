@@ -16,4 +16,5 @@
     <string name="left_button">left button</string>
     <string name="right_button">right button</string>
     <string name="text_seed">Enter Maze Seed</string>
+    <string name="seed_hint">85</string>
 </resources>

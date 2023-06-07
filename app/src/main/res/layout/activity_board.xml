@@ -32,10 +32,11 @@
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:background="@drawable/up_arrow"
-        android:contentDescription="@string/down_button"
+        android:contentDescription="@string/up_button"
         app:layout_constraintBottom_toTopOf="@+id/button_left"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="RedundantDescriptionCheck" />
 
     <Button
         android:id="@+id/button_left"
@@ -44,7 +45,8 @@
         android:background="@drawable/left_arrow"
         android:contentDescription="@string/left_button"
         app:layout_constraintBottom_toTopOf="@+id/button_down"
-        app:layout_constraintEnd_toStartOf="@+id/button_up" />
+        app:layout_constraintEnd_toStartOf="@+id/button_up"
+        tools:ignore="RedundantDescriptionCheck" />
 
     <Button
         android:id="@+id/button_right"
@@ -53,7 +55,8 @@
         android:background="@drawable/right_arrow"
         android:contentDescription="@string/right_button"
         app:layout_constraintBottom_toTopOf="@+id/button_down"
-        app:layout_constraintStart_toEndOf="@+id/button_up" />
+        app:layout_constraintStart_toEndOf="@+id/button_up"
+        tools:ignore="RedundantDescriptionCheck" />
 
     <Button
         android:id="@+id/button_down"
@@ -64,6 +67,7 @@
         android:contentDescription="@string/down_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="RedundantDescriptionCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

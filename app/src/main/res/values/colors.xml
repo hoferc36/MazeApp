@@ -29,7 +29,7 @@
     <color name="background">#4B4D49</color>
     <color name="accent">#804D33</color>
     <color name="text">#FFFFFFFF</color>
-    <color name="hint_text">#8E8F8D</color>
+    <color name="hint_text">#9E9E9E</color>
     <color name="bar">#301B59</color>
 
     <color name="border">#FF000000</color>
