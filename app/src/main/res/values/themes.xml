@@ -7,6 +7,7 @@
         <item name="android:textSize">24sp</item>
         <item name="android:textColor">@color/text</item>
         <item name="android:textColorHint">@color/hint_text</item>
+        <item name="alertDialogTheme">@android:style/Theme.DeviceDefault.Dialog.Alert</item>
     </style>
 
 

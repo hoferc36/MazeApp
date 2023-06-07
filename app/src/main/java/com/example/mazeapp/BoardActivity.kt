@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.*
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.GestureDetectorCompat
 import com.example.mazeapp.databinding.ActivityBoardBinding
 import kotlin.math.abs
@@ -25,6 +26,8 @@ class BoardActivity : AppCompatActivity() {
     private lateinit var leftButton: Button
     private lateinit var rightButton: Button
     private lateinit var downButton: Button
+
+    private var isEndGame: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,7 +87,23 @@ class BoardActivity : AppCompatActivity() {
 
     fun endGame(){
         Toast.makeText(applicationContext, "You WIN", Toast.LENGTH_SHORT).show()
+        isEndGame = true
         finish()
+    }
+
+    override fun finish() {
+        if(isEndGame){
+            super.finish()
+        }else{
+            val builder = AlertDialog.Builder(this)
+            with(builder) {
+                setTitle("Warning")
+                setMessage("Do you want to quit?")
+                setPositiveButton("Yes") { dialog, which -> super.finish() }
+                setNegativeButton("No"){ dialog, which -> dialog.dismiss() }
+                show()
+            }
+        }
     }
 
     fun boardRefresh() {
