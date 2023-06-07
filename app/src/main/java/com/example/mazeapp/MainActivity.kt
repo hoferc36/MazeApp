@@ -100,7 +100,11 @@ class MainActivity : AppCompatActivity() {
     private fun getIntFromView(text: EditText, defaultVal: Int):Int{
         val textString = text.text.toString()
         return if(textString != ""){
-            textString.toInt()
+            try {
+                textString.toInt()
+            }catch(e: NumberFormatException) {
+                textString.hashCode()
+            }
         }else defaultVal
     }
 }

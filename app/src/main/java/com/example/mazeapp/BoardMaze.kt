@@ -1,13 +1,13 @@
 package com.example.mazeapp
 
-import android.util.Log
 import java.util.Stack
+import kotlin.math.abs
 import kotlin.random.Random
 
 class BoardMaze (val rows:Int = 2,
                  val cols:Int = 2,
                  private val activity: BoardActivity,
-                 val seed:Int = 0) {
+                 seed:Int = 0) {
     val board: Array<Array<CellPieces>> = Array(rows) { Array(cols) { CellPieces() } }
 
     private val stack: Stack<Pair<Int, Int>> = Stack<Pair<Int, Int>>()
@@ -107,6 +107,8 @@ class BoardMaze (val rows:Int = 2,
         }
 
         currentSeed += Random(currentSeed).nextInt(1, 3000)
+        currentSeed = if(currentSeed == 0L) 2029L else abs(currentSeed)
+
         if (availablePaths.size > 0) {
             when (availablePaths[Random(currentSeed).nextInt(0, availablePaths.size)]) {
                 PATH.TOP -> {
