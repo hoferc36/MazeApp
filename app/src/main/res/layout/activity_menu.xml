@@ -1,32 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main1"
+    android:id="@+id/menu1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MenuActivity">
 
     <Button
         android:id="@+id/startBoardButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="8dp"
         android:text="@string/button_start"
         android:textColor="@color/text"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/buttonLogin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textWidth"
         android:layout_width="wrap_content"
-        android:minHeight="50dp"
-        android:gravity="center"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
+        android:gravity="center"
+        android:minHeight="50dp"
         android:text="@string/width_text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -36,6 +34,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
+        android:autofillHints="5"
         android:ems="3"
         android:gravity="end"
         android:hint="@string/default_size"
@@ -44,16 +43,15 @@
         android:minHeight="50dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="DuplicateSpeakableTextCheck"
-        android:autofillHints="5" />
+        tools:ignore="DuplicateSpeakableTextCheck" />
 
     <TextView
         android:id="@+id/textHeight"
         android:layout_width="wrap_content"
-        android:minHeight="50dp"
-        android:gravity="center"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
+        android:gravity="center"
+        android:minHeight="50dp"
         android:text="@string/height_text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textWidth" />
@@ -76,10 +74,10 @@
     <TextView
         android:id="@+id/textButtonToggle"
         android:layout_width="wrap_content"
-        android:minHeight="50dp"
-        android:gravity="center"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
+        android:gravity="center"
+        android:minHeight="50dp"
         android:text="@string/button_toggle_text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textHeight" />
@@ -98,10 +96,10 @@
     <TextView
         android:id="@+id/textStartPoint"
         android:layout_width="wrap_content"
-        android:minHeight="50dp"
-        android:gravity="center"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
+        android:gravity="center"
+        android:minHeight="50dp"
         android:text="@string/text_start_point"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textButtonToggle" />
@@ -194,12 +192,35 @@
         android:layout_margin="8dp"
         android:autofillHints="0"
         android:ems="7"
-        android:maxEms="3"
-        android:maxLength="10"
         android:gravity="end"
         android:hint="@string/seed_hint"
         android:inputType="text"
+        android:maxEms="3"
+        android:maxLength="10"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextEndY" />
+
+    <Button
+        android:id="@+id/buttonLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="@string/button_login"
+        android:textColor="@color/text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/textViewUserData"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewUserData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="@string/text_user_data"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/buttonLogin" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

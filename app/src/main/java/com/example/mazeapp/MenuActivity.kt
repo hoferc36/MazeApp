@@ -1,25 +1,29 @@
 package com.example.mazeapp
 
+import android.app.Activity
 import android.os.Bundle
 import android.widget.*
 import android.content.*
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
-import com.example.mazeapp.databinding.ActivityMainBinding
+import com.example.mazeapp.databinding.ActivityMenuBinding
 
-class MainActivity : AppCompatActivity() {
-    private lateinit var bind: ActivityMainBinding
+class MenuActivity : AppCompatActivity() {
+    private lateinit var bind: ActivityMenuBinding
     private lateinit var database: DatabaseHelper
 
     private lateinit var buttonStartBoard: Button
+    private lateinit var buttonLogin: Button
 
     private val minSize = 2
     private val maxSize = 40
 
+    private var user: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        bind = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(bind.main1)
+        bind = ActivityMenuBinding.inflate(layoutInflater)
+        setContentView(bind.menu1)
         database = DatabaseHelper(this)
 
         val buttonToggle = bind.toggleButton
@@ -37,7 +41,39 @@ class MainActivity : AppCompatActivity() {
             if (getInputForMaze(intent))startActivity(intent)
         }
 
+        buttonLogin = bind.buttonLogin
+        buttonLogin.setOnClickListener {
+            if(buttonLogin.text.toString() == "Login") {
+                val intent = Intent(this, LoginActivity::class.java)
+//            startActivity(intent)
+                startActivityForResult(intent, 1)
+            }else {
+                user = null
+                checkUser()
+            }
+        }
+        checkUser()
+
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 1){
+            if(resultCode == Activity.RESULT_OK){
+                user = data!!.getStringExtra("UserData").toString()
+                checkUser()
+            }
+        }
+    }
+    private fun checkUser() {
+        if (user != null && user != "") {
+            bind.textViewUserData.text = "$user"
+            bind.buttonLogin.text = "Logout"
+        } else {
+            bind.textViewUserData.text = "No User Data"
+            bind.buttonLogin.text = "Login"
+        }
     }
 
     private fun getInputForMaze(intent: Intent): Boolean {

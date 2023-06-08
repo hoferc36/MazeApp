@@ -17,4 +17,9 @@
     <string name="right_button">right button</string>
     <string name="text_seed">Enter Maze Seed</string>
     <string name="seed_hint">85</string>
+    <string name="text_username">Username</string>
+    <string name="button_login">Login</string>
+    <string name="button_create">Create</string>
+    <string name="text_user_data">No User Data</string>
+    <string name="button_back">Back to Menu</string>
 </resources>
