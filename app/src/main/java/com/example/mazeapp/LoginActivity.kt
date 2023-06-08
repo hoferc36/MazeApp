@@ -5,7 +5,6 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.view.WindowManager
 import android.widget.*
 import com.example.mazeapp.databinding.ActivityLoginBinding
 
@@ -28,7 +27,7 @@ class LoginActivity: AppCompatActivity() {
         setContentView(bind.login1)
 
         database = mutableListOf()
-        returnIntent = Intent(this, MenuActivity::class.java)
+        returnIntent = Intent(this, MainActivity::class.java)
         pageRefresh()
 
         createButton = bind.buttonCreate
@@ -42,7 +41,6 @@ class LoginActivity: AppCompatActivity() {
                     database.add(user!!)
                     pageRefresh()
                     Toast.makeText(applicationContext, "User Created", Toast.LENGTH_SHORT).show()
-                    window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
                 }else{
                     Toast.makeText(applicationContext, "User already exists", Toast.LENGTH_SHORT).show()
                 }
@@ -61,7 +59,6 @@ class LoginActivity: AppCompatActivity() {
                     user = tempCheckDatabase(username)
                     pageRefresh()
                     Toast.makeText(applicationContext, "User Login", Toast.LENGTH_SHORT).show()
-                    window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
                 }else{
                     Toast.makeText(applicationContext, "User doesn't exists", Toast.LENGTH_SHORT).show()
                 }
@@ -87,14 +84,14 @@ class LoginActivity: AppCompatActivity() {
             bind.buttonCreate.visibility = View.INVISIBLE
             bind.editTextUsername.visibility = View.INVISIBLE
             returnIntent.putExtra("UserData", user!!.name)
-            setResult(Activity.RESULT_OK,returnIntent);
+            setResult(Activity.RESULT_OK,returnIntent)
         } else {
             bind.textViewUserData.text = "No User Data"
             bind.buttonLogin.text = "Login"
             bind.buttonCreate.visibility = View.VISIBLE
             bind.editTextUsername.visibility = View.VISIBLE
             returnIntent.putExtra("UserData", "")
-            setResult(Activity.RESULT_OK,returnIntent);
+            setResult(Activity.RESULT_OK,returnIntent)
         }
     }
 

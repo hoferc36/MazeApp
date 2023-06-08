@@ -16,6 +16,8 @@ class BoardActivity : AppCompatActivity() {
     private lateinit var displayMetrics: DisplayMetrics
     private lateinit var gestureDetector: GestureDetectorCompat
 
+    private lateinit var settings: SettingsData
+
     private var cellSize = 5
     private val marginDP = 8
 
@@ -34,31 +36,19 @@ class BoardActivity : AppCompatActivity() {
         bind = ActivityBoardBinding.inflate(layoutInflater)
         setContentView(bind.board1)
 
-        boardSetUp()
+        settings = intent.getSerializableExtra("maze settings") as SettingsData
+
+        boardMaze = BoardMaze(settings.height, settings.width, this, settings.seed)
+        boardMaze.startCellCoord = Pair(settings.startX, settings.startY)
+        boardMaze.endCellCoord = Pair(settings.endX,settings.endY)
+
         buttonSetUp()
         cellCreation()
         gestureDetector = GestureDetectorCompat(this, GestureListener1())
     }
 
-    private fun boardSetUp() {
-        boardMaze = BoardMaze(
-            intent.getIntExtra("heightMaze", 5),
-            intent.getIntExtra("widthMaze", 5),
-            this,
-            intent.getIntExtra("mazeSeed", 0)
-        )
-        boardMaze.startCellCoord = Pair(
-            intent.getIntExtra("startCoordX", 0),
-            intent.getIntExtra("startCoordY", 0)
-        )
-        boardMaze.endCellCoord = Pair(
-            intent.getIntExtra("endCoordX", boardMaze.rows - 1),
-            intent.getIntExtra("endCoordY", boardMaze.cols - 1)
-        )
-    }
-
     private fun buttonSetUp() {
-        isButtonOn = intent.getBooleanExtra("isButtonOn", false)
+        isButtonOn = settings.buttonToggle
 
         upButton = bind.buttonUp
         upButton.visibility = if (isButtonOn) View.VISIBLE else View.GONE
@@ -143,11 +133,8 @@ class BoardActivity : AppCompatActivity() {
     private fun cellCreation() {
         displayMetrics = Resources.getSystem().displayMetrics
 
-//        val dpi = displayMetrics.densityDpi
         val marginPixel = marginDP * (displayMetrics.densityDpi/160)
 
-//        val heightDP = displayMetrics.heightPixels * 160 / dpi
-//        val heightP = displayMetrics.heightPixels
         var heightButtons = 0
         if(isButtonOn) {
             heightButtons = 70 * (displayMetrics.densityDpi/ 160)
@@ -157,7 +144,6 @@ class BoardActivity : AppCompatActivity() {
         cellSize = if (widthCol < heightRow) widthCol else heightRow
         //centre maze
         val marginPixelWidth =  (displayMetrics.widthPixels - cellSize*boardMaze.cols)/2
-
 //        Log.d("chandra", "mdp:$marginDP mp:$marginP w:$displayMetrics.widthPixels cw:$cellSize")//maxWidth
 
         boardMaze.board.forEach {row ->

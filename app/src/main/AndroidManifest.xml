@@ -13,19 +13,24 @@
         android:theme="@style/Theme.MazeApp"
         tools:targetApi="31">
         <activity
+            android:name=".SettingsActivity"
+            android:exported="false"
+            android:label="Maze Settings"
+            android:parentActivityName=".MainActivity" />
+        <activity
             android:name=".LoginActivity"
             android:exported="false"
             android:label="Login"
-            android:parentActivityName=".MenuActivity" />
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".BoardActivity"
             android:exported="false"
             android:label="Maze"
-            android:parentActivityName=".MenuActivity" />
+            android:parentActivityName=".MainActivity" />
         <activity
-            android:name=".MenuActivity"
+            android:name=".MainActivity"
             android:exported="true"
-            android:label="Option Menu">
+            android:label="Home">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

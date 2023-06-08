@@ -82,6 +82,8 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
                 }
             }while(cursor.moveToNext())
         }
+        cursor.close()
+//        db.close()
         return userList
     }
 }
