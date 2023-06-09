@@ -4,6 +4,7 @@ import android.app.Activity
 import android.os.Bundle
 import android.widget.*
 import android.content.*
+import android.text.Editable
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.mazeapp.databinding.ActivitySettingsBinding
@@ -24,8 +25,8 @@ class SettingsActivity : AppCompatActivity() {
         bind = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(bind.settings1)
 
-        settings = if(intent.getSerializableExtra("PreviousSettings") != null)
-            intent.getSerializableExtra("PreviousSettings") as SettingsData
+        settings = if(intent.getSerializableExtra("previousSettings") != null)
+            intent.getSerializableExtra("previousSettings") as SettingsData
             else SettingsData()
 
         val buttonToggle = bind.toggleButton
@@ -43,7 +44,7 @@ class SettingsActivity : AppCompatActivity() {
         buttonSave.setOnClickListener {
             if(updateSettings()) {
                 val returnIntent = Intent(this, MainActivity::class.java)
-                returnIntent.putExtra("SettingsData", settings)
+                returnIntent.putExtra("settingsData", settings)
                 setResult(Activity.RESULT_OK, returnIntent)
                 finish()
             }
@@ -53,9 +54,23 @@ class SettingsActivity : AppCompatActivity() {
         buttonCancel.setOnClickListener {
             finish()
         }
+
+        setSettings()
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
     }
+    private fun setSettings(){
+        if(settings.width != 5) bind.editTextWidth.setText(settings.width.toString())
+        if(settings.height != 5) bind.editTextHeight.setText(settings.height.toString())
 
+        if(settings.startX != 0) bind.editTextStartX.setText(settings.startX.toString())
+        if(settings.startY!= 0) bind.editTextStartY.setText(settings.startY.toString())
+        if(settings.endX != settings.width-1) bind.editTextEndX.setText(settings.endX.toString())
+        if(settings.endY != settings.height-1) bind.editTextEndY.setText(settings.endY.toString())
+
+        if(settings.seed!= 0) bind.editTextSeed.setText(settings.seed.toString())
+
+        if(settings.buttonToggle) bind.toggleButton.performClick()
+    }
     private fun updateSettings(): Boolean {
         //maze height
         val height = getIntFromView(bind.editTextHeight, 5)

@@ -30,6 +30,7 @@
         android:inputType="number"
         android:maxLength="3"
         android:minHeight="50dp"
+        android:textColor="@color/text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="DuplicateSpeakableTextCheck" />
@@ -57,6 +58,7 @@
         android:inputType="number"
         android:maxLength="3"
         android:minHeight="50dp"
+        android:textColor="@color/text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textWidth" />
 
@@ -115,6 +117,7 @@
         android:hint="@string/text_row"
         android:inputType="number"
         android:maxLength="3"
+        android:textColor="@color/text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textButtonToggle"
         tools:ignore="DuplicateSpeakableTextCheck" />
@@ -130,6 +133,7 @@
         android:hint="@string/text_column"
         android:inputType="number"
         android:maxLength="3"
+        android:textColor="@color/text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textStartPoint"
         tools:ignore="TextSizeCheck,TextSizeCheck,DuplicateSpeakableTextCheck" />
@@ -145,6 +149,7 @@
         android:hint="@string/text_row"
         android:inputType="number"
         android:maxLength="3"
+        android:textColor="@color/text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextStartY"
         tools:ignore="TextSizeCheck,TextSizeCheck" />
@@ -160,6 +165,7 @@
         android:hint="@string/text_column"
         android:inputType="number"
         android:maxLength="3"
+        android:textColor="@color/text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textEndPoint" />
 
@@ -186,6 +192,7 @@
         android:inputType="text"
         android:maxEms="3"
         android:maxLength="10"
+        android:textColor="@color/text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextEndY" />
 

@@ -1,5 +1,7 @@
 package com.example.mazeapp
 
+import android.app.Activity
+import android.content.Intent
 import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -15,6 +17,7 @@ class BoardActivity : AppCompatActivity() {
     private lateinit var bind: ActivityBoardBinding
     private lateinit var displayMetrics: DisplayMetrics
     private lateinit var gestureDetector: GestureDetectorCompat
+    private lateinit var returnIntent: Intent
 
     private lateinit var settings: SettingsData
 
@@ -36,7 +39,8 @@ class BoardActivity : AppCompatActivity() {
         bind = ActivityBoardBinding.inflate(layoutInflater)
         setContentView(bind.board1)
 
-        settings = intent.getSerializableExtra("maze settings") as SettingsData
+        returnIntent = Intent(this, MainActivity::class.java)
+        settings = intent.getSerializableExtra("mazeSettings") as SettingsData
 
         boardMaze = BoardMaze(settings.height, settings.width, this, settings.seed)
         boardMaze.startCellCoord = Pair(settings.startX, settings.startY)
@@ -83,13 +87,18 @@ class BoardActivity : AppCompatActivity() {
 
     override fun finish() {
         if(isEndGame){
+            returnIntent.putExtra("win", true)
+            setResult(Activity.RESULT_OK,returnIntent)
             super.finish()
         }else{
             val builder = AlertDialog.Builder(this)
             with(builder) {
                 setTitle("Warning")
                 setMessage("Do you want to quit?")
-                setPositiveButton("Yes") { dialog, which -> super.finish() }
+                setPositiveButton("Yes") { dialog, which ->
+                    setResult(Activity.RESULT_CANCELED,returnIntent)
+                    super.finish()
+                }
                 setNegativeButton("No"){ dialog, which -> dialog.dismiss() }
                 show()
             }

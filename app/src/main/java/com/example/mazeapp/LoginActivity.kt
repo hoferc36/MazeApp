@@ -27,6 +27,8 @@ class LoginActivity: AppCompatActivity() {
         setContentView(bind.login1)
 
         database = mutableListOf()
+        user = if(intent.getSerializableExtra("previousUser") != null)
+            intent.getSerializableExtra("previousUser") as UserData else null
         returnIntent = Intent(this, MainActivity::class.java)
         pageRefresh()
 
@@ -79,19 +81,18 @@ class LoginActivity: AppCompatActivity() {
 
     private fun pageRefresh() {
         if (user != null) {
-            bind.textViewUserData.text = "${user!!.name}: /nWins ${user!!.wins}"
+            bind.textViewUserData.text = "${user!!.name}: Wins ${user!!.wins}"
             bind.buttonLogin.text = "Logout"
             bind.buttonCreate.visibility = View.INVISIBLE
             bind.editTextUsername.visibility = View.INVISIBLE
-            returnIntent.putExtra("UserData", user!!.name)
+            returnIntent.putExtra("userData", user!!)
             setResult(Activity.RESULT_OK,returnIntent)
         } else {
             bind.textViewUserData.text = "No User Data"
             bind.buttonLogin.text = "Login"
             bind.buttonCreate.visibility = View.VISIBLE
             bind.editTextUsername.visibility = View.VISIBLE
-            returnIntent.putExtra("UserData", "")
-            setResult(Activity.RESULT_OK,returnIntent)
+            setResult(Activity.RESULT_CANCELED,returnIntent)
         }
     }
 

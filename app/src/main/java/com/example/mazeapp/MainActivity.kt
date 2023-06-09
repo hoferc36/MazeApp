@@ -14,8 +14,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var buttonSettings: Button
     private lateinit var buttonLogin: Button
 
-    private var user: String = ""
+    private var user: UserData? = null
     private lateinit var settings: SettingsData
+
+    private val REQUEST_LOGIN = 1
+    private val REQUEST_SETTINGS = 2
+    private val REQUEST_WINS = 3
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,47 +32,55 @@ class MainActivity : AppCompatActivity() {
         buttonMaze = bind.buttonMaze
         buttonMaze.setOnClickListener {
             val intent = Intent(this, BoardActivity::class.java)
-            intent.putExtra("maze settings", settings)
-            startActivity(intent)
+            intent.putExtra("mazeSettings", settings)
+            startActivityForResult(intent, REQUEST_WINS)
         }
 
         buttonSettings = bind.buttonSettings
         buttonSettings.setOnClickListener {
             val intent = Intent(this, SettingsActivity::class.java)
-            intent.putExtra("PreviousSettings", settings)
-            startActivityForResult(intent, 2)
+            intent.putExtra("previousSettings", settings)
+            startActivityForResult(intent, REQUEST_SETTINGS)
         }
 
         buttonLogin = bind.buttonLogin
         buttonLogin.setOnClickListener {
-            if(buttonLogin.text.toString() == "Login") {
-                val intent = Intent(this, LoginActivity::class.java)
-                startActivityForResult(intent, 1)
-            }else {
-                user = ""
-            }
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.putExtra("previousUser", user)
+            startActivityForResult(intent, REQUEST_LOGIN)
         }
         checkUser()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 1){
+        if (requestCode == REQUEST_LOGIN){
             if(resultCode == Activity.RESULT_OK){
-                user = data!!.getStringExtra("UserData").toString()
+                user = if(data!!.getSerializableExtra("userData") != null)
+                    data.getSerializableExtra("userData") as UserData else null
+                checkUser()
+            }else {
+                user = null
                 checkUser()
             }
-        }else if (requestCode == 2){
+        }else if (requestCode == REQUEST_SETTINGS){
             if(resultCode == Activity.RESULT_OK){
-                settings = if(data!!.getSerializableExtra("SettingsData") != null)
-                    data.getSerializableExtra("SettingsData") as SettingsData else SettingsData()
+                settings = if(data!!.getSerializableExtra("settingsData") != null)
+                    data.getSerializableExtra("settingsData") as SettingsData else SettingsData()
+            }
+        }else if (requestCode == REQUEST_WINS){
+            if(resultCode == Activity.RESULT_OK){
+                if(user != null) {
+                    if (data!!.getBooleanExtra("win",false)) user!!.wins++
+                    checkUser()
+                }
             }
         }
     }
 
     private fun checkUser() {
-        if (user != "") {
-            bind.textViewUserData.text = "$user"
+        if (user != null) {
+            bind.textViewUserData.text = user!!.name + ": Wins " + user!!.wins
             bind.buttonLogin.text = "Logout"
         } else {
             bind.textViewUserData.text = "No User Data"
