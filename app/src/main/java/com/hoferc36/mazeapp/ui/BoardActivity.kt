@@ -10,10 +10,9 @@ import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.GestureDetectorCompat
-import com.hoferc36.mazeapp.logic.BoardMaze
-import com.hoferc36.mazeapp.objects.CellPieces
+import com.hoferc36.mazeapp.logic.*
+import com.hoferc36.mazeapp.objects.*
 import com.hoferc36.mazeapp.R
-import com.hoferc36.mazeapp.objects.SettingsData
 import com.hoferc36.mazeapp.databinding.ActivityBoardBinding
 import kotlin.math.abs
 
@@ -85,6 +84,7 @@ class BoardActivity : AppCompatActivity() {
 
     fun endGame(){
         Toast.makeText(applicationContext, "You WIN", Toast.LENGTH_SHORT).show()
+        Toast.makeText(applicationContext, "Miss Steps ${boardMaze.missSteps}", Toast.LENGTH_SHORT).show()
         isEndGame = true
         finish()
     }

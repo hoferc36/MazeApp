@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.*
-import com.hoferc36.mazeapp.objects.UserData
+import com.hoferc36.mazeapp.objects.*
 import com.hoferc36.mazeapp.databinding.ActivityLoginBinding
 
 class LoginActivity: AppCompatActivity() {

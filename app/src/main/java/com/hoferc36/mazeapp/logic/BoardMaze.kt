@@ -1,7 +1,7 @@
 package com.hoferc36.mazeapp.logic
 
 import com.hoferc36.mazeapp.objects.*
-import com.hoferc36.mazeapp.ui.BoardActivity
+import com.hoferc36.mazeapp.ui.*
 import java.util.Stack
 import kotlin.math.abs
 import kotlin.random.Random
@@ -20,6 +20,8 @@ class BoardMaze (val settings: SettingsData = SettingsData(), private val activi
     private var hereCell = CellPieces()
 
     private var currentSeed = 2029L + rows - cols
+
+    var missSteps: Int = 0
 
     var startCellCoord: Pair<Int,Int> = Pair(0,0)
         set(value) {
@@ -153,6 +155,8 @@ class BoardMaze (val settings: SettingsData = SettingsData(), private val activi
             else {
                 activity.boardRefresh()
             }
+        }else{
+            missSteps++
         }
     }
     fun moveLeft(){
@@ -164,6 +168,8 @@ class BoardMaze (val settings: SettingsData = SettingsData(), private val activi
             else {
                 activity.boardRefresh()
             }
+        }else{
+            missSteps++
         }
     }
     fun moveRight(){
@@ -175,6 +181,8 @@ class BoardMaze (val settings: SettingsData = SettingsData(), private val activi
             else {
                 activity.boardRefresh()
             }
+        }else{
+            missSteps++
         }
     }
 
@@ -187,6 +195,8 @@ class BoardMaze (val settings: SettingsData = SettingsData(), private val activi
             else {
                 activity.boardRefresh()
             }
+        }else{
+            missSteps++
         }
     }
     private fun moveCharacter(newRow:Int, newCol:Int){

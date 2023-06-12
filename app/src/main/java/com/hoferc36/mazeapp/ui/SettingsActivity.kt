@@ -7,7 +7,7 @@ import android.content.*
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import com.hoferc36.mazeapp.R
-import com.hoferc36.mazeapp.objects.SettingsData
+import com.hoferc36.mazeapp.objects.*
 import com.hoferc36.mazeapp.databinding.ActivitySettingsBinding
 
 class SettingsActivity : AppCompatActivity() {
