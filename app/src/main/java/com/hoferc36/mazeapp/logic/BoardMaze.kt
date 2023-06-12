@@ -1,13 +1,16 @@
-package com.example.mazeapp
+package com.hoferc36.mazeapp.logic
 
+import com.hoferc36.mazeapp.objects.*
+import com.hoferc36.mazeapp.ui.BoardActivity
 import java.util.Stack
 import kotlin.math.abs
 import kotlin.random.Random
 
-class BoardMaze (val rows:Int = 2,
-                 val cols:Int = 2,
-                 private val activity: BoardActivity,
-                 seed:Int = 0) {
+class BoardMaze (val settings: SettingsData = SettingsData(), private val activity: BoardActivity) {
+
+    val rows:Int = settings.height
+    val cols:Int = settings.width
+    val seed:Int = settings.seed
     val board: Array<Array<CellPieces>> = Array(rows) { Array(cols) { CellPieces() } }
 
     private val stack: Stack<Pair<Int, Int>> = Stack<Pair<Int, Int>>()
@@ -79,7 +82,6 @@ class BoardMaze (val rows:Int = 2,
                 cell.position = rowIndex * cols + colIndex
                 cell.coord = Pair(rowIndex, colIndex)
             }
-
         }
         hereCell = board[startCellCoord.first][startCellCoord.second]
         hereCell.start = true
@@ -145,7 +147,7 @@ class BoardMaze (val rows:Int = 2,
     fun moveUp(){
         if (hereCell.top) {
             moveCharacter(hereCoord.first-1, hereCoord.second)
-            if(hereCell.top && !hereCell.left && !hereCell.right){
+            if(hereCell.top && !hereCell.left && !hereCell.right && settings.corridor){
                 moveUp()
             }
             else {
@@ -156,7 +158,7 @@ class BoardMaze (val rows:Int = 2,
     fun moveLeft(){
         if(hereCell.left){
             moveCharacter(hereCoord.first, hereCoord.second-1)
-            if(!hereCell.top && hereCell.left && !hereCell.bottom){
+            if(!hereCell.top && hereCell.left && !hereCell.bottom && settings.corridor){
                 moveLeft()
             }
             else {
@@ -167,7 +169,7 @@ class BoardMaze (val rows:Int = 2,
     fun moveRight(){
         if(hereCell.right){
             moveCharacter(hereCoord.first, hereCoord.second+1)
-            if(!hereCell.top && hereCell.right && !hereCell.bottom){
+            if(!hereCell.top && hereCell.right && !hereCell.bottom && settings.corridor){
                 moveRight()
             }
             else {
@@ -179,7 +181,7 @@ class BoardMaze (val rows:Int = 2,
     fun moveDown(){
         if(hereCell.bottom){
             moveCharacter(hereCoord.first+1, hereCoord.second)
-            if(!hereCell.left && !hereCell.right && hereCell.bottom){
+            if(!hereCell.left && !hereCell.right && hereCell.bottom && settings.corridor){
                 moveDown()
             }
             else {

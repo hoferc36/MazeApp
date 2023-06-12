@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.mazeapp'
+    namespace 'com.hoferc36.mazeapp'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.mazeapp"
+        applicationId 'com.hoferc36.mazeapp'
         minSdk 24
         targetSdk 33
         versionCode 1

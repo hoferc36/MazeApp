@@ -1,10 +1,11 @@
-package com.example.mazeapp
+package com.hoferc36.mazeapp
 
 import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import com.hoferc36.mazeapp.objects.UserData
 
 class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     companion object{
@@ -60,7 +61,7 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
         var id: Int
         var name: String
         var wins: Int
-        var user :UserData
+        var user : UserData
 
         if(cursor.moveToFirst()){
             do{

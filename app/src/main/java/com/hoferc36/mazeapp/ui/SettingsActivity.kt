@@ -1,13 +1,14 @@
-package com.example.mazeapp
+package com.hoferc36.mazeapp.ui
 
 import android.app.Activity
 import android.os.Bundle
 import android.widget.*
 import android.content.*
-import android.text.Editable
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
-import com.example.mazeapp.databinding.ActivitySettingsBinding
+import com.hoferc36.mazeapp.R
+import com.hoferc36.mazeapp.objects.SettingsData
+import com.hoferc36.mazeapp.databinding.ActivitySettingsBinding
 
 class SettingsActivity : AppCompatActivity() {
     private lateinit var bind: ActivitySettingsBinding
@@ -55,6 +56,17 @@ class SettingsActivity : AppCompatActivity() {
             finish()
         }
 
+        val buttonCorridor = bind.buttonCorridor
+        buttonCorridor.setOnClickListener {
+            if (bind.buttonCorridor.isChecked){
+                bind.buttonCorridor.setBackgroundResource(R.color.success)
+                settings.corridor = true
+            }else{
+                bind.buttonCorridor.setBackgroundResource(R.color.warning)
+                settings.corridor = false
+            }
+        }
+
         setSettings()
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
     }
@@ -70,6 +82,7 @@ class SettingsActivity : AppCompatActivity() {
         if(settings.seed!= 0) bind.editTextSeed.setText(settings.seed.toString())
 
         if(settings.buttonToggle) bind.toggleButton.performClick()
+        if(settings.corridor) bind.buttonCorridor.performClick()
     }
     private fun updateSettings(): Boolean {
         //maze height
@@ -126,6 +139,7 @@ class SettingsActivity : AppCompatActivity() {
             return false
         }
         settings.buttonToggle = bind.toggleButton.isChecked
+        settings.corridor = bind.buttonCorridor.isChecked
         return true
     }
 

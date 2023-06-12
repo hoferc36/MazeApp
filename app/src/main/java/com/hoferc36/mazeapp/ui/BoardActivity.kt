@@ -1,4 +1,4 @@
-package com.example.mazeapp
+package com.hoferc36.mazeapp.ui
 
 import android.app.Activity
 import android.content.Intent
@@ -10,7 +10,11 @@ import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.GestureDetectorCompat
-import com.example.mazeapp.databinding.ActivityBoardBinding
+import com.hoferc36.mazeapp.logic.BoardMaze
+import com.hoferc36.mazeapp.objects.CellPieces
+import com.hoferc36.mazeapp.R
+import com.hoferc36.mazeapp.objects.SettingsData
+import com.hoferc36.mazeapp.databinding.ActivityBoardBinding
 import kotlin.math.abs
 
 class BoardActivity : AppCompatActivity() {
@@ -42,7 +46,7 @@ class BoardActivity : AppCompatActivity() {
         returnIntent = Intent(this, MainActivity::class.java)
         settings = intent.getSerializableExtra("mazeSettings") as SettingsData
 
-        boardMaze = BoardMaze(settings.height, settings.width, this, settings.seed)
+        boardMaze = BoardMaze(settings, this)
         boardMaze.startCellCoord = Pair(settings.startX, settings.startY)
         boardMaze.endCellCoord = Pair(settings.endX,settings.endY)
 

@@ -1,4 +1,4 @@
-package com.example.mazeapp
+package com.hoferc36.mazeapp.objects
 
 
 class CellPieces {

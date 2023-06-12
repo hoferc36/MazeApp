@@ -1,11 +1,13 @@
-package com.example.mazeapp
+package com.hoferc36.mazeapp.ui
 
 import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
-import com.example.mazeapp.databinding.ActivityMainBinding
+import com.hoferc36.mazeapp.objects.SettingsData
+import com.hoferc36.mazeapp.objects.UserData
+import com.hoferc36.mazeapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private lateinit var bind: ActivityMainBinding

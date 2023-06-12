@@ -1,4 +1,4 @@
-package com.example.mazeapp
+package com.hoferc36.mazeapp.ui
 
 import android.app.Activity
 import android.content.Intent
@@ -6,7 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.*
-import com.example.mazeapp.databinding.ActivityLoginBinding
+import com.hoferc36.mazeapp.objects.UserData
+import com.hoferc36.mazeapp.databinding.ActivityLoginBinding
 
 class LoginActivity: AppCompatActivity() {
     private lateinit var bind: ActivityLoginBinding
@@ -96,7 +97,7 @@ class LoginActivity: AppCompatActivity() {
         }
     }
 
-    private fun tempCheckDatabase(user:String):UserData?{
+    private fun tempCheckDatabase(user:String): UserData?{
         var userData: UserData? = null
         database.forEach {
              if(it.name == user)userData = it
