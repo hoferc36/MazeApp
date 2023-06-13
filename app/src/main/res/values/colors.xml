@@ -23,6 +23,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="black">#FF000000</color>
     <color name="transparent">#00000000</color>
+    <color name="yellow">#FFEB3B</color>
 
     <!--layout colors-->
     <color name="button">#667F33</color>
@@ -31,6 +32,7 @@
     <color name="text">#FFFFFFFF</color>
     <color name="hint_text">#9E9E9E</color>
     <color name="bar">#301B59</color>
+    <color name="windshield">#808E8F8D</color>
 
     <color name="border">#FF000000</color>
 
