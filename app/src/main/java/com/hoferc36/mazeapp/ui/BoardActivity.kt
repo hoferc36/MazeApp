@@ -85,6 +85,8 @@ class BoardActivity : AppCompatActivity() {
     fun endGame(){
         Toast.makeText(applicationContext, "You WIN", Toast.LENGTH_SHORT).show()
         Toast.makeText(applicationContext, "Miss Steps ${boardMaze.missSteps}", Toast.LENGTH_SHORT).show()
+        Toast.makeText(applicationContext, "Revisited ${boardMaze.revisited}", Toast.LENGTH_SHORT).show()
+        Toast.makeText(applicationContext, "Seed used ${boardMaze.seed}", Toast.LENGTH_SHORT).show()
         isEndGame = true
         finish()
     }
