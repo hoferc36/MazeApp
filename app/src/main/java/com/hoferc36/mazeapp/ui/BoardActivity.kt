@@ -110,9 +110,18 @@ class BoardActivity : AppCompatActivity() {
     }
 
     fun boardRefresh() {
+        var cellPayer: View
         boardMaze.board.forEach { row ->
             row.forEach { cell ->
                 setCellBackgroundColor(cell)
+                cellPayer = bind.boardPlayerGround.getChildAt(cell.position)
+                if(cell.here) {
+                    cellPayer.setBackgroundResource(R.drawable.character)
+                }else if(cell.end){
+                    cellPayer.setBackgroundResource(R.drawable.end)
+                }else{
+                    cellPayer.setBackgroundResource(R.color.transparent)
+                }
             }
         }
     }
@@ -176,8 +185,17 @@ class BoardActivity : AppCompatActivity() {
                 cellForeground.x = 1F * cellSize * cell.coord.second + marginPixelWidth
                 bind.boardForeground.addView(cellForeground)
                 cellOrientation(cell)
+
+                val cellPlayerGround = ImageView(this)
+                cellPlayerGround.minimumHeight = cellSize - 20 * (displayMetrics.densityDpi/160)
+                cellPlayerGround.minimumWidth = cellSize - 20 * (displayMetrics.densityDpi/160)
+                cellPlayerGround.y = 1F * cellSize * cell.coord.first + marginPixel + (10 * (displayMetrics.densityDpi/160))
+                cellPlayerGround.x = 1F * cellSize * cell.coord.second + marginPixelWidth + (10 * (displayMetrics.densityDpi/160))
+                bind.boardPlayerGround.addView(cellPlayerGround)
+                cellPlayerGround.setBackgroundResource(R.color.transparent)
             }
         }
+        boardRefresh()
     }
 
     private fun cellOrientation(cell: CellPieces) {
@@ -247,21 +265,12 @@ class BoardActivity : AppCompatActivity() {
 
     private fun setCellBackgroundColor(cell: CellPieces) {
         val cellBackground = bind.boardBackground.getChildAt(cell.position)
-        if(cell.here) {
-            cellBackground.setBackgroundResource(R.color.here_cell)
-        }
-        else {
-            if(cell.start){
-                cellBackground.setBackgroundResource(R.color.start_cell)
-            }else if(cell.end){
-                cellBackground.setBackgroundResource(R.color.end_cell)
-            }else if(cell.dead){
-                cellBackground.setBackgroundResource(R.color.dead_cell)
-            }else if(cell.visited){
-                cellBackground.setBackgroundResource(R.color.visited_cell)
-            }else{
-                cellBackground.setBackgroundResource(R.color.unvisited_cell)
-            }
+        if(cell.start){
+            cellBackground.setBackgroundResource(R.color.start_cell)
+        }else if(cell.visited){
+            cellBackground.setBackgroundResource(R.color.visited_cell)
+        }else{
+            cellBackground.setBackgroundResource(R.color.unvisited_cell)
         }
 
     }
