@@ -82,7 +82,7 @@ class LoginActivity: AppCompatActivity() {
 
     private fun pageRefresh() {
         if (user != null) {
-            bind.textViewUserData.text = "${user!!.name}: Wins ${user!!.wins}"
+            bind.textViewUserData.text = user!!.toString()
             bind.buttonLogin.text = "Logout"
             bind.buttonCreate.visibility = View.INVISIBLE
             bind.editTextUsername.visibility = View.INVISIBLE

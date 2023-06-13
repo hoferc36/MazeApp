@@ -19,6 +19,3 @@ class CellPieces {
 
 }
 
-enum class PATH {
-    TOP, LEFT, RIGHT, BOTTOM
-}

@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun checkUser() {
         if (user != null) {
-            bind.textViewUserData.text = user!!.name + ": Wins " + user!!.wins
+            bind.textViewUserData.text = user!!.toString()
             bind.buttonLogin.text = "Logout"
         } else {
             bind.textViewUserData.text = "No User Data"

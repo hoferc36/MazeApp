@@ -1,5 +1,6 @@
 package com.hoferc36.mazeapp.logic
 
+import android.util.Log
 import com.hoferc36.mazeapp.objects.*
 import com.hoferc36.mazeapp.ui.*
 import java.util.Stack
@@ -7,6 +8,11 @@ import kotlin.math.abs
 import kotlin.random.Random
 
 class BoardMaze (private val settings: SettingsData = SettingsData(), private val activity: BoardActivity) {
+
+    enum class PATH {
+        TOP, LEFT, RIGHT, BOTTOM;
+//        fun nameString() = name.lowercase().replaceFirstChar{it.uppercase()}
+    }
 
     val rows:Int = settings.height
     val cols:Int = settings.width
@@ -115,25 +121,25 @@ class BoardMaze (private val settings: SettingsData = SettingsData(), private va
 
             when (availablePaths[Random(currentSeed).nextInt(0, availablePaths.size)]) {
                 PATH.TOP -> {
-//                    Log.d("chandra", "random path TOP size ${availablePaths.size}")
+//                    Log.d("chandra", "random path ${PATH.TOP.nameString()} size ${availablePaths.size}")
                     board[row][col].top = true
                     board[row - 1][col].bottom = true
                     stack.push(Pair(row - 1, col))
                 }
                 PATH.LEFT -> {
-//                    Log.d("chandra", "random path LEFT size ${availablePaths.size}")
+//                    Log.d("chandra", "random path ${PATH.LEFT.nameString()} size ${availablePaths.size}")
                     board[row][col].left = true
                     board[row][col - 1].right = true
                     stack.push(Pair(row, col - 1))
                 }
                 PATH.RIGHT -> {
-//                    Log.d("chandra", "random path RIGHT size ${availablePaths.size}")
+//                    Log.d("chandra", "random path ${PATH.RIGHT.nameString()} size ${availablePaths.size}")
                     board[row][col].right = true
                     board[row][col + 1].left = true
                     stack.push(Pair(row, col + 1))
                 }
                 PATH.BOTTOM -> {
-//                    Log.d("chandra", "random path BOTTOM size ${availablePaths.size}")
+//                    Log.d("chandra", "random path ${PATH.BOTTOM.name} size ${availablePaths.size}")
                     board[row][col].bottom = true
                     board[row + 1][col].top = true
                     stack.push(Pair(row + 1, col))
