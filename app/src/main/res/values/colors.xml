@@ -32,7 +32,8 @@
     <color name="text">#FFFFFFFF</color>
     <color name="hint_text">#9E9E9E</color>
     <color name="bar">#301B59</color>
-    <color name="windshield">#808E8F8D</color>
+    <color name="character_background">#25000000</color>
+    <color name="exit_foreground">#FFFFFF</color>
 
     <color name="border">#FF000000</color>
 

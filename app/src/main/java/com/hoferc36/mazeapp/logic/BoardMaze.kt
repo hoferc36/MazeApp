@@ -11,7 +11,6 @@ class BoardMaze (private val settings: SettingsData = SettingsData(), private va
 
     enum class PATH {
         TOP, LEFT, RIGHT, BOTTOM;
-//        fun nameString() = name.lowercase().replaceFirstChar{it.uppercase()}
     }
 
     val rows:Int = settings.height
@@ -121,19 +120,19 @@ class BoardMaze (private val settings: SettingsData = SettingsData(), private va
 
             when (availablePaths[Random(currentSeed).nextInt(0, availablePaths.size)]) {
                 PATH.TOP -> {
-//                    Log.d("chandra", "random path ${PATH.TOP.nameString()} size ${availablePaths.size}")
+//                    Log.d("chandra", "random path ${PATH.TOP.name} size ${availablePaths.size}")
                     board[row][col].top = true
                     board[row - 1][col].bottom = true
                     stack.push(Pair(row - 1, col))
                 }
                 PATH.LEFT -> {
-//                    Log.d("chandra", "random path ${PATH.LEFT.nameString()} size ${availablePaths.size}")
+//                    Log.d("chandra", "random path ${PATH.LEFT.name} size ${availablePaths.size}")
                     board[row][col].left = true
                     board[row][col - 1].right = true
                     stack.push(Pair(row, col - 1))
                 }
                 PATH.RIGHT -> {
-//                    Log.d("chandra", "random path ${PATH.RIGHT.nameString()} size ${availablePaths.size}")
+//                    Log.d("chandra", "random path ${PATH.RIGHT.name} size ${availablePaths.size}")
                     board[row][col].right = true
                     board[row][col + 1].left = true
                     stack.push(Pair(row, col + 1))

@@ -118,9 +118,9 @@ class BoardActivity : AppCompatActivity() {
                 setCellBackgroundColor(cell)
                 cellPayer = bind.boardPlayerGround.getChildAt(cell.position)
                 if(cell.here) {
-                    cellPayer.setBackgroundResource(R.drawable.character)
+                    cellPayer.setBackgroundResource(R.drawable.character3)
                 }else if(cell.end){
-                    cellPayer.setBackgroundResource(R.drawable.end)
+                    cellPayer.setBackgroundResource(R.drawable.character3_garage)
                 }else{
                     cellPayer.setBackgroundResource(R.color.transparent)
                 }
@@ -166,6 +166,7 @@ class BoardActivity : AppCompatActivity() {
         val heightRow = (displayMetrics.heightPixels - marginPixel*2 - heightButtons*3) /boardMaze.rows
         val widthCol = (displayMetrics.widthPixels - marginPixel*2) /boardMaze.cols
         cellSize = if (widthCol < heightRow) widthCol else heightRow
+        cellSize = if(cellSize<25) 25 else cellSize
         //centre maze
         val marginPixelWidth =  (displayMetrics.widthPixels - cellSize*boardMaze.cols)/2
 //        Log.d("chandra", "mdp:$marginDP mp:$marginP w:$displayMetrics.widthPixels cw:$cellSize")//maxWidth
@@ -187,12 +188,13 @@ class BoardActivity : AppCompatActivity() {
                 cellForeground.x = 1F * cellSize * cell.coord.second + marginPixelWidth
                 bind.boardForeground.addView(cellForeground)
                 cellOrientation(cell)
+//                bind.boardForeground.getChildAt(cell.position).setBackgroundResource(R.drawable.cell)
 
                 val cellPlayerGround = ImageView(this)
-                cellPlayerGround.minimumHeight = cellSize - 20 * (displayMetrics.densityDpi/160)
-                cellPlayerGround.minimumWidth = cellSize - 20 * (displayMetrics.densityDpi/160)
-                cellPlayerGround.y = 1F * cellSize * cell.coord.first + marginPixel + (10 * (displayMetrics.densityDpi/160))
-                cellPlayerGround.x = 1F * cellSize * cell.coord.second + marginPixelWidth + (10 * (displayMetrics.densityDpi/160))
+                cellPlayerGround.minimumHeight = cellSize //- 20 * (displayMetrics.densityDpi/160)
+                cellPlayerGround.minimumWidth = cellSize //- 20 * (displayMetrics.densityDpi/160)
+                cellPlayerGround.y = 1F * cellSize * cell.coord.first + marginPixel// + (10 * (displayMetrics.densityDpi/160))
+                cellPlayerGround.x = 1F * cellSize * cell.coord.second + marginPixelWidth// + (10 * (displayMetrics.densityDpi/160))
                 bind.boardPlayerGround.addView(cellPlayerGround)
                 cellPlayerGround.setBackgroundResource(R.color.transparent)
             }
