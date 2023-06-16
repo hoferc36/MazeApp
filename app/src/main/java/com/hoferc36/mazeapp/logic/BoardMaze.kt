@@ -13,9 +13,9 @@ class BoardMaze (private val settings: SettingsData = SettingsData(), private va
         TOP, LEFT, RIGHT, BOTTOM;
     }
 
+    val boardData = BoardData()
     val rows:Int = settings.height
     val cols:Int = settings.width
-    val seed:Int = if (settings.seed <= 0) Random.nextInt(1, 3000) else settings.seed
 
     val board: Array<Array<CellPieces>> = Array(rows) { Array(cols) { CellPieces() } }
 
@@ -24,10 +24,7 @@ class BoardMaze (private val settings: SettingsData = SettingsData(), private va
 
     private var hereCell = CellPieces()
 
-    private var currentSeed = (2029L + rows - cols) * seed
-
-    var missSteps: Int = 0
-    var revisited: Int = 0
+    private var currentSeed = (2029L + rows - cols)
     private var revisitedCorridor: Boolean = false
 
     var startCellCoord: Pair<Int,Int> = Pair(0,0)
@@ -54,6 +51,8 @@ class BoardMaze (private val settings: SettingsData = SettingsData(), private va
         }
 
     init {
+        boardData.seed = if (settings.seed <= 0) Random.nextInt(1, 3000) else settings.seed
+        currentSeed *= boardData.seed
         boardSetUp()
         pathSetUp()
 
@@ -157,7 +156,7 @@ class BoardMaze (private val settings: SettingsData = SettingsData(), private va
                 if (settings.corridor) {
                     revisitedCorridor = true
                 } else {
-                    revisited++
+                    boardData.revisited++
                 }
             }
             moveCharacter(hereCell.coord.first-1, hereCell.coord.second)
@@ -166,13 +165,13 @@ class BoardMaze (private val settings: SettingsData = SettingsData(), private va
             }
             else {
                 if(revisitedCorridor){
-                    revisited++
+                    boardData.revisited++
                     revisitedCorridor = false
                 }
                 activity.boardRefresh()
             }
         }else{
-            missSteps++
+            boardData.missSteps++
         }
     }
     fun moveLeft(){
@@ -181,7 +180,7 @@ class BoardMaze (private val settings: SettingsData = SettingsData(), private va
                 if (settings.corridor) {
                     revisitedCorridor = true
                 } else {
-                    revisited++
+                    boardData.revisited++
                 }
             }
             moveCharacter(hereCell.coord.first, hereCell.coord.second-1)
@@ -190,13 +189,13 @@ class BoardMaze (private val settings: SettingsData = SettingsData(), private va
             }
             else {
                 if(revisitedCorridor){
-                    revisited++
+                    boardData.revisited++
                     revisitedCorridor = false
                 }
                 activity.boardRefresh()
             }
         }else{
-            missSteps++
+            boardData.missSteps++
         }
     }
     fun moveRight(){
@@ -205,7 +204,7 @@ class BoardMaze (private val settings: SettingsData = SettingsData(), private va
                 if (settings.corridor) {
                     revisitedCorridor = true
                 } else {
-                    revisited++
+                    boardData.revisited++
                 }
             }
             moveCharacter(hereCell.coord.first, hereCell.coord.second+1)
@@ -214,13 +213,13 @@ class BoardMaze (private val settings: SettingsData = SettingsData(), private va
             }
             else {
                 if(revisitedCorridor){
-                    revisited++
+                    boardData.revisited++
                     revisitedCorridor = false
                 }
                 activity.boardRefresh()
             }
         }else{
-            missSteps++
+            boardData.missSteps++
         }
     }
 
@@ -230,7 +229,7 @@ class BoardMaze (private val settings: SettingsData = SettingsData(), private va
                 if (settings.corridor) {
                     revisitedCorridor = true
                 } else {
-                    revisited++
+                    boardData.revisited++
                 }
             }
             moveCharacter(hereCell.coord.first+1, hereCell.coord.second)
@@ -239,13 +238,13 @@ class BoardMaze (private val settings: SettingsData = SettingsData(), private va
             }
             else {
                 if(revisitedCorridor){
-                    revisited++
+                    boardData.revisited++
                     revisitedCorridor = false
                 }
                 activity.boardRefresh()
             }
         }else{
-            missSteps++
+            boardData.missSteps++
         }
     }
     private fun moveCharacter(newRow:Int, newCol:Int){

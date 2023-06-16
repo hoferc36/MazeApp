@@ -2,8 +2,10 @@ package com.hoferc36.mazeapp.ui
 
 import android.app.Activity
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.widget.Button
 import com.hoferc36.mazeapp.DatabaseHelper
 import com.hoferc36.mazeapp.objects.*
@@ -12,6 +14,7 @@ import com.hoferc36.mazeapp.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
     private lateinit var bind: ActivityMainBinding
     private lateinit var database: DatabaseHelper
+//    private lateinit var sharedPreferences: SharedPreferences
 
     private lateinit var buttonMaze: Button
     private lateinit var buttonSettings: Button
@@ -22,7 +25,6 @@ class MainActivity : AppCompatActivity() {
 
     private val REQUEST_LOGIN = 1
     private val REQUEST_SETTINGS = 2
-    private val REQUEST_WINS = 3
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,6 +33,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(bind.main1)
 
         database = DatabaseHelper(applicationContext)
+//        sharedPreferences = SharedPreferences("sharedPref", MODE_PRIVATE)
 
         settings = SettingsData()
 
@@ -38,8 +41,10 @@ class MainActivity : AppCompatActivity() {
         buttonMaze.setOnClickListener {
             val intent = Intent(this, BoardActivity::class.java)
             intent.putExtra("mazeSettings", settings)
-            intent.putExtra("previousUser", user)
-            startActivityForResult(intent, REQUEST_WINS)
+            if(user != null) {
+                intent.putExtra("previousUser", user!!.name)
+            }
+            startActivity(intent)
         }
 
         buttonSettings = bind.buttonSettings
@@ -52,7 +57,9 @@ class MainActivity : AppCompatActivity() {
         buttonLogin = bind.buttonLogin
         buttonLogin.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
-            intent.putExtra("previousUser", user)
+            if(user != null) {
+                intent.putExtra("previousUser", user!!.name)
+            }
             startActivityForResult(intent, REQUEST_LOGIN)
         }
         checkUser()
@@ -74,15 +81,15 @@ class MainActivity : AppCompatActivity() {
                 settings = if(data!!.getSerializableExtra("settingsData") != null)
                     data.getSerializableExtra("settingsData") as SettingsData else SettingsData()
             }
-        }else if (requestCode == REQUEST_WINS){
-            if(resultCode == Activity.RESULT_OK){
-                if(user != null) {
-                    if (data!!.getBooleanExtra("win",false)) user!!.wins++
-                    database.updateUser(user!!.name, user!!)
-                    checkUser()
-                }
-            }
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
+        super.onRestoreInstanceState(savedInstanceState, persistentState)
     }
 
     private fun checkUser() {

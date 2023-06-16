@@ -10,6 +10,7 @@ import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.GestureDetectorCompat
+import com.hoferc36.mazeapp.DatabaseHelper
 import com.hoferc36.mazeapp.logic.*
 import com.hoferc36.mazeapp.objects.*
 import com.hoferc36.mazeapp.R
@@ -18,11 +19,12 @@ import kotlin.math.abs
 
 class BoardActivity : AppCompatActivity() {
     private lateinit var bind: ActivityBoardBinding
-    private lateinit var displayMetrics: DisplayMetrics
     private lateinit var gestureDetector: GestureDetectorCompat
-    private lateinit var returnIntent: Intent
+//    private lateinit var returnIntent: Intent
+    private lateinit var database: DatabaseHelper
 
     private lateinit var settings: SettingsData
+    private var user:UserData? = null
 
     private var cellSize = 5
     private val marginDP = 8
@@ -42,8 +44,11 @@ class BoardActivity : AppCompatActivity() {
         bind = ActivityBoardBinding.inflate(layoutInflater)
         setContentView(bind.board1)
 
-        returnIntent = Intent(this, MainActivity::class.java)
+        database = DatabaseHelper(applicationContext)
+
         settings = intent.getSerializableExtra("mazeSettings") as SettingsData
+        val username = intent.getStringExtra("previousUser")
+        user = if(username != null) database.searchForUser(username) else null
 
         boardMaze = BoardMaze(settings, this)
         boardMaze.startCellCoord = Pair(settings.startX, settings.startY)
@@ -83,28 +88,30 @@ class BoardActivity : AppCompatActivity() {
     }
 
     fun endGame(){
-        Toast.makeText(applicationContext, "You WIN", Toast.LENGTH_SHORT).show()
-        Toast.makeText(applicationContext, "Miss Steps ${boardMaze.missSteps}", Toast.LENGTH_SHORT).show()
-        Toast.makeText(applicationContext, "Revisited ${boardMaze.revisited}", Toast.LENGTH_SHORT).show()
-        Toast.makeText(applicationContext, "Seed used ${boardMaze.seed}", Toast.LENGTH_SHORT).show()
         isEndGame = true
+        if (user != null ) {
+            user!!.wins++
+            database.updateUser(user!!.name, user!!)
+        }
+
+        val intent = Intent(this, WinActivity::class.java)
+        intent.putExtra("boardData", boardMaze.boardData)
+        if(user != null) {
+            intent.putExtra("previousUser", user!!.name)
+        }
+        startActivity(intent)
         finish()
     }
 
     override fun finish() {
         if(isEndGame){
-            returnIntent.putExtra("win", true)
-            setResult(Activity.RESULT_OK,returnIntent)
             super.finish()
         }else{
             val builder = AlertDialog.Builder(this)
             with(builder) {
                 setTitle("Warning")
                 setMessage("Do you want to quit?")
-                setPositiveButton("Yes") { dialog, which ->
-                    setResult(Activity.RESULT_CANCELED,returnIntent)
-                    super.finish()
-                }
+                setPositiveButton("Yes") { dialog, which -> super.finish() }
                 setNegativeButton("No"){ dialog, which -> dialog.dismiss() }
                 show()
             }
@@ -155,7 +162,7 @@ class BoardActivity : AppCompatActivity() {
     }
 
     private fun cellCreation() {
-        displayMetrics = Resources.getSystem().displayMetrics
+        val displayMetrics = Resources.getSystem().displayMetrics
 
         val marginPixel = marginDP * (displayMetrics.densityDpi/160)
 
@@ -188,13 +195,12 @@ class BoardActivity : AppCompatActivity() {
                 cellForeground.x = 1F * cellSize * cell.coord.second + marginPixelWidth
                 bind.boardForeground.addView(cellForeground)
                 cellOrientation(cell)
-//                bind.boardForeground.getChildAt(cell.position).setBackgroundResource(R.drawable.cell)
 
                 val cellPlayerGround = ImageView(this)
-                cellPlayerGround.minimumHeight = cellSize //- 20 * (displayMetrics.densityDpi/160)
-                cellPlayerGround.minimumWidth = cellSize //- 20 * (displayMetrics.densityDpi/160)
-                cellPlayerGround.y = 1F * cellSize * cell.coord.first + marginPixel// + (10 * (displayMetrics.densityDpi/160))
-                cellPlayerGround.x = 1F * cellSize * cell.coord.second + marginPixelWidth// + (10 * (displayMetrics.densityDpi/160))
+                cellPlayerGround.minimumHeight = cellSize
+                cellPlayerGround.minimumWidth = cellSize
+                cellPlayerGround.y = 1F * cellSize * cell.coord.first + marginPixel
+                cellPlayerGround.x = 1F * cellSize * cell.coord.second + marginPixelWidth
                 bind.boardPlayerGround.addView(cellPlayerGround)
                 cellPlayerGround.setBackgroundResource(R.color.transparent)
             }
