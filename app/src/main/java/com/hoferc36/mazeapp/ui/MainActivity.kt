@@ -5,11 +5,13 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import com.hoferc36.mazeapp.DatabaseHelper
 import com.hoferc36.mazeapp.objects.*
 import com.hoferc36.mazeapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private lateinit var bind: ActivityMainBinding
+    private lateinit var database: DatabaseHelper
 
     private lateinit var buttonMaze: Button
     private lateinit var buttonSettings: Button
@@ -28,12 +30,15 @@ class MainActivity : AppCompatActivity() {
         bind = ActivityMainBinding.inflate(layoutInflater)
         setContentView(bind.main1)
 
+        database = DatabaseHelper(applicationContext)
+
         settings = SettingsData()
 
         buttonMaze = bind.buttonMaze
         buttonMaze.setOnClickListener {
             val intent = Intent(this, BoardActivity::class.java)
             intent.putExtra("mazeSettings", settings)
+            intent.putExtra("previousUser", user)
             startActivityForResult(intent, REQUEST_WINS)
         }
 
@@ -57,8 +62,8 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_LOGIN){
             if(resultCode == Activity.RESULT_OK){
-                user = if(data!!.getSerializableExtra("userData") != null)
-                    data.getSerializableExtra("userData") as UserData else null
+                val username = data!!.getStringExtra("userData")
+                user = if(username != null) database.searchForUser(username) else null
                 checkUser()
             }else {
                 user = null
@@ -73,6 +78,7 @@ class MainActivity : AppCompatActivity() {
             if(resultCode == Activity.RESULT_OK){
                 if(user != null) {
                     if (data!!.getBooleanExtra("win",false)) user!!.wins++
+                    database.updateUser(user!!.name, user!!)
                     checkUser()
                 }
             }

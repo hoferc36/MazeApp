@@ -18,8 +18,8 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
-        val createTableUsers = ("CREATE TABLE $TABLE_USERDATA + ($USER_ID INTEGER PRIMARY KEY, " +
-                "$USER_NAME TEXT, $USER_WINS TEXT)")
+        val createTableUsers = ("CREATE TABLE $TABLE_USERDATA ($USER_ID INTEGER PRIMARY KEY " +
+                "AUTOINCREMENT, $USER_NAME TEXT, $USER_WINS TEXT)")
         db?.execSQL(createTableUsers)
     }
 
@@ -28,12 +28,24 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
         onCreate(db)
     }
 
-    fun insertUser(user: UserData): Boolean{
+    fun searchForUser(name: String):UserData?{
+        val userList = getAllUsers()
+        var user:UserData? = null
+        if (userList.size > 0) {
+            userList.forEach {
+                if(it.name == name){
+                    user = it
+                }
+            }
+        }
+        return user
+    }
+
+    fun addUser(user: UserData): Boolean{
         val db = this.writableDatabase
 
         val contValues = ContentValues()
         with(contValues){
-            put(USER_ID, user.id)
             put(USER_NAME, user.name)
             put(USER_WINS, user.wins)
         }
@@ -43,48 +55,46 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
         return success != -1L
     }
 
+    fun updateUser(name: String, newUserData: UserData):Boolean{
+        val oldUserData = searchForUser(name)
+        if(oldUserData != null) {
+            val db = this.writableDatabase
+
+            val contValues = ContentValues()
+            with(contValues) {
+                put(USER_NAME, newUserData.name)
+                put(USER_WINS, newUserData.wins)
+            }
+
+            val success = db.update(TABLE_USERDATA,contValues, "$USER_ID = ${oldUserData.id}", null)
+            db.close()
+            return success != -1
+        }
+        return false
+    }
+
     fun getAllUsers():ArrayList<UserData>{
         val userList: ArrayList<UserData> = ArrayList()
         val selectQuery = "SELECT * FROM $TABLE_USERDATA"
         val db = this.readableDatabase
 
-        val cursor: Cursor?
+        val cursor = db.rawQuery(selectQuery, null)
 
-        try{
-            cursor = db.rawQuery(selectQuery, null)
-        }catch (e: Exception){
-            e.printStackTrace()
-            db.execSQL(selectQuery)
-            return ArrayList()
-        }
-
-        var id: Int
-        var name: String
-        var wins: Int
-        var user : UserData
+        var user : UserData = UserData()
 
         if(cursor.moveToFirst()){
             do{
-                var index = cursor.getColumnIndex(USER_ID)
-                if(index != -1){
-                    id = cursor.getInt(index)
-                    index = cursor.getColumnIndex(USER_NAME)
-                    if(index != -1){
-                        name = cursor.getString(index)
-                        index = cursor.getColumnIndex(USER_WINS)
-                        if(index != -1){
-                            wins = cursor.getInt(index)
+                user.id = cursor.getInt(0)
+                user.name = cursor.getString(1)
+                user.wins = cursor.getInt(2)
 
-                            user = UserData(id = id, name = name)
-                            user.wins = wins
-                            userList.add(user)
-                        }
-                    }
-                }
+                userList.add(user)
+                user = UserData()
+
             }while(cursor.moveToNext())
         }
         cursor.close()
-//        db.close()
+        db.close()
         return userList
     }
 }
