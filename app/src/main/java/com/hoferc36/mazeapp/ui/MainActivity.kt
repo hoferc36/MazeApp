@@ -2,10 +2,8 @@ package com.hoferc36.mazeapp.ui
 
 import android.app.Activity
 import android.content.Intent
-import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.widget.Button
 import com.hoferc36.mazeapp.DatabaseHelper
 import com.hoferc36.mazeapp.objects.*
@@ -35,12 +33,19 @@ class MainActivity : AppCompatActivity() {
         database = DatabaseHelper(applicationContext)
 //        sharedPreferences = SharedPreferences("sharedPref", MODE_PRIVATE)
 
-        settings = SettingsData()
+        if(database.getAllSettings().size <1){
+            settings = SettingsData()
+            settings.id = database.addSettings(settings)
+//            Toast.makeText(applicationContext, "setting created ${settings.id}", Toast.LENGTH_LONG).show()
+        }else {
+            settings =if(database.searchForSettings(1) != null) database.searchForSettings(1)!! else SettingsData()
+//            Toast.makeText(applicationContext, "setting retrieved ${settings.id}", Toast.LENGTH_LONG).show()
+        }
 
         buttonMaze = bind.buttonMaze
         buttonMaze.setOnClickListener {
             val intent = Intent(this, BoardActivity::class.java)
-            intent.putExtra("mazeSettings", settings)
+            intent.putExtra("mazeSettings", settings.id)
             if(user != null) {
                 intent.putExtra("previousUser", user!!.name)
             }
@@ -50,7 +55,7 @@ class MainActivity : AppCompatActivity() {
         buttonSettings = bind.buttonSettings
         buttonSettings.setOnClickListener {
             val intent = Intent(this, SettingsActivity::class.java)
-            intent.putExtra("previousSettings", settings)
+            intent.putExtra("previousSettings", settings.id)
             startActivityForResult(intent, REQUEST_SETTINGS)
         }
 
@@ -78,21 +83,29 @@ class MainActivity : AppCompatActivity() {
             }
         }else if (requestCode == REQUEST_SETTINGS){
             if(resultCode == Activity.RESULT_OK){
-                settings = if(data!!.getSerializableExtra("settingsData") != null)
-                    data.getSerializableExtra("settingsData") as SettingsData else SettingsData()
+                val settingId = data!!.getIntExtra("previousSettings", 1)
+                settings  = if(database.searchForSettings(settingId) != null) database.searchForSettings(settingId)!! else SettingsData()
             }
         }
+        checkUser()
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
+    override fun onResume() {
+        super.onResume()
+        checkUser()
     }
 
-    override fun onRestoreInstanceState(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onRestoreInstanceState(savedInstanceState, persistentState)
-    }
+//    override fun onSaveInstanceState(outState: Bundle) {
+//        super.onSaveInstanceState(outState)
+//    }
+//
+//    override fun onRestoreInstanceState(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
+//        super.onRestoreInstanceState(savedInstanceState, persistentState)
+//    }
 
     private fun checkUser() {
+        user = if(user != null && user!!.name != "") database.searchForUser(user!!.name) else null
+        settings = if(database.searchForSettings(settings.id) != null) database.searchForSettings(settings.id)!! else SettingsData()
         if (user != null) {
             bind.textViewUserData.text = user!!.toString()
             bind.buttonLogin.text = "Logout"

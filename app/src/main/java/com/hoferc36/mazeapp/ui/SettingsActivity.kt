@@ -6,12 +6,14 @@ import android.widget.*
 import android.content.*
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
+import com.hoferc36.mazeapp.DatabaseHelper
 import com.hoferc36.mazeapp.R
 import com.hoferc36.mazeapp.objects.*
 import com.hoferc36.mazeapp.databinding.ActivitySettingsBinding
 
 class SettingsActivity : AppCompatActivity() {
     private lateinit var bind: ActivitySettingsBinding
+    private lateinit var database: DatabaseHelper
 
     private lateinit var buttonSave: Button
     private lateinit var buttonCancel: Button
@@ -26,9 +28,10 @@ class SettingsActivity : AppCompatActivity() {
         bind = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(bind.settings1)
 
-        settings = if(intent.getSerializableExtra("previousSettings") != null)
-            intent.getSerializableExtra("previousSettings") as SettingsData
-            else SettingsData()
+        database = DatabaseHelper(applicationContext)
+
+        val settingId = intent.getIntExtra("previousSettings", 1)
+        settings  = if(database.searchForSettings(settingId) != null) database.searchForSettings(settingId)!! else SettingsData()
 
         val buttonToggle = bind.toggleButton
         buttonToggle.setOnClickListener {
@@ -45,7 +48,7 @@ class SettingsActivity : AppCompatActivity() {
         buttonSave.setOnClickListener {
             if(updateSettings()) {
                 val returnIntent = Intent(this, MainActivity::class.java)
-                returnIntent.putExtra("settingsData", settings)
+                returnIntent.putExtra("settingsData", settings.id)
                 setResult(Activity.RESULT_OK, returnIntent)
                 finish()
             }
@@ -140,6 +143,8 @@ class SettingsActivity : AppCompatActivity() {
         }
         settings.buttonToggle = bind.toggleButton.isChecked
         settings.corridor = bind.buttonCorridor.isChecked
+
+        database.updateSettings(settings.id, settings)
         return true
     }
 

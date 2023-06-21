@@ -28,9 +28,8 @@ class LoginActivity: AppCompatActivity() {
 
         database = DatabaseHelper(applicationContext)
 
-
-        user = if(intent.getSerializableExtra("previousUser") != null)
-            intent.getSerializableExtra("previousUser") as UserData else null
+        val user_name = intent.getStringExtra("previousUser")
+        user = if(user_name != null) database.searchForUser(user_name) else null
         returnIntent = Intent(this, MainActivity::class.java)
         pageRefresh()
 
@@ -86,6 +85,7 @@ class LoginActivity: AppCompatActivity() {
     }
 
     private fun pageRefresh() {
+        user = if(user != null) database.searchForUser(user!!.name) else null
         if (user != null) {
             bind.textViewUserData.text = user!!.toString()
             bind.buttonLogin.text = "Logout"
@@ -101,12 +101,4 @@ class LoginActivity: AppCompatActivity() {
             setResult(Activity.RESULT_CANCELED,returnIntent)
         }
     }
-
-//    private fun tempCheckDatabase(user:String): UserData?{
-//        var userData: UserData? = null
-//        userList.forEach {
-//             if(it.name == user)userData = it
-//        }
-//        return userData
-//    }
 }

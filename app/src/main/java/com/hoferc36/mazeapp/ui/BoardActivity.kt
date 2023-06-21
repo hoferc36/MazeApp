@@ -1,11 +1,9 @@
 package com.hoferc36.mazeapp.ui
 
-import android.app.Activity
 import android.content.Intent
 import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
@@ -20,7 +18,6 @@ import kotlin.math.abs
 class BoardActivity : AppCompatActivity() {
     private lateinit var bind: ActivityBoardBinding
     private lateinit var gestureDetector: GestureDetectorCompat
-//    private lateinit var returnIntent: Intent
     private lateinit var database: DatabaseHelper
 
     private lateinit var settings: SettingsData
@@ -46,7 +43,9 @@ class BoardActivity : AppCompatActivity() {
 
         database = DatabaseHelper(applicationContext)
 
-        settings = intent.getSerializableExtra("mazeSettings") as SettingsData
+        val settingId = intent.getIntExtra("mazeSettings", 1)
+        settings  = if(database.searchForSettings(settingId) != null) database.searchForSettings(settingId)!! else SettingsData()
+
         val username = intent.getStringExtra("previousUser")
         user = if(username != null) database.searchForUser(username) else null
 
@@ -57,34 +56,48 @@ class BoardActivity : AppCompatActivity() {
         buttonSetUp()
         cellCreation()
         gestureDetector = GestureDetectorCompat(this, GestureListener1())
+
+        currentFocus?.clearFocus()
     }
 
     private fun buttonSetUp() {
         isButtonOn = settings.buttonToggle
 
         upButton = bind.buttonUp
-        upButton.visibility = if (isButtonOn) View.VISIBLE else View.GONE
-        upButton.setOnClickListener {
-            boardMaze.moveUp()
-        }
+        if (isButtonOn) {
+            upButton.visibility = View.VISIBLE
+            upButton.setOnClickListener {
+                boardMaze.moveUp()
+            }
+        } else upButton.visibility = View.GONE
+
 
         leftButton = bind.buttonLeft
-        leftButton.visibility = if (isButtonOn) View.VISIBLE else View.GONE
-        leftButton.setOnClickListener {
-            boardMaze.moveLeft()
-        }
+        if (isButtonOn) {
+            leftButton.visibility = View.VISIBLE
+            leftButton.setOnClickListener {
+                boardMaze.moveLeft()
+            }
+        }else leftButton.visibility = View.GONE
+
 
         rightButton = bind.buttonRight
-        rightButton.visibility = if (isButtonOn) View.VISIBLE else View.GONE
-        rightButton.setOnClickListener {
-            boardMaze.moveRight()
-        }
+        if (isButtonOn) {
+            rightButton.visibility = View.VISIBLE
+            rightButton.setOnClickListener {
+                boardMaze.moveRight()
+            }
+        } else rightButton.visibility = View.GONE
+
 
         downButton = bind.buttonDown
-        downButton.visibility = if (isButtonOn) View.VISIBLE else View.INVISIBLE
-        downButton.setOnClickListener {
-            boardMaze.moveDown()
-        }
+        if (isButtonOn){
+            downButton.visibility = View.VISIBLE
+            downButton.setOnClickListener {
+                boardMaze.moveDown()
+            }
+        } else downButton.visibility = View.GONE
+
     }
 
     fun endGame(){
@@ -275,7 +288,9 @@ class BoardActivity : AppCompatActivity() {
 
     private fun setCellBackgroundColor(cell: CellPieces) {
         val cellBackground = bind.boardBackground.getChildAt(cell.position)
-        if(cell.start){
+        if(cell.end){
+            cellBackground.setBackgroundResource(R.color.end_cell)
+        }else if(cell.start){
             cellBackground.setBackgroundResource(R.color.start_cell)
         }else if(cell.visited){
             cellBackground.setBackgroundResource(R.color.visited_cell)

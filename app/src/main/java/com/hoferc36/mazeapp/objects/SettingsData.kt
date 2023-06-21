@@ -3,6 +3,7 @@ package com.hoferc36.mazeapp.objects
 import java.io.Serializable
 
 class SettingsData :Serializable{
+    var id:Int = -1
     var width:Int = 5
     var height:Int = 5
     var buttonToggle: Boolean = true

@@ -40,7 +40,7 @@
     <!--maze colors-->
     <color name="unvisited_cell">#465623</color>
     <color name="visited_cell">#86A64B</color>
-    <color name="end_cell">#7CBDBD</color>
+    <color name="end_cell">#338080</color>
     <color name="start_cell">#4C3380</color>
     <color name="dead_cell">#803333</color>
     <color name="here_cell">#B3633B</color>

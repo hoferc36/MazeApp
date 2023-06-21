@@ -29,9 +29,9 @@
 <!--    <path android:strokeColor="@color/windshield"-->
 <!--        android:pathData="M0.75,4.625 L4.25,4.625"-->
 <!--        android:strokeWidth="0.75"/>-->
-    <path
-        android:fillColor="@color/success"
-        android:pathData="M0.75,0.75 L0.75,4.25 4.25,4.25 4.25,0.75"/>
+<!--    <path-->
+<!--        android:fillColor="@color/success"-->
+<!--        android:pathData="M0.75,0.75 L0.75,4.25 4.25,4.25 4.25,0.75"/>-->
 
     <!--left front tire-->
     <path
