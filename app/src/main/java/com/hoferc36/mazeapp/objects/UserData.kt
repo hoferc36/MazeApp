@@ -1,9 +1,7 @@
 package com.hoferc36.mazeapp.objects
 
-import java.io.Serializable
-
-class UserData (var name: String = ""): Serializable{
-    var id:Int = -1
+class UserData (var name: String = "Peter Parker"){
+    var id:Int = -1//TODO change to Long
     var wins:Int = 0
     var settingsId: Long = 1
 

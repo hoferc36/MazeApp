@@ -17,6 +17,7 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
         private const val USER_ID = "id"
         private const val USER_NAME = "name"
         private const val USER_WINS = "wins"
+        //TODO add settings to user
 
         private const val TABLE_SETTINGS = "table_settings"
         private const val SETTINGS_ID = "id"
@@ -34,6 +35,7 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
     override fun onCreate(db: SQLiteDatabase?) {
         val createTableUsers = ("CREATE TABLE $TABLE_USERDATA ($USER_ID INTEGER PRIMARY KEY " +
                 "AUTOINCREMENT, $USER_NAME TEXT, $USER_WINS INTEGER)")
+        //TODO add settings to user
         db?.execSQL(createTableUsers)
         val createTableSettings = ("CREATE TABLE $TABLE_SETTINGS ($SETTINGS_ID INTEGER PRIMARY KEY " +
                 "AUTOINCREMENT, $SETTINGS_HEIGHT INTEGER, $SETTINGS_WIDTHS INTEGER, " +
@@ -68,6 +70,7 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
         with(contValues){
             put(USER_NAME, user.name)
             put(USER_WINS, user.wins)
+            //TODO add settings to user
         }
 
         val success = db.insert(TABLE_USERDATA, null, contValues)
@@ -84,6 +87,7 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
             with(contValues) {
                 put(USER_NAME, newUserData.name)
                 put(USER_WINS, newUserData.wins)
+                //TODO add settings to user
             }
 
             val success = db.update(TABLE_USERDATA,contValues, "$USER_ID = ${oldUserData.id}", null)
@@ -104,10 +108,12 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
 
         if(cursor.moveToFirst()){
             do{
-                user.id = cursor.getInt(0)
-                user.name = cursor.getString(1)
-                user.wins = cursor.getInt(2)
-
+                with(user) {
+                    id = cursor.getInt(0)
+                    name = cursor.getString(1)
+                    wins = cursor.getInt(2)
+                    //TODO add settings to user
+                }
                 userList.add(user)
                 user = UserData()
 
@@ -180,16 +186,18 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
 
         if(cursor.moveToFirst()){
             do{
-                settings.id = cursor.getLong(0)
-                settings.height = cursor.getInt(1)
-                settings.width = cursor.getInt(2)
-                settings.buttonToggle = cursor.getInt(3) == 1
-                settings.corridor = cursor.getInt(4) == 1
-                settings.startY = cursor.getInt(5)
-                settings.startX = cursor.getInt(6)
-                settings.endY = cursor.getInt(7)
-                settings.endX = cursor.getInt(8)
-                settings.seed = cursor.getInt(9)
+                with(settings) {
+                    id = cursor.getLong(0)
+                    height = cursor.getInt(1)
+                    width = cursor.getInt(2)
+                    buttonToggle = cursor.getInt(3) == 1
+                    corridor = cursor.getInt(4) == 1
+                    startY = cursor.getInt(5)
+                    startX = cursor.getInt(6)
+                    endY = cursor.getInt(7)
+                    endX = cursor.getInt(8)
+                    seed = cursor.getInt(9)
+                }
 //                Log.d("chandra", "get all settings $settings")
 
                 settingsList.add(settings)

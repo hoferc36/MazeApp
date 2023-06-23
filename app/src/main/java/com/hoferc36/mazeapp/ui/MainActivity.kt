@@ -1,12 +1,13 @@
 package com.hoferc36.mazeapp.ui
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import com.hoferc36.mazeapp.DatabaseHelper
+import com.hoferc36.mazeapp.R
 import com.hoferc36.mazeapp.objects.*
 import com.hoferc36.mazeapp.databinding.ActivityMainBinding
 
@@ -32,6 +33,7 @@ class MainActivity : AppCompatActivity() {
 
         database = DatabaseHelper(applicationContext)
 
+        //TODO add saved user and setting to onCreate
         settings = SettingsData()
         settings.id = database.addSettings(settings)
 
@@ -88,12 +90,13 @@ class MainActivity : AppCompatActivity() {
     private fun checkUser() {
         user = if (user != null && user!!.name != "") database.searchForUser(user!!.name) else null
         settings = database.searchForSettings(settings.id) ?: SettingsData()
+        //TODO settings should reflect user preference
         if (user != null) {
             bind.textViewUserData.text = user!!.toString()
             bind.buttonLogin.text = "Logout"
         } else {
             bind.textViewUserData.text = "No User Data"
-            bind.buttonLogin.text = "Login"
+            bind.buttonLogin.text = R.string.button_login.toString()//"Login" TODO change others
         }
     }
 }

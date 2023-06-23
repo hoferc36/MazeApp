@@ -28,7 +28,7 @@
     <string name="text_corridor_snap">Corridor Snap</string>
     <string name="text_you_win">You Win!!</string>
     <string name="text_seed_played">Map #</string>
-    <string name="text_miss_steps">Miss Steps:</string>
+    <string name="text_miss_steps">Collision with Walls:</string>
     <string name="text_revisited">Revisited:</string>
     <string name="text_total_wins">Total Wins:</string>
     <string name="button_user_settings">Set to User</string>

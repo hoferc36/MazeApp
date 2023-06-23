@@ -4,7 +4,6 @@ import android.app.Activity
 import android.os.Bundle
 import android.widget.*
 import android.content.*
-import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import com.hoferc36.mazeapp.DatabaseHelper
@@ -51,18 +50,25 @@ class SettingsActivity : AppCompatActivity() {
             }
         }
 
+        val buttonCorridor = bind.buttonCorridor
+        buttonCorridor.setOnClickListener {
+            if (bind.buttonCorridor.isChecked){
+                bind.buttonCorridor.setBackgroundResource(R.color.success)
+                settings.corridor = true
+            }else{
+                bind.buttonCorridor.setBackgroundResource(R.color.warning)
+                settings.corridor = false
+            }
+        }
+
         buttonUser = bind.buttonSetAsUser
         if(user != null) {
             buttonUser.visibility = View.VISIBLE
             buttonUser.setOnClickListener {
                 if (updateSettings()) {
-                    if(database.searchForExistingSettings(settings) == -1L){
-                        user!!.settingsId = database.addSettings(settings)
-                        database.updateUser(user!!.name, user!!)
-                        Toast.makeText(applicationContext, "Created new settings", Toast.LENGTH_SHORT).show()
-                    }else {
-                        Toast.makeText(applicationContext, "Set user settings", Toast.LENGTH_SHORT).show()
-                    }
+                    user!!.settingsId = database.addSettings(settings)
+                    database.updateUser(user!!.name, user!!)
+                    Toast.makeText(applicationContext, "User settings updated", Toast.LENGTH_SHORT).show()
                 }
             }
         }else{
@@ -73,6 +79,8 @@ class SettingsActivity : AppCompatActivity() {
         buttonReset.setOnClickListener {
             settings = SettingsData()
             setSettings()
+            Toast.makeText(applicationContext, "Settings Reset", Toast.LENGTH_SHORT).show()
+            //TODO user preference?
         }
 
         buttonSave = bind.buttonSave
@@ -89,17 +97,6 @@ class SettingsActivity : AppCompatActivity() {
         buttonCancel = bind.buttonCancel
         buttonCancel.setOnClickListener {
             finish()
-        }
-
-        val buttonCorridor = bind.buttonCorridor
-        buttonCorridor.setOnClickListener {
-            if (bind.buttonCorridor.isChecked){
-                bind.buttonCorridor.setBackgroundResource(R.color.success)
-                settings.corridor = true
-            }else{
-                bind.buttonCorridor.setBackgroundResource(R.color.warning)
-                settings.corridor = false
-            }
         }
 
         setSettings()

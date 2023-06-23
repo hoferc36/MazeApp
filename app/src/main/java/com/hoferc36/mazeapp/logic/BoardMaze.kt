@@ -1,6 +1,5 @@
 package com.hoferc36.mazeapp.logic
 
-import android.util.Log
 import com.hoferc36.mazeapp.objects.*
 import com.hoferc36.mazeapp.ui.*
 import java.util.Stack

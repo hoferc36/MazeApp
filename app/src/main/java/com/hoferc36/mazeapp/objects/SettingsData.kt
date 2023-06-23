@@ -1,8 +1,6 @@
 package com.hoferc36.mazeapp.objects
 
-import java.io.Serializable
-
-class SettingsData :Serializable{
+class SettingsData{
     var id:Long = 1
     var height:Int = 5
         set(value) {

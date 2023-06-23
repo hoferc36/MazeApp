@@ -4,7 +4,6 @@ import android.content.Intent
 import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
@@ -182,7 +181,7 @@ class BoardActivity : AppCompatActivity() {
         var cellSize = if (widthCol < heightRow) widthCol else heightRow
         cellSize = if(cellSize<25) 25 else cellSize
 
-        //centre maze in width
+        //centre maze
         val marginPixelWidth =  (displayMetrics.widthPixels - cellSize*boardMaze.cols)/2
         val marginPixelHeight =  (displayMetrics.heightPixels - heightButtons*3 - cellSize*boardMaze.rows)/2
 //        Log.d("chandra", "mdp:$marginDP mp:$marginP w:$displayMetrics.widthPixels cw:$cellSize")//maxWidth
@@ -195,7 +194,7 @@ class BoardActivity : AppCompatActivity() {
                 cellBackground.y = 1F * cellSize * cell.coord.first + marginPixelHeight
                 cellBackground.x = 1F * cellSize * cell.coord.second + marginPixelWidth
                 bind.boardBackground.addView(cellBackground)
-                setCellBackgroundColor(cell)
+                setCellBackgroundColor(cell)//TODO get rid of
 
                 val cellForeground = ImageView(this)
                 cellForeground.minimumHeight = cellSize
@@ -210,8 +209,8 @@ class BoardActivity : AppCompatActivity() {
                 cellPlayerGround.minimumWidth = cellSize
                 cellPlayerGround.y = 1F * cellSize * cell.coord.first + marginPixelHeight
                 cellPlayerGround.x = 1F * cellSize * cell.coord.second + marginPixelWidth
+                cellPlayerGround.setBackgroundResource(R.color.transparent)//TODO get rid of
                 bind.boardPlayerGround.addView(cellPlayerGround)
-                cellPlayerGround.setBackgroundResource(R.color.transparent)
             }
         }
         boardRefresh()
