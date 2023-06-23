@@ -16,7 +16,7 @@
         android:minHeight="50dp"
         android:text="@string/text_maze_width"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/textHeight" />
 
     <EditText
         android:id="@+id/editTextWidth"
@@ -32,7 +32,7 @@
         android:minHeight="50dp"
         android:textColor="@color/text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textHeight"
         tools:ignore="DuplicateSpeakableTextCheck" />
 
     <TextView
@@ -44,7 +44,7 @@
         android:minHeight="50dp"
         android:text="@string/text_maze_height"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textWidth" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/editTextHeight"
@@ -60,7 +60,7 @@
         android:minHeight="50dp"
         android:textColor="@color/text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textWidth" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textButtonToggle"
@@ -71,7 +71,7 @@
         android:minHeight="50dp"
         android:text="@string/text_button_toggle"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textHeight" />
+        app:layout_constraintTop_toBottomOf="@+id/textWidth" />
 
     <ToggleButton
         android:id="@+id/toggleButton"
@@ -81,7 +81,7 @@
         android:background="@color/warning"
         android:gravity="center"
         app:layout_constraintStart_toEndOf="@+id/textButtonToggle"
-        app:layout_constraintTop_toBottomOf="@+id/textHeight"
+        app:layout_constraintTop_toBottomOf="@+id/textWidth"
         tools:ignore="TextSizeCheck" />
 
     <TextView
@@ -243,5 +243,25 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/buttonSave" />
+
+    <Button
+        android:id="@+id/buttonSetAsUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="@string/button_user_settings"
+        app:layout_constraintBottom_toTopOf="@+id/buttonSave"
+        app:layout_constraintEnd_toStartOf="@+id/buttonResetToDefault"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/buttonResetToDefault"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="@string/button_reset_settings"
+        app:layout_constraintBottom_toTopOf="@+id/buttonCancel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/buttonSetAsUser" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

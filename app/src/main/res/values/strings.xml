@@ -15,7 +15,7 @@
     <string name="down_button">down button</string>
     <string name="left_button">left button</string>
     <string name="right_button">right button</string>
-    <string name="text_seed">Maze Seed</string>
+    <string name="text_seed">Map #</string>
     <string name="hint_seed">85</string>
     <string name="text_username">Username</string>
     <string name="button_login">Login</string>
@@ -27,8 +27,10 @@
     <string name="button_cancel">Cancel</string>
     <string name="text_corridor_snap">Corridor Snap</string>
     <string name="text_you_win">You Win!!</string>
-    <string name="text_seed_played">Seed:</string>
+    <string name="text_seed_played">Map #</string>
     <string name="text_miss_steps">Miss Steps:</string>
     <string name="text_revisited">Revisited:</string>
     <string name="text_total_wins">Total Wins:</string>
+    <string name="button_user_settings">Set to User</string>
+    <string name="button_reset_settings">Default</string>
 </resources>

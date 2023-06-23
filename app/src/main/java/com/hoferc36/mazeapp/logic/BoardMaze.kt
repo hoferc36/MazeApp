@@ -27,7 +27,10 @@ class BoardMaze (private val settings: SettingsData = SettingsData(), private va
     private var currentSeed = (2029L + rows - cols)
     private var revisitedCorridor: Boolean = false
 
-    var startCellCoord: Pair<Int,Int> = Pair(0,0)
+    private var startTime = 0//TODO
+    private var endTime = 0//TODO
+
+    var startCellCoord: Pair<Int,Int> = Pair(settings.startY, settings.startX)
         set(value) {
             if(value.first in 0 until rows && value.second in 0 until cols) {
                 board[startCellCoord.first][startCellCoord.second].start = false
@@ -41,7 +44,7 @@ class BoardMaze (private val settings: SettingsData = SettingsData(), private va
                 hereCell.visited = true
             }
         }
-    var endCellCoord = Pair(0, 0)
+    var endCellCoord = Pair(settings.endY, settings.endX)
         set(value) {
             if(value.first in 0 until rows && value.second in 0 until cols) {
                 board[endCellCoord.first][endCellCoord.second].end = false
@@ -56,13 +59,12 @@ class BoardMaze (private val settings: SettingsData = SettingsData(), private va
         boardSetUp()
         pathSetUp()
 
-        hereCell = board[startCellCoord.first][startCellCoord.second]
+        hereCell = board[settings.startY][settings.startX]
         hereCell.start = true
         hereCell.here = true
         hereCell.visited = true
 
-        endCellCoord = Pair(rows - 1, cols - 1)
-        board[endCellCoord.first][endCellCoord.second].end = true
+        board[settings.endY][settings.endX].end = true
     }
 
     private fun pathSetUp() {

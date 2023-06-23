@@ -58,16 +58,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textRevisited" />
 
-    <TextView
-        android:id="@+id/textWins"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="32dp"
-        android:text="@string/text_total_wins"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textUser" />
-
     <Button
         android:id="@+id/buttonMenu"
         android:layout_width="wrap_content"
@@ -76,7 +66,7 @@
         android:text="@string/button_back"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textWins"
+        app:layout_constraintTop_toBottomOf="@+id/textUser"
         android:textColor="@color/text"/>
 
 

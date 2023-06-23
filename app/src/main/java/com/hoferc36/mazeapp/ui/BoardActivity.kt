@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
@@ -23,9 +24,6 @@ class BoardActivity : AppCompatActivity() {
     private lateinit var settings: SettingsData
     private var user:UserData? = null
 
-    private var cellSize = 5
-    private val marginDP = 8
-
     private lateinit var boardMaze: BoardMaze
 
     private var isButtonOn: Boolean = false
@@ -43,15 +41,13 @@ class BoardActivity : AppCompatActivity() {
 
         database = DatabaseHelper(applicationContext)
 
-        val settingId = intent.getIntExtra("mazeSettings", 1)
-        settings  = if(database.searchForSettings(settingId) != null) database.searchForSettings(settingId)!! else SettingsData()
+        val settingId = intent.getLongExtra("mazeSettings", 1)
+        settings  = database.searchForSettings(settingId) ?: SettingsData()
 
         val username = intent.getStringExtra("previousUser")
         user = if(username != null) database.searchForUser(username) else null
 
         boardMaze = BoardMaze(settings, this)
-        boardMaze.startCellCoord = Pair(settings.startX, settings.startY)
-        boardMaze.endCellCoord = Pair(settings.endX,settings.endY)
 
         buttonSetUp()
         cellCreation()
@@ -123,7 +119,7 @@ class BoardActivity : AppCompatActivity() {
             val builder = AlertDialog.Builder(this)
             with(builder) {
                 setTitle("Warning")
-                setMessage("Do you want to quit?")
+                setMessage("Do you want to return to leave map?")
                 setPositiveButton("Yes") { dialog, which -> super.finish() }
                 setNegativeButton("No"){ dialog, which -> dialog.dismiss() }
                 show()
@@ -138,9 +134,9 @@ class BoardActivity : AppCompatActivity() {
                 setCellBackgroundColor(cell)
                 cellPayer = bind.boardPlayerGround.getChildAt(cell.position)
                 if(cell.here) {
-                    cellPayer.setBackgroundResource(R.drawable.character3)
+                    cellPayer.setBackgroundResource(R.drawable.character)
                 }else if(cell.end){
-                    cellPayer.setBackgroundResource(R.drawable.character3_garage)
+                    cellPayer.setBackgroundResource(R.drawable.character_garage)
                 }else{
                     cellPayer.setBackgroundResource(R.color.transparent)
                 }
@@ -176,19 +172,19 @@ class BoardActivity : AppCompatActivity() {
 
     private fun cellCreation() {
         val displayMetrics = Resources.getSystem().displayMetrics
-
+        val marginDP = 8
         val marginPixel = marginDP * (displayMetrics.densityDpi/160)
 
-        var heightButtons = 0
-        if(isButtonOn) {
-            heightButtons = 70 * (displayMetrics.densityDpi/ 160)
-        }
-        val heightRow = (displayMetrics.heightPixels - marginPixel*2 - heightButtons*3) /boardMaze.rows
-        val widthCol = (displayMetrics.widthPixels - marginPixel*2) /boardMaze.cols
-        cellSize = if (widthCol < heightRow) widthCol else heightRow
+        val heightButtons = if(isButtonOn) 70 * (displayMetrics.densityDpi/ 160) else 0
+
+        val heightRow = (displayMetrics.heightPixels - marginPixel*2 - heightButtons*3) / boardMaze.rows
+        val widthCol = (displayMetrics.widthPixels - marginPixel*2) / boardMaze.cols
+        var cellSize = if (widthCol < heightRow) widthCol else heightRow
         cellSize = if(cellSize<25) 25 else cellSize
-        //centre maze
+
+        //centre maze in width
         val marginPixelWidth =  (displayMetrics.widthPixels - cellSize*boardMaze.cols)/2
+        val marginPixelHeight =  (displayMetrics.heightPixels - heightButtons*3 - cellSize*boardMaze.rows)/2
 //        Log.d("chandra", "mdp:$marginDP mp:$marginP w:$displayMetrics.widthPixels cw:$cellSize")//maxWidth
 
         boardMaze.board.forEach {row ->
@@ -196,7 +192,7 @@ class BoardActivity : AppCompatActivity() {
                 val cellBackground = ImageView(this)
                 cellBackground.minimumHeight = cellSize
                 cellBackground.minimumWidth = cellSize
-                cellBackground.y = 1F * cellSize * cell.coord.first + marginPixel
+                cellBackground.y = 1F * cellSize * cell.coord.first + marginPixelHeight
                 cellBackground.x = 1F * cellSize * cell.coord.second + marginPixelWidth
                 bind.boardBackground.addView(cellBackground)
                 setCellBackgroundColor(cell)
@@ -204,15 +200,15 @@ class BoardActivity : AppCompatActivity() {
                 val cellForeground = ImageView(this)
                 cellForeground.minimumHeight = cellSize
                 cellForeground.minimumWidth = cellSize
-                cellForeground.y = 1F * cellSize * cell.coord.first + marginPixel
+                cellForeground.y = 1F * cellSize * cell.coord.first + marginPixelHeight
                 cellForeground.x = 1F * cellSize * cell.coord.second + marginPixelWidth
                 bind.boardForeground.addView(cellForeground)
                 cellOrientation(cell)
 
-                val cellPlayerGround = ImageView(this)
+                val cellPlayerGround = ImageView(this)//TODO only make one object
                 cellPlayerGround.minimumHeight = cellSize
                 cellPlayerGround.minimumWidth = cellSize
-                cellPlayerGround.y = 1F * cellSize * cell.coord.first + marginPixel
+                cellPlayerGround.y = 1F * cellSize * cell.coord.first + marginPixelHeight
                 cellPlayerGround.x = 1F * cellSize * cell.coord.second + marginPixelWidth
                 bind.boardPlayerGround.addView(cellPlayerGround)
                 cellPlayerGround.setBackgroundResource(R.color.transparent)

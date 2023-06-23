@@ -28,19 +28,19 @@ class LoginActivity: AppCompatActivity() {
 
         database = DatabaseHelper(applicationContext)
 
-        val user_name = intent.getStringExtra("previousUser")
-        user = if(user_name != null) database.searchForUser(user_name) else null
+        val usernamePast = intent.getStringExtra("previousUser")
+        user = if(usernamePast != null) database.searchForUser(usernamePast) else null
         returnIntent = Intent(this, MainActivity::class.java)
         pageRefresh()
 
         createButton = bind.buttonCreate
         createButton.setOnClickListener {
-            val username = bind.editTextUsername.text.toString()
-            if(username != ""){
+            val username1 = bind.editTextUsername.text.toString()
+            if(username1 != ""){
                 //check database for duplicates
-                if(database.searchForUser(username) == null){
+                if(database.searchForUser(username1) == null){
                     //add to database
-                    user = UserData(username)
+                    user = UserData(username1)
                     database.addUser(user!!)
                     pageRefresh()
                     Toast.makeText(applicationContext, "User Created", Toast.LENGTH_SHORT).show()
@@ -54,13 +54,13 @@ class LoginActivity: AppCompatActivity() {
 
         loginButton = bind.buttonLogin
         loginButton.setOnClickListener {
-            val username = bind.editTextUsername.text.toString()
+            val username2 = bind.editTextUsername.text.toString()
             if(bind.buttonLogin.text.toString() == "Login"){
-                if(username != "") {
+                if(username2 != "") {
                     //check database for user
-                    if (database.searchForUser(username) != null) {
+                    if (database.searchForUser(username2) != null) {
                         //get user from database
-                        user = database.searchForUser(username)
+                        user = database.searchForUser(username2)
                         pageRefresh()
                         Toast.makeText(applicationContext, "User Login", Toast.LENGTH_SHORT).show()
                     } else {

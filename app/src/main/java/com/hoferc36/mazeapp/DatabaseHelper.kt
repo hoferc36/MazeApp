@@ -4,12 +4,13 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
 import com.hoferc36.mazeapp.objects.SettingsData
 import com.hoferc36.mazeapp.objects.UserData
 
 class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     companion object{
-        private const val DATABASE_VERSION = 2
+        private const val DATABASE_VERSION = 3
         private const val DATABASE_NAME = "maze_data.db"
 
         private const val TABLE_USERDATA = "table_user"
@@ -19,11 +20,15 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
 
         private const val TABLE_SETTINGS = "table_settings"
         private const val SETTINGS_ID = "id"
-        private const val SETTINGS_USERNAME = "name"
         private const val SETTINGS_HEIGHT = "height"
         private const val SETTINGS_WIDTHS = "width"
         private const val SETTINGS_BUTTONS = "buttons"
         private const val SETTINGS_CORRIDOR = "corridor"
+        private const val SETTINGS_START_Y = "start_y"
+        private const val SETTINGS_START_X = "start_x"
+        private const val SETTINGS_END_Y = "end_y"
+        private const val SETTINGS_END_X = "end_x"
+        private const val SETTINGS_SEED = "seed"
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
@@ -31,7 +36,9 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
                 "AUTOINCREMENT, $USER_NAME TEXT, $USER_WINS INTEGER)")
         db?.execSQL(createTableUsers)
         val createTableSettings = ("CREATE TABLE $TABLE_SETTINGS ($SETTINGS_ID INTEGER PRIMARY KEY " +
-                "AUTOINCREMENT, $SETTINGS_USERNAME TEXT, $SETTINGS_HEIGHT INTEGER, $SETTINGS_WIDTHS INTEGER, $SETTINGS_BUTTONS BOOL, $SETTINGS_CORRIDOR BOOL)")
+                "AUTOINCREMENT, $SETTINGS_HEIGHT INTEGER, $SETTINGS_WIDTHS INTEGER, " +
+                "$SETTINGS_BUTTONS BOOL, $SETTINGS_CORRIDOR BOOL, $SETTINGS_START_Y INTEGER, $SETTINGS_START_X INTEGER, " +
+                "$SETTINGS_END_Y INTEGER, $SETTINGS_END_X INTEGER, $SETTINGS_SEED INTEGER)")
         db?.execSQL(createTableSettings)
     }
 
@@ -111,7 +118,7 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
         return userList
     }
 
-    fun searchForSettings(id: Int):SettingsData?{
+    fun searchForSettings(id: Long):SettingsData?{
         val settingsList = getAllSettings()
         var settings:SettingsData? = null
         if (settingsList.size > 0) {
@@ -123,47 +130,45 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
         }
         return settings
     }
-    fun addSettings(settings:SettingsData): Int{
-        val db = this.writableDatabase
+    fun addSettings(settings:SettingsData): Long{
+        var results = searchForExistingSettings(settings)
 
-        val contValues = ContentValues()
-        with(contValues){
-            put(SETTINGS_USERNAME, "default")
-            put(SETTINGS_HEIGHT, settings.height)
-            put(SETTINGS_WIDTHS, settings.width)
-            put(SETTINGS_BUTTONS, settings.buttonToggle)
-            put(SETTINGS_CORRIDOR, settings.corridor)
-        }
-
-        val success = db.insert(TABLE_SETTINGS, null, contValues)
-        db.close()
-
-        return if(success == -1L){
-            -1
-        }else {
-            if (getAllSettings().size > 0) getAllSettings()[0].id else -1
-        }
-    }
-
-    fun updateSettings(id: Int, newSettings: SettingsData):Boolean{
-        val oldSettings= searchForSettings(id)
-        if(oldSettings != null) {
+        if(results == -1L) {
             val db = this.writableDatabase
 
             val contValues = ContentValues()
             with(contValues) {
-                put(SETTINGS_HEIGHT, newSettings.height)
-                put(SETTINGS_WIDTHS, newSettings.width)
-                put(SETTINGS_BUTTONS, newSettings.buttonToggle)
-                put(SETTINGS_CORRIDOR, newSettings.corridor)
+                put(SETTINGS_HEIGHT, settings.height)
+                put(SETTINGS_WIDTHS, settings.width)
+                put(SETTINGS_BUTTONS, settings.buttonToggle)
+                put(SETTINGS_CORRIDOR, settings.corridor)
+                put(SETTINGS_START_Y, settings.startY)
+                put(SETTINGS_START_X, settings.startX)
+                put(SETTINGS_END_Y, settings.endY)
+                put(SETTINGS_END_X, settings.endX)
+                put(SETTINGS_SEED, settings.seed)
             }
 
-            val success = db.update(TABLE_SETTINGS,contValues, "$SETTINGS_ID = ${oldSettings.id}", null)
+            results = db.insert(TABLE_SETTINGS, null, contValues)
             db.close()
-            return success != -1
         }
-        return false
+
+        return results
+
     }
+
+    fun searchForExistingSettings(settings: SettingsData): Long {
+        val settingsList = getAllSettings()
+        settingsList.forEach {
+            if (settings.equals(it)) {
+                Log.d("chandra", "setting already exists settings id ${it.id}")
+                return it.id
+            }
+        }
+        Log.d("chandra", "setting did not exists settings id ${settings.id}")
+        return -1L
+    }
+
     fun getAllSettings():ArrayList<SettingsData>{
         val settingsList: ArrayList<SettingsData> = ArrayList()
         val selectQuery = "SELECT * FROM $TABLE_SETTINGS"
@@ -175,11 +180,17 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
 
         if(cursor.moveToFirst()){
             do{
-                settings.id = cursor.getInt(0)
-                settings.height = cursor.getInt(2)
-                settings.width = cursor.getInt(3)
-                settings.buttonToggle = cursor.getInt(4) == 1
-                settings.corridor = cursor.getInt(5) == 1
+                settings.id = cursor.getLong(0)
+                settings.height = cursor.getInt(1)
+                settings.width = cursor.getInt(2)
+                settings.buttonToggle = cursor.getInt(3) == 1
+                settings.corridor = cursor.getInt(4) == 1
+                settings.startY = cursor.getInt(5)
+                settings.startX = cursor.getInt(6)
+                settings.endY = cursor.getInt(7)
+                settings.endX = cursor.getInt(8)
+                settings.seed = cursor.getInt(9)
+//                Log.d("chandra", "get all settings $settings")
 
                 settingsList.add(settings)
                 settings = SettingsData()

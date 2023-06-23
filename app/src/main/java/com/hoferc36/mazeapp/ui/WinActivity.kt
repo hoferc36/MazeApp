@@ -33,7 +33,6 @@ class WinActivity : AppCompatActivity() {
 
         if(user != null){
             bind.textUser.text = user!!.toString()
-            bind.textWins.append(user!!.wins.toString())
         }
 
         buttonBack = bind.buttonMenu

@@ -4,6 +4,7 @@ import android.app.Activity
 import android.os.Bundle
 import android.widget.*
 import android.content.*
+import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import com.hoferc36.mazeapp.DatabaseHelper
@@ -17,8 +18,11 @@ class SettingsActivity : AppCompatActivity() {
 
     private lateinit var buttonSave: Button
     private lateinit var buttonCancel: Button
+    private lateinit var buttonUser: Button
+    private lateinit var buttonReset: Button
 
     private lateinit var settings: SettingsData
+    private var user: UserData? = null
 
     private val minSize = 2
     private val maxSize = 40
@@ -30,8 +34,11 @@ class SettingsActivity : AppCompatActivity() {
 
         database = DatabaseHelper(applicationContext)
 
-        val settingId = intent.getIntExtra("previousSettings", 1)
-        settings  = if(database.searchForSettings(settingId) != null) database.searchForSettings(settingId)!! else SettingsData()
+        val settingsId = intent.getLongExtra("previousSettings", 1)
+        settings  = database.searchForSettings(settingsId) ?: SettingsData()
+
+        val username = intent.getStringExtra("previousUser")
+        user = if(username != null) database.searchForUser(username) else null
 
         val buttonToggle = bind.toggleButton
         buttonToggle.setOnClickListener {
@@ -44,9 +51,34 @@ class SettingsActivity : AppCompatActivity() {
             }
         }
 
+        buttonUser = bind.buttonSetAsUser
+        if(user != null) {
+            buttonUser.visibility = View.VISIBLE
+            buttonUser.setOnClickListener {
+                if (updateSettings()) {
+                    if(database.searchForExistingSettings(settings) == -1L){
+                        user!!.settingsId = database.addSettings(settings)
+                        database.updateUser(user!!.name, user!!)
+                        Toast.makeText(applicationContext, "Created new settings", Toast.LENGTH_SHORT).show()
+                    }else {
+                        Toast.makeText(applicationContext, "Set user settings", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }else{
+            buttonUser.visibility = View.GONE
+        }
+
+        buttonReset = bind.buttonResetToDefault
+        buttonReset.setOnClickListener {
+            settings = SettingsData()
+            setSettings()
+        }
+
         buttonSave = bind.buttonSave
         buttonSave.setOnClickListener {
             if(updateSettings()) {
+                settings.id = database.addSettings(settings)
                 val returnIntent = Intent(this, MainActivity::class.java)
                 returnIntent.putExtra("settingsData", settings.id)
                 setResult(Activity.RESULT_OK, returnIntent)
@@ -75,17 +107,25 @@ class SettingsActivity : AppCompatActivity() {
     }
     private fun setSettings(){
         if(settings.width != 5) bind.editTextWidth.setText(settings.width.toString())
+            else bind.editTextWidth.text.clear()
         if(settings.height != 5) bind.editTextHeight.setText(settings.height.toString())
+            else bind.editTextHeight.text.clear()
 
         if(settings.startX != 0) bind.editTextStartX.setText(settings.startX.toString())
-        if(settings.startY!= 0) bind.editTextStartY.setText(settings.startY.toString())
+            else bind.editTextStartX.text.clear()
+        if(settings.startY != 0) bind.editTextStartY.setText(settings.startY.toString())
+            else bind.editTextStartY.text.clear()
+
         if(settings.endX != settings.width-1) bind.editTextEndX.setText(settings.endX.toString())
+            else bind.editTextEndX.text.clear()
         if(settings.endY != settings.height-1) bind.editTextEndY.setText(settings.endY.toString())
+            else bind.editTextEndY.text.clear()
 
         if(settings.seed!= 0) bind.editTextSeed.setText(settings.seed.toString())
+            else bind.editTextSeed.text.clear()
 
-        if(settings.buttonToggle) bind.toggleButton.performClick()
-        if(settings.corridor) bind.buttonCorridor.performClick()
+        if(settings.buttonToggle && !bind.toggleButton.isChecked) bind.toggleButton.performClick()
+        if(settings.corridor && !bind.buttonCorridor.isChecked) bind.buttonCorridor.performClick()
     }
     private fun updateSettings(): Boolean {
         //maze height
@@ -109,11 +149,11 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         //maze start coord
-        val startCoordX = getIntFromView(bind.editTextStartX, 0)
         val startCoordY = getIntFromView(bind.editTextStartY, 0)
-        if (startCoordX in 0 until width && startCoordY in 0 until height) {
-            settings.startX = startCoordX
+        val startCoordX = getIntFromView(bind.editTextStartX, 0)
+        if (startCoordX in 0 until settings.width && startCoordY in 0 until settings.height) {
             settings.startY = startCoordY
+            settings.startX = startCoordX
         } else {
             Toast.makeText(applicationContext, "Start Coordinate have " +
                         "to be in the maze", Toast.LENGTH_SHORT).show()
@@ -121,11 +161,11 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         //maze end coord
-        val endCoordX = getIntFromView(bind.editTextEndX, width-1)
-        val endCoordY = getIntFromView(bind.editTextEndY, height-1)
-        if (endCoordX in 0 until width && endCoordY in 0 until height) {
-            settings.endX = endCoordX
+        val endCoordY = getIntFromView(bind.editTextEndY, settings.height-1)
+        val endCoordX = getIntFromView(bind.editTextEndX, settings.width-1)
+        if (endCoordX in 0 until settings.width && endCoordY in 0 until settings.height) {
             settings.endY = endCoordY
+            settings.endX = endCoordX
         } else {
             Toast.makeText(applicationContext, "End Coordinate have " +
                         "to be in the maze", Toast.LENGTH_SHORT).show()
@@ -144,7 +184,6 @@ class SettingsActivity : AppCompatActivity() {
         settings.buttonToggle = bind.toggleButton.isChecked
         settings.corridor = bind.buttonCorridor.isChecked
 
-        database.updateSettings(settings.id, settings)
         return true
     }
 
