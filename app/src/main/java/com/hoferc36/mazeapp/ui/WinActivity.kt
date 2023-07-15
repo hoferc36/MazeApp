@@ -6,6 +6,7 @@ import android.widget.Button
 import com.hoferc36.mazeapp.DatabaseHelper
 import com.hoferc36.mazeapp.databinding.ActivityWinBinding
 import com.hoferc36.mazeapp.objects.*
+import java.text.SimpleDateFormat
 
 class WinActivity : AppCompatActivity() {
     private lateinit var bind: ActivityWinBinding
@@ -15,6 +16,7 @@ class WinActivity : AppCompatActivity() {
     private var user: UserData? = null
 
     private lateinit var buttonBack: Button
+    private var dateForm = SimpleDateFormat("mm:ss.SSS")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +32,8 @@ class WinActivity : AppCompatActivity() {
         bind.textSeed.append(boardData.seed.toString())
         bind.textMissSteps.append(boardData.missSteps.toString())
         bind.textRevisited.append(boardData.revisited.toString())
+        bind.textTimeTaken.append(dateForm.format(boardData.timeTaken))
+        bind.textTotalMoves.append((boardData.totalMoves + boardData.missSteps).toString())
 
         if(user != null){
             bind.textUser.text = user!!.toString()

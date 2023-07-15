@@ -41,7 +41,6 @@ class LoginActivity: AppCompatActivity() {
                 if(database.searchForUser(username1) == null){
                     //add to database
                     user = UserData(username1)
-                    //TODO add old settings to this
                     database.addUser(user!!)
                     pageRefresh()
                     Toast.makeText(applicationContext, "User Created", Toast.LENGTH_SHORT).show()

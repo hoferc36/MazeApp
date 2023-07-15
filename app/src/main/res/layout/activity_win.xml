@@ -49,6 +49,26 @@
         app:layout_constraintTop_toBottomOf="@+id/textMissSteps" />
 
     <TextView
+        android:id="@+id/textTimeTaken"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="32dp"
+        android:text="@string/textTimeTaken"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textRevisited" />
+
+    <TextView
+        android:id="@+id/textTotalMoves"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="32dp"
+        android:text="@string/text_total_moves"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textTimeTaken" />
+
+    <TextView
         android:id="@+id/textUser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -56,7 +76,7 @@
         android:text="@string/text_user_data"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textRevisited" />
+        app:layout_constraintTop_toBottomOf="@+id/textTotalMoves" />
 
     <Button
         android:id="@+id/buttonMenu"
