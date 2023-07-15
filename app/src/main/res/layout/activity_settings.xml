@@ -250,6 +250,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:text="@string/button_user_settings"
+        android:textColor="@color/text"
         app:layout_constraintBottom_toTopOf="@+id/buttonSave"
         app:layout_constraintEnd_toStartOf="@+id/buttonResetToDefault"
         app:layout_constraintStart_toStartOf="parent" />
@@ -260,6 +261,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:text="@string/button_reset_settings"
+        android:textColor="@color/text"
         app:layout_constraintBottom_toTopOf="@+id/buttonCancel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/buttonSetAsUser" />

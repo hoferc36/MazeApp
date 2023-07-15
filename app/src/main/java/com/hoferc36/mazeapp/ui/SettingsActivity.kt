@@ -79,8 +79,10 @@ class SettingsActivity : AppCompatActivity() {
         buttonReset.setOnClickListener {
             settings = SettingsData()
             setSettings()
+            if(user != null) {
+                user!!.settingsId = settings.id
+            }
             Toast.makeText(applicationContext, "Settings Reset", Toast.LENGTH_SHORT).show()
-            //TODO user preference?
         }
 
         buttonSave = bind.buttonSave

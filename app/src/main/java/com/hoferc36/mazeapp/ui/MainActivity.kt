@@ -1,13 +1,11 @@
 package com.hoferc36.mazeapp.ui
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import com.hoferc36.mazeapp.DatabaseHelper
-import com.hoferc36.mazeapp.R
 import com.hoferc36.mazeapp.objects.*
 import com.hoferc36.mazeapp.databinding.ActivityMainBinding
 
@@ -19,7 +17,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var buttonSettings: Button
     private lateinit var buttonLogin: Button
 
-    private var user: UserData? = null
+    private var user: UserData? = null//TODO add default user instead of null
     private lateinit var settings: SettingsData
 
     private val REQUEST_LOGIN = 1
@@ -33,8 +31,11 @@ class MainActivity : AppCompatActivity() {
 
         database = DatabaseHelper(applicationContext)
 
-        //TODO add saved user and setting to onCreate
-        settings = SettingsData()
+        settings = if(user != null){
+            database.searchForSettings(user!!.settingsId) ?: SettingsData()
+        }else {
+            SettingsData()
+        }
         settings.id = database.addSettings(settings)
 
         buttonMaze = bind.buttonMaze
@@ -89,14 +90,15 @@ class MainActivity : AppCompatActivity() {
 
     private fun checkUser() {
         user = if (user != null && user!!.name != "") database.searchForUser(user!!.name) else null
-        settings = database.searchForSettings(settings.id) ?: SettingsData()
-        //TODO settings should reflect user preference
+        if(user != null){
+            settings =database.searchForSettings(user!!.settingsId) ?: SettingsData()
+        }
         if (user != null) {
             bind.textViewUserData.text = user!!.toString()
             bind.buttonLogin.text = "Logout"
         } else {
             bind.textViewUserData.text = "No User Data"
-            bind.buttonLogin.text = R.string.button_login.toString()//"Login" TODO change others
+            bind.buttonLogin.text = "Login" //R.string.button_login.toString() nope change others
         }
     }
 }

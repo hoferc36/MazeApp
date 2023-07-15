@@ -10,14 +10,14 @@ import com.hoferc36.mazeapp.objects.UserData
 
 class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     companion object{
-        private const val DATABASE_VERSION = 3
+        private const val DATABASE_VERSION = 4
         private const val DATABASE_NAME = "maze_data.db"
 
         private const val TABLE_USERDATA = "table_user"
         private const val USER_ID = "id"
         private const val USER_NAME = "name"
         private const val USER_WINS = "wins"
-        //TODO add settings to user
+        private const val USER_SETTINGS = "settings"
 
         private const val TABLE_SETTINGS = "table_settings"
         private const val SETTINGS_ID = "id"
@@ -34,8 +34,7 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
 
     override fun onCreate(db: SQLiteDatabase?) {
         val createTableUsers = ("CREATE TABLE $TABLE_USERDATA ($USER_ID INTEGER PRIMARY KEY " +
-                "AUTOINCREMENT, $USER_NAME TEXT, $USER_WINS INTEGER)")
-        //TODO add settings to user
+                "AUTOINCREMENT, $USER_NAME TEXT, $USER_WINS INTEGER, $USER_SETTINGS INTEGER)")
         db?.execSQL(createTableUsers)
         val createTableSettings = ("CREATE TABLE $TABLE_SETTINGS ($SETTINGS_ID INTEGER PRIMARY KEY " +
                 "AUTOINCREMENT, $SETTINGS_HEIGHT INTEGER, $SETTINGS_WIDTHS INTEGER, " +
@@ -70,7 +69,7 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
         with(contValues){
             put(USER_NAME, user.name)
             put(USER_WINS, user.wins)
-            //TODO add settings to user
+            put(USER_SETTINGS, user.settingsId)
         }
 
         val success = db.insert(TABLE_USERDATA, null, contValues)
@@ -87,7 +86,7 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
             with(contValues) {
                 put(USER_NAME, newUserData.name)
                 put(USER_WINS, newUserData.wins)
-                //TODO add settings to user
+                put(USER_SETTINGS, newUserData.settingsId)
             }
 
             val success = db.update(TABLE_USERDATA,contValues, "$USER_ID = ${oldUserData.id}", null)
@@ -112,7 +111,7 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
                     id = cursor.getInt(0)
                     name = cursor.getString(1)
                     wins = cursor.getInt(2)
-                    //TODO add settings to user
+                    settingsId = cursor.getLong(3)
                 }
                 userList.add(user)
                 user = UserData()
