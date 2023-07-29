@@ -18,8 +18,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var buttonSettings: Button
     private lateinit var buttonLogin: Button
 
+    //TODO make user and setting accessible from each page
     private var user: UserData? = null//TODO add default user instead of null
     private var settings: SettingsData = SettingsData()
+    //TODO added a new table to the database that keeps what user is on
+    // and what settings are being used
 
     private val REQUEST_LOGIN = 1
     private val REQUEST_SETTINGS = 2

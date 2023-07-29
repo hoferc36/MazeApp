@@ -103,6 +103,7 @@ class SettingsActivity : AppCompatActivity() {
 
         setSettings()
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
+        //TODO added quick select easy medium or hard
     }
     private fun setSettings(){
         if(settings.width != 5) bind.editTextWidth.setText(settings.width.toString())

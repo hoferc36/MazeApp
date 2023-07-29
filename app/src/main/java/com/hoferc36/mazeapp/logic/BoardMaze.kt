@@ -31,6 +31,7 @@ class BoardMaze (private val settings: SettingsData = SettingsData(), private va
     var endTime = 0L
     var timerStarted:Boolean = false
 
+    //TODO start coords should only be looked at once and it should be stored in settings data
     var startCellCoord: Pair<Int,Int> = Pair(settings.startY, settings.startX)
         set(value) {
             if(value.first in 0 until rows && value.second in 0 until cols) {
@@ -45,6 +46,8 @@ class BoardMaze (private val settings: SettingsData = SettingsData(), private va
                 hereCell.visited = true
             }
         }
+
+    //TODO end coords should only be looked at once and it should be stored in settings data
     var endCellCoord = Pair(settings.endY, settings.endX)
         set(value) {
             if(value.first in 0 until rows && value.second in 0 until cols) {
@@ -269,6 +272,7 @@ class BoardMaze (private val settings: SettingsData = SettingsData(), private va
             boardData.totalMoves++
             endTime = System.currentTimeMillis()
             boardData.timeTaken = endTime - startTime
+            //TODO moins off off app time
             activity.endGame()
         }
     }

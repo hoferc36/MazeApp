@@ -58,6 +58,7 @@ class BoardActivity : AppCompatActivity() {
 //        currentFocus?.clearFocus()
     }
 
+    //TODO add a onResume and onPause overrides to track time taken better
     private fun buttonSetUp() {
         isButtonOn = settings.buttonToggle
 
