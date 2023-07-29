@@ -1,5 +1,6 @@
 package com.hoferc36.mazeapp.logic
 
+import android.util.Log
 import com.hoferc36.mazeapp.objects.*
 import com.hoferc36.mazeapp.ui.*
 import java.util.Stack
@@ -153,6 +154,7 @@ class BoardMaze (private val settings: SettingsData = SettingsData(), private va
         }
     }
     fun moveUp(){
+        Log.d("chandra", "move up")
         if (hereCell.top) {
             if(board[hereCell.coord.first-1][hereCell.coord.second].visited) {
                 if (settings.corridor) {
@@ -177,6 +179,7 @@ class BoardMaze (private val settings: SettingsData = SettingsData(), private va
         }
     }
     fun moveLeft(){
+        Log.d("chandra", "move left")
         if(hereCell.left) {
             if (board[hereCell.coord.first][hereCell.coord.second-1].visited){
                 if (settings.corridor) {
@@ -201,6 +204,7 @@ class BoardMaze (private val settings: SettingsData = SettingsData(), private va
         }
     }
     fun moveRight(){
+        Log.d("chandra", "move right")
         if(hereCell.right){
             if (board[hereCell.coord.first][hereCell.coord.second+1].visited){
                 if (settings.corridor) {
@@ -226,6 +230,7 @@ class BoardMaze (private val settings: SettingsData = SettingsData(), private va
     }
 
     fun moveDown(){
+        Log.d("chandra", "move down")
         if(hereCell.bottom){
             if(board[hereCell.coord.first+1][hereCell.coord.second].visited) {
                 if (settings.corridor) {
@@ -250,6 +255,7 @@ class BoardMaze (private val settings: SettingsData = SettingsData(), private va
         }
     }
     private fun moveCharacter(newRow:Int, newCol:Int){
+        Log.d("chandra", "move $newRow $newCol")
         if (!timerStarted){
             startTime = System.currentTimeMillis()
             timerStarted = true

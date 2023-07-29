@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import com.hoferc36.mazeapp.DatabaseHelper
 import com.hoferc36.mazeapp.objects.*
@@ -18,7 +19,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var buttonLogin: Button
 
     private var user: UserData? = null//TODO add default user instead of null
-    private lateinit var settings: SettingsData
+    private var settings: SettingsData = SettingsData()
 
     private val REQUEST_LOGIN = 1
     private val REQUEST_SETTINGS = 2
@@ -31,12 +32,18 @@ class MainActivity : AppCompatActivity() {
 
         database = DatabaseHelper(applicationContext)
 
-        settings = if(user != null){
-            database.searchForSettings(user!!.settingsId) ?: SettingsData()
-        }else {
-            SettingsData()
+        Log.d("chandra", "saved retrieved ${savedInstanceState != null}")
+        if(savedInstanceState != null) {
+            val settingsId = savedInstanceState.getLong("settingsSaved", 1)
+            settings = database.searchForSettings(settingsId) ?: SettingsData()
+
+            val username = savedInstanceState.getString("userName")
+            user = if (username != null) database.searchForUser(username) else null
+            if(user != null){
+                settings = database.searchForSettings(user!!.settingsId) ?: SettingsData()
+            }
+            settings.id = database.addSettings(settings)
         }
-        settings.id = database.addSettings(settings)
 
         buttonMaze = bind.buttonMaze
         buttonMaze.setOnClickListener {
@@ -86,6 +93,14 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         checkUser()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putLong("settingsSaved", settings.id)
+        if (user != null) {
+            outState.putString("userName", user!!.name)
+        }
     }
 
     private fun checkUser() {

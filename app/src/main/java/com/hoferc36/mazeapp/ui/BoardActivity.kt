@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
@@ -52,7 +53,9 @@ class BoardActivity : AppCompatActivity() {
         cellCreation()
         gestureDetector = GestureDetectorCompat(this, GestureListener1())
 
-        currentFocus?.clearFocus()
+        //currentFocus. = bind.boardPlayerGround
+        Log.d("chandra", "focus ${currentFocus.toString()}")
+//        currentFocus?.clearFocus()
     }
 
     private fun buttonSetUp() {
@@ -144,6 +147,9 @@ class BoardActivity : AppCompatActivity() {
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        Log.d("chandra", "move keys")
+        Log.d("chandra", "focus ${currentFocus.toString()}")
+        currentFocus?.clearFocus()
         return when (keyCode) {
             KeyEvent.KEYCODE_DPAD_UP -> {
                 boardMaze.moveUp()
