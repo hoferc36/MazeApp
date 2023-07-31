@@ -34,6 +34,12 @@ class BoardActivity : AppCompatActivity() {
 
     private var isEndGame: Boolean = false
 
+    private var cellSize = 0
+    private var marginPixelWidth = 0
+    private var marginPixelHeight = 0
+    private lateinit var player: ImageView
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bind = ActivityBoardBinding.inflate(layoutInflater)
@@ -47,57 +53,18 @@ class BoardActivity : AppCompatActivity() {
         val username = intent.getStringExtra("previousUser")
         user = if(username != null) database.searchForUser(username) else null
 
+        player = ImageView(this)
         boardMaze = BoardMaze(settings, this)
 
         buttonSetUp()
         cellCreation()
         gestureDetector = GestureDetectorCompat(this, GestureListener1())
 
-        //currentFocus. = bind.boardPlayerGround
-        Log.d("chandra", "focus ${currentFocus.toString()}")
 //        currentFocus?.clearFocus()
     }
 
     //TODO add a onResume and onPause overrides to track time taken better
-    private fun buttonSetUp() {
-        isButtonOn = settings.buttonToggle
 
-        upButton = bind.buttonUp
-        if (isButtonOn) {
-            upButton.visibility = View.VISIBLE
-            upButton.setOnClickListener {
-                boardMaze.moveUp()
-            }
-        } else upButton.visibility = View.GONE
-
-
-        leftButton = bind.buttonLeft
-        if (isButtonOn) {
-            leftButton.visibility = View.VISIBLE
-            leftButton.setOnClickListener {
-                boardMaze.moveLeft()
-            }
-        }else leftButton.visibility = View.GONE
-
-
-        rightButton = bind.buttonRight
-        if (isButtonOn) {
-            rightButton.visibility = View.VISIBLE
-            rightButton.setOnClickListener {
-                boardMaze.moveRight()
-            }
-        } else rightButton.visibility = View.GONE
-
-
-        downButton = bind.buttonDown
-        if (isButtonOn){
-            downButton.visibility = View.VISIBLE
-            downButton.setOnClickListener {
-                boardMaze.moveDown()
-            }
-        } else downButton.visibility = View.GONE
-
-    }
 
     fun endGame(){
         isEndGame = true
@@ -130,49 +97,29 @@ class BoardActivity : AppCompatActivity() {
         }
     }
 
+    fun moveCharacter(row: Int, col:Int){
+        player.y = 1F * cellSize * row + marginPixelHeight
+        player.x = 1F * cellSize * col + marginPixelWidth
+    }
+
     fun boardRefresh() {
-        var cellPayer: View
         boardMaze.board.forEach { row ->
             row.forEach { cell ->
                 setCellBackgroundColor(cell)
-                cellPayer = bind.boardPlayerGround.getChildAt(cell.position)
-                if(cell.here) {
-                    cellPayer.setBackgroundResource(R.drawable.character)
-                }else if(cell.end){
-                    cellPayer.setBackgroundResource(R.drawable.character_garage)
-                }else{
-                    cellPayer.setBackgroundResource(R.color.transparent)
-                }
             }
         }
     }
 
-    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        Log.d("chandra", "move keys")
-        Log.d("chandra", "focus ${currentFocus.toString()}")
-        currentFocus?.clearFocus()
-        return when (keyCode) {
-            KeyEvent.KEYCODE_DPAD_UP -> {
-                boardMaze.moveUp()
-                true
-            }KeyEvent.KEYCODE_DPAD_LEFT -> {
-                boardMaze.moveLeft()
-                true
-            }KeyEvent.KEYCODE_DPAD_RIGHT -> {
-                boardMaze.moveRight()
-                true
-            }KeyEvent.KEYCODE_DPAD_DOWN -> {
-                boardMaze.moveDown()
-                true
-            }else -> { super.onKeyDown(keyCode, event)}
-        }
-    }
-
-    override fun onTouchEvent(event: MotionEvent): Boolean {
-        return if (gestureDetector.onTouchEvent(event)) {
-            true
-        } else {
-            super.onTouchEvent(event)
+    private fun setCellBackgroundColor(cell: CellPieces) {
+        val cellBackground = bind.boardBackground.getChildAt(cell.position)
+        if(cell.end){
+            cellBackground.setBackgroundResource(R.color.end_cell)
+        }else if(cell.start){
+            cellBackground.setBackgroundResource(R.color.start_cell)
+        }else if(cell.visited){
+            cellBackground.setBackgroundResource(R.color.visited_cell)
+        }else{
+            cellBackground.setBackgroundResource(R.color.unvisited_cell)
         }
     }
 
@@ -185,12 +132,12 @@ class BoardActivity : AppCompatActivity() {
 
         val heightRow = (displayMetrics.heightPixels - marginPixel*2 - heightButtons*3) / boardMaze.rows
         val widthCol = (displayMetrics.widthPixels - marginPixel*2) / boardMaze.cols
-        var cellSize = if (widthCol < heightRow) widthCol else heightRow
+        cellSize = if (widthCol < heightRow) widthCol else heightRow
         cellSize = if(cellSize<25) 25 else cellSize
 
         //centre maze
-        val marginPixelWidth =  (displayMetrics.widthPixels - cellSize*boardMaze.cols)/2
-        val marginPixelHeight =  (displayMetrics.heightPixels - heightButtons*3 - cellSize*boardMaze.rows)/2
+        marginPixelWidth =  (displayMetrics.widthPixels - cellSize*boardMaze.cols)/2
+        marginPixelHeight =  (displayMetrics.heightPixels - heightButtons*3 - cellSize*boardMaze.rows)/2
 //        Log.d("chandra", "mdp:$marginDP mp:$marginP w:$displayMetrics.widthPixels cw:$cellSize")//maxWidth
 
         boardMaze.board.forEach {row ->
@@ -201,7 +148,6 @@ class BoardActivity : AppCompatActivity() {
                 cellBackground.y = 1F * cellSize * cell.coord.first + marginPixelHeight
                 cellBackground.x = 1F * cellSize * cell.coord.second + marginPixelWidth
                 bind.boardBackground.addView(cellBackground)
-                setCellBackgroundColor(cell)//TODO get rid of
 
                 val cellForeground = ImageView(this)
                 cellForeground.minimumHeight = cellSize
@@ -210,16 +156,24 @@ class BoardActivity : AppCompatActivity() {
                 cellForeground.x = 1F * cellSize * cell.coord.second + marginPixelWidth
                 bind.boardForeground.addView(cellForeground)
                 cellOrientation(cell)
-
-                val cellPlayerGround = ImageView(this)//TODO only make one object
-                cellPlayerGround.minimumHeight = cellSize
-                cellPlayerGround.minimumWidth = cellSize
-                cellPlayerGround.y = 1F * cellSize * cell.coord.first + marginPixelHeight
-                cellPlayerGround.x = 1F * cellSize * cell.coord.second + marginPixelWidth
-                cellPlayerGround.setBackgroundResource(R.color.transparent)//TODO get rid of
-                bind.boardPlayerGround.addView(cellPlayerGround)
             }
         }
+        val garage = ImageView(this)
+        garage.minimumHeight = cellSize
+        garage.minimumWidth = cellSize
+        garage.y = 1F * cellSize * settings.endY + marginPixelHeight
+        garage.x = 1F * cellSize * settings.endX + marginPixelWidth
+        garage.setBackgroundResource(R.drawable.character_garage)
+        bind.boardPlayerGround.addView(garage)
+
+        player.minimumHeight = cellSize
+        player.minimumWidth = cellSize
+        player.y = 1F * cellSize * settings.startY + marginPixelHeight
+        player.x = 1F * cellSize * settings.startX + marginPixelWidth
+        player.setBackgroundResource(R.drawable.character)
+        bind.boardPlayerGround.addView(player)
+
+
         boardRefresh()
     }
 
@@ -288,18 +242,69 @@ class BoardActivity : AppCompatActivity() {
         }
     }
 
-    private fun setCellBackgroundColor(cell: CellPieces) {
-        val cellBackground = bind.boardBackground.getChildAt(cell.position)
-        if(cell.end){
-            cellBackground.setBackgroundResource(R.color.end_cell)
-        }else if(cell.start){
-            cellBackground.setBackgroundResource(R.color.start_cell)
-        }else if(cell.visited){
-            cellBackground.setBackgroundResource(R.color.visited_cell)
-        }else{
-            cellBackground.setBackgroundResource(R.color.unvisited_cell)
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        return when (keyCode) {
+            KeyEvent.KEYCODE_DPAD_UP -> {
+                boardMaze.moveUp()
+                true
+            }KeyEvent.KEYCODE_DPAD_LEFT -> {
+                boardMaze.moveLeft()
+                true
+            }KeyEvent.KEYCODE_DPAD_RIGHT -> {
+                boardMaze.moveRight()
+                true
+            }KeyEvent.KEYCODE_DPAD_DOWN -> {
+                boardMaze.moveDown()
+                true
+            }else -> { super.onKeyDown(keyCode, event)}
         }
+    }
 
+    private fun buttonSetUp() {
+        isButtonOn = settings.buttonToggle
+
+        upButton = bind.buttonUp
+        if (isButtonOn) {
+            upButton.visibility = View.VISIBLE
+            upButton.setOnClickListener {
+                boardMaze.moveUp()
+            }
+        } else upButton.visibility = View.GONE
+
+
+        leftButton = bind.buttonLeft
+        if (isButtonOn) {
+            leftButton.visibility = View.VISIBLE
+            leftButton.setOnClickListener {
+                boardMaze.moveLeft()
+            }
+        }else leftButton.visibility = View.GONE
+
+
+        rightButton = bind.buttonRight
+        if (isButtonOn) {
+            rightButton.visibility = View.VISIBLE
+            rightButton.setOnClickListener {
+                boardMaze.moveRight()
+            }
+        } else rightButton.visibility = View.GONE
+
+
+        downButton = bind.buttonDown
+        if (isButtonOn){
+            downButton.visibility = View.VISIBLE
+            downButton.setOnClickListener {
+                boardMaze.moveDown()
+            }
+        } else downButton.visibility = View.GONE
+    }
+
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        return if (gestureDetector.onTouchEvent(event)) {
+            true
+        } else {
+            super.onTouchEvent(event)
+        }
     }
 
     inner class GestureListener1 : GestureDetector.SimpleOnGestureListener(){

@@ -167,7 +167,8 @@ class BoardMaze (private val settings: SettingsData = SettingsData(), private va
                 }
             }
             moveCharacter(hereCell.coord.first-1, hereCell.coord.second)
-            if(hereCell.top && !hereCell.left && !hereCell.right && settings.corridor){
+            if(hereCell.top && !hereCell.left && !hereCell.right
+                && settings.corridor && !hereCell.end){
                 moveUp()
             } else {
                 boardData.totalMoves++
@@ -192,7 +193,8 @@ class BoardMaze (private val settings: SettingsData = SettingsData(), private va
                 }
             }
             moveCharacter(hereCell.coord.first, hereCell.coord.second-1)
-            if(!hereCell.top && hereCell.left && !hereCell.bottom && settings.corridor){
+            if(!hereCell.top && hereCell.left && !hereCell.bottom
+                && settings.corridor && !hereCell.end){
                 moveLeft()
             } else {
                 boardData.totalMoves++
@@ -217,7 +219,8 @@ class BoardMaze (private val settings: SettingsData = SettingsData(), private va
                 }
             }
             moveCharacter(hereCell.coord.first, hereCell.coord.second+1)
-            if(!hereCell.top && hereCell.right && !hereCell.bottom && settings.corridor){
+            if(!hereCell.top && hereCell.right && !hereCell.bottom
+                && settings.corridor && !hereCell.end){
                 moveRight()
             } else {
                 boardData.totalMoves++
@@ -243,7 +246,8 @@ class BoardMaze (private val settings: SettingsData = SettingsData(), private va
                 }
             }
             moveCharacter(hereCell.coord.first+1, hereCell.coord.second)
-            if(!hereCell.left && !hereCell.right && hereCell.bottom && settings.corridor){
+            if(!hereCell.left && !hereCell.right && hereCell.bottom
+                && settings.corridor && !hereCell.end){
                 moveDown()
             } else {
                 boardData.totalMoves++
@@ -275,5 +279,6 @@ class BoardMaze (private val settings: SettingsData = SettingsData(), private va
             //TODO moins off off app time
             activity.endGame()
         }
+        activity.moveCharacter(newRow, newCol)
     }
 }
