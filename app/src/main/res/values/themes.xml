@@ -8,6 +8,11 @@
         <item name="android:textColor">@color/text</item>
         <item name="android:textColorHint">@color/hint_text</item>
         <item name="alertDialogTheme">@android:style/Theme.DeviceDefault.Dialog.Alert</item>
+        <item name="android:scrollbarThumbVertical">@color/accent</item>
+        <item name="android:fadeScrollbars">false</item>
+        <item name="android:scrollbarSize">8dp</item>
+<!--
+    android:scrollbarSize="8dp"-->
 <!--        TODO fix button text color and set default margins-->
     </style>
 

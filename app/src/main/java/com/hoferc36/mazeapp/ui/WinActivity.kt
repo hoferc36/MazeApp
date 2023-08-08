@@ -3,6 +3,7 @@ package com.hoferc36.mazeapp.ui
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ScrollView
 import com.hoferc36.mazeapp.DatabaseHelper
 import com.hoferc36.mazeapp.databinding.ActivityWinBinding
 import com.hoferc36.mazeapp.objects.*
@@ -43,5 +44,7 @@ class WinActivity : AppCompatActivity() {
         buttonBack.setOnClickListener {
             finish()
         }
+
+        bind.win1.fullScroll(ScrollView.FOCUS_UP)
     }
 }

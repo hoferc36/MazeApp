@@ -38,6 +38,7 @@ class BoardActivity : AppCompatActivity() {
     private var marginPixelWidth = 0
     private var marginPixelHeight = 0
     private lateinit var player: ImageView
+    private lateinit var garage: ImageView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,14 +54,13 @@ class BoardActivity : AppCompatActivity() {
         val username = intent.getStringExtra("previousUser")
         user = if(username != null) database.searchForUser(username) else null
 
-        player = ImageView(this)
+        garage = bind.garageView
+        player = bind.playerView
         boardMaze = BoardMaze(settings, this)
 
         buttonSetUp()
         cellCreation()
         gestureDetector = GestureDetectorCompat(this, GestureListener1())
-
-//        currentFocus?.clearFocus()
     }
 
     //TODO add a onResume and onPause overrides to track time taken better
@@ -158,21 +158,16 @@ class BoardActivity : AppCompatActivity() {
                 cellOrientation(cell)
             }
         }
-        val garage = ImageView(this)
+
         garage.minimumHeight = cellSize
         garage.minimumWidth = cellSize
         garage.y = 1F * cellSize * settings.endY + marginPixelHeight
         garage.x = 1F * cellSize * settings.endX + marginPixelWidth
-        garage.setBackgroundResource(R.drawable.character_garage)
-        bind.boardPlayerGround.addView(garage)
 
         player.minimumHeight = cellSize
         player.minimumWidth = cellSize
         player.y = 1F * cellSize * settings.startY + marginPixelHeight
         player.x = 1F * cellSize * settings.startX + marginPixelWidth
-        player.setBackgroundResource(R.drawable.character)
-        bind.boardPlayerGround.addView(player)
-
 
         boardRefresh()
     }

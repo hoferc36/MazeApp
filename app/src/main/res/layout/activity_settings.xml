@@ -1,270 +1,276 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/settings1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     tools:context=".ui.SettingsActivity">
-    <!--    TODO setting should be scrollable if the screens too small-->
-    <TextView
-        android:id="@+id/textWidth"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:gravity="center"
-        android:minHeight="50dp"
-        android:text="@string/text_maze_width"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textHeight" />
 
-    <EditText
-        android:id="@+id/editTextWidth"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:autofillHints="5"
-        android:ems="3"
-        android:gravity="end"
-        android:hint="@string/hint_default_size"
-        android:inputType="number"
-        android:maxLength="3"
-        android:minHeight="50dp"
-        android:textColor="@color/text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textHeight"
-        tools:ignore="DuplicateSpeakableTextCheck" />
+        android:padding="8dp">
 
-    <TextView
-        android:id="@+id/textHeight"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:gravity="center"
-        android:minHeight="50dp"
-        android:text="@string/text_maze_height"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/textWidth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:gravity="center"
+            android:minHeight="50dp"
+            android:text="@string/text_maze_width"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textHeight" />
 
-    <EditText
-        android:id="@+id/editTextHeight"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:autofillHints="5"
-        android:ems="3"
-        android:gravity="end"
-        android:hint="@string/hint_default_size"
-        android:inputType="number"
-        android:maxLength="3"
-        android:minHeight="50dp"
-        android:textColor="@color/text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <EditText
+            android:id="@+id/editTextWidth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:autofillHints="5"
+            android:ems="3"
+            android:gravity="end"
+            android:hint="@string/hint_default_size"
+            android:inputType="number"
+            android:maxLength="3"
+            android:minHeight="50dp"
+            android:textColor="@color/text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textHeight"
+            tools:ignore="DuplicateSpeakableTextCheck" />
 
-    <TextView
-        android:id="@+id/textButtonToggle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:gravity="center"
-        android:minHeight="50dp"
-        android:text="@string/text_button_toggle"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textWidth" />
+        <TextView
+            android:id="@+id/textHeight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:gravity="center"
+            android:minHeight="50dp"
+            android:text="@string/text_maze_height"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <ToggleButton
-        android:id="@+id/toggleButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:background="@color/warning"
-        android:gravity="center"
-        app:layout_constraintStart_toEndOf="@+id/textButtonToggle"
-        app:layout_constraintTop_toBottomOf="@+id/textWidth"
-        tools:ignore="TextSizeCheck" />
+        <EditText
+            android:id="@+id/editTextHeight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:autofillHints="5"
+            android:ems="3"
+            android:gravity="end"
+            android:hint="@string/hint_default_size"
+            android:inputType="number"
+            android:maxLength="3"
+            android:minHeight="50dp"
+            android:textColor="@color/text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textStartPoint"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:gravity="center"
-        android:minHeight="50dp"
-        android:text="@string/text_start_point"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textButtonToggle" />
+        <TextView
+            android:id="@+id/textButtonToggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:gravity="center"
+            android:minHeight="50dp"
+            android:text="@string/text_button_toggle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textWidth" />
 
-    <TextView
-        android:id="@+id/textEndPoint"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:gravity="center"
-        android:minHeight="50dp"
-        android:text="@string/text_endpoint"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextStartY" />
+        <ToggleButton
+            android:id="@+id/toggleButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@color/warning"
+            android:gravity="center"
+            app:layout_constraintStart_toEndOf="@+id/textButtonToggle"
+            app:layout_constraintTop_toBottomOf="@+id/textWidth"
+            tools:ignore="TextSizeCheck" />
 
-    <EditText
-        android:id="@+id/editTextStartX"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:autofillHints="0"
-        android:ems="3"
-        android:gravity="end"
-        android:hint="@string/hint_row"
-        android:inputType="number"
-        android:maxLength="3"
-        android:textColor="@color/text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textButtonToggle"
-        tools:ignore="DuplicateSpeakableTextCheck" />
+        <TextView
+            android:id="@+id/textStartPoint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:gravity="center"
+            android:minHeight="50dp"
+            android:text="@string/text_start_point"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textButtonToggle" />
 
-    <EditText
-        android:id="@+id/editTextStartY"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:autofillHints="0"
-        android:ems="4"
-        android:gravity="end"
-        android:hint="@string/hint_column"
-        android:inputType="number"
-        android:maxLength="3"
-        android:textColor="@color/text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textStartPoint"
-        tools:ignore="TextSizeCheck,TextSizeCheck,DuplicateSpeakableTextCheck" />
+        <TextView
+            android:id="@+id/textEndPoint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:gravity="center"
+            android:minHeight="50dp"
+            android:text="@string/text_endpoint"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextStartY" />
 
-    <EditText
-        android:id="@+id/editTextEndX"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:autofillHints="0"
-        android:ems="3"
-        android:gravity="end"
-        android:hint="@string/hint_row"
-        android:inputType="number"
-        android:maxLength="3"
-        android:textColor="@color/text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextStartY"
-        tools:ignore="TextSizeCheck,TextSizeCheck" />
+        <EditText
+            android:id="@+id/editTextStartX"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:autofillHints="0"
+            android:ems="3"
+            android:gravity="end"
+            android:hint="@string/hint_row"
+            android:inputType="number"
+            android:maxLength="3"
+            android:textColor="@color/text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textButtonToggle"
+            tools:ignore="DuplicateSpeakableTextCheck" />
 
-    <EditText
-        android:id="@+id/editTextEndY"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:autofillHints="0"
-        android:ems="4"
-        android:gravity="end"
-        android:hint="@string/hint_column"
-        android:inputType="number"
-        android:maxLength="3"
-        android:textColor="@color/text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textEndPoint" />
+        <EditText
+            android:id="@+id/editTextStartY"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:autofillHints="0"
+            android:ems="4"
+            android:gravity="end"
+            android:hint="@string/hint_column"
+            android:inputType="number"
+            android:maxLength="3"
+            android:textColor="@color/text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textStartPoint"
+            tools:ignore="TextSizeCheck,TextSizeCheck,DuplicateSpeakableTextCheck" />
 
-    <TextView
-        android:id="@+id/textSeed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:gravity="center"
-        android:minHeight="50dp"
-        android:text="@string/text_seed"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextEndY" />
+        <EditText
+            android:id="@+id/editTextEndX"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:autofillHints="0"
+            android:ems="3"
+            android:gravity="end"
+            android:hint="@string/hint_row"
+            android:inputType="number"
+            android:maxLength="3"
+            android:textColor="@color/text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextStartY"
+            tools:ignore="TextSizeCheck,TextSizeCheck" />
 
-    <EditText
-        android:id="@+id/editTextSeed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:autofillHints="0"
-        android:ems="7"
-        android:gravity="end"
-        android:hint="@string/hint_seed"
-        android:inputType="text"
-        android:maxEms="3"
-        android:maxLength="10"
-        android:textColor="@color/text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextEndY" />
+        <EditText
+            android:id="@+id/editTextEndY"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:autofillHints="0"
+            android:ems="4"
+            android:gravity="end"
+            android:hint="@string/hint_column"
+            android:inputType="number"
+            android:maxLength="3"
+            android:textColor="@color/text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textEndPoint" />
 
-    <TextView
-        android:id="@+id/textCorridor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:layout_marginStart="8dp"
-        android:gravity="center"
-        android:minHeight="50dp"
-        android:text="@string/text_corridor_snap"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textSeed" />
+        <TextView
+            android:id="@+id/textSeed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:gravity="center"
+            android:minHeight="50dp"
+            android:text="@string/text_seed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextEndY" />
 
-    <ToggleButton
-        android:id="@+id/buttonCorridor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:layout_marginStart="8dp"
-        android:background="@color/warning"
-        android:gravity="center"
-        app:layout_constraintStart_toEndOf="@+id/textCorridor"
-        app:layout_constraintTop_toBottomOf="@+id/textSeed"
-        tools:ignore="TextSizeCheck" />
+        <EditText
+            android:id="@+id/editTextSeed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:autofillHints="0"
+            android:ems="7"
+            android:gravity="end"
+            android:hint="@string/hint_seed"
+            android:inputType="text"
+            android:maxEms="3"
+            android:maxLength="10"
+            android:textColor="@color/text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextEndY" />
 
-    <Button
-        android:id="@+id/buttonSave"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:text="@string/button_save"
-        android:textColor="@color/text"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/buttonCancel"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
+        <TextView
+            android:id="@+id/textCorridor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_marginStart="8dp"
+            android:gravity="center"
+            android:minHeight="50dp"
+            android:text="@string/text_corridor_snap"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textSeed" />
 
-    <Button
-        android:id="@+id/buttonCancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:text="@string/button_cancel"
-        android:textColor="@color/text"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/buttonSave" />
+        <ToggleButton
+            android:id="@+id/buttonCorridor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_marginStart="8dp"
+            android:background="@color/warning"
+            android:gravity="center"
+            app:layout_constraintStart_toEndOf="@+id/textCorridor"
+            app:layout_constraintTop_toBottomOf="@+id/textSeed"
+            tools:ignore="TextSizeCheck" />
 
-    <Button
-        android:id="@+id/buttonSetAsUser"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:text="@string/button_user_settings"
-        android:textColor="@color/text"
-        app:layout_constraintBottom_toTopOf="@+id/buttonSave"
-        app:layout_constraintEnd_toStartOf="@+id/buttonResetToDefault"
-        app:layout_constraintStart_toStartOf="parent" />
+        <Button
+            android:id="@+id/buttonSave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="@string/button_save"
+            android:textColor="@color/text"
+            app:layout_constraintEnd_toStartOf="@+id/buttonCancel"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/buttonResetToDefault" />
 
-    <Button
-        android:id="@+id/buttonResetToDefault"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:text="@string/button_reset_settings"
-        android:textColor="@color/text"
-        app:layout_constraintBottom_toTopOf="@+id/buttonCancel"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/buttonSetAsUser" />
+        <Button
+            android:id="@+id/buttonCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="@string/button_cancel"
+            android:textColor="@color/text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/buttonSave"
+            app:layout_constraintTop_toBottomOf="@+id/buttonResetToDefault" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <Button
+            android:id="@+id/buttonSetAsUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="@string/button_user_settings"
+            android:textColor="@color/text"
+            app:layout_constraintEnd_toStartOf="@+id/buttonResetToDefault"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textCorridor" />
+
+        <Button
+            android:id="@+id/buttonResetToDefault"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="@string/button_reset_settings"
+            android:textColor="@color/text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/buttonSetAsUser"
+            app:layout_constraintTop_toBottomOf="@+id/textCorridor" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

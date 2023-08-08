@@ -35,4 +35,6 @@
     <string name="button_reset_settings">Default</string>
     <string name="textTimeTaken">Time Taken: </string>
     <string name="text_total_moves">Total Moves:</string>
+    <string name="player_des">Character</string>
+    <string name="exit_des">Exit</string>
 </resources>
