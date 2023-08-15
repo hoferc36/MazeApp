@@ -1,5 +1,6 @@
 package com.hoferc36.mazeapp.ui
 
+import android.content.ClipData
 import android.content.Intent
 import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
@@ -61,10 +62,42 @@ class BoardActivity : AppCompatActivity() {
         buttonSetUp()
         cellCreation()
         gestureDetector = GestureDetectorCompat(this, GestureListener1())
+
+        player.setOnLongClickListener{view ->
+            val data = ClipData.newPlainText("","")
+            val shadow = View.DragShadowBuilder(view)
+            view.startDragAndDrop(data, shadow, view, 0)
+            true
+        }
+
+        garage.setOnDragListener(DragListener1())
+    }
+
+
+    inner class DragListener1(): View.OnDragListener{
+        override fun onDrag(view: View?, dragEvent: DragEvent?): Boolean {
+            when(dragEvent!!.action){
+                DragEvent.ACTION_DRAG_ENTERED->{
+                    val row = ((view!!.y - marginPixelHeight) / cellSize).toInt()
+                    val col = ((view!!.x - marginPixelWidth) / cellSize).toInt()
+                    boardMaze.dragToNextPath(row, col)
+                }
+                DragEvent.ACTION_DRAG_EXITED->{
+//                    Toast.makeText(applicationContext, "Player exiting ${view!!.contentDescription}", Toast.LENGTH_SHORT).show()
+                }
+                DragEvent.ACTION_DROP->{
+//                    Toast.makeText(applicationContext, "Player dropped ${view!!.contentDescription}", Toast.LENGTH_SHORT).show()
+                }
+                DragEvent.ACTION_DRAG_LOCATION->{
+//                    Toast.makeText(applicationContext, "Player location ${view.toString()}", Toast.LENGTH_SHORT).show()
+                }
+            }
+            return true
+        }
+
     }
 
     //TODO add a onResume and onPause overrides to track time taken better
-
 
     fun endGame(){
         isEndGame = true
@@ -152,15 +185,18 @@ class BoardActivity : AppCompatActivity() {
                 val cellForeground = ImageView(this)
                 cellForeground.minimumHeight = cellSize
                 cellForeground.minimumWidth = cellSize
+                cellForeground.contentDescription = "r:${cell.coord.first} c:${cell.coord.second}"
                 cellForeground.y = 1F * cellSize * cell.coord.first + marginPixelHeight
                 cellForeground.x = 1F * cellSize * cell.coord.second + marginPixelWidth
                 bind.boardForeground.addView(cellForeground)
                 cellOrientation(cell)
+                cellForeground.setOnDragListener(DragListener1())
             }
         }
 
         garage.minimumHeight = cellSize
         garage.minimumWidth = cellSize
+        garage.contentDescription = "garage"
         garage.y = 1F * cellSize * settings.endY + marginPixelHeight
         garage.x = 1F * cellSize * settings.endX + marginPixelWidth
 

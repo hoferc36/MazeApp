@@ -31,32 +31,6 @@ class BoardMaze (private val settings: SettingsData = SettingsData(), private va
     var endTime = 0L
     var timerStarted:Boolean = false
 
-    //TODO start coords should only be looked at once and it should be stored in settings data
-    var startCellCoord: Pair<Int,Int> = Pair(settings.startY, settings.startX)
-        set(value) {
-            if(value.first in 0 until rows && value.second in 0 until cols) {
-                board[startCellCoord.first][startCellCoord.second].start = false
-                hereCell.here = false
-                hereCell.visited = false
-
-                field = value
-                hereCell = board[value.first][value.second]
-                hereCell.start = true
-                hereCell.here = true
-                hereCell.visited = true
-            }
-        }
-
-    //TODO end coords should only be looked at once and it should be stored in settings data
-    var endCellCoord = Pair(settings.endY, settings.endX)
-        set(value) {
-            if(value.first in 0 until rows && value.second in 0 until cols) {
-                board[endCellCoord.first][endCellCoord.second].end = false
-                field = value
-                board[value.first][value.second].end = true
-            }
-        }
-
     init {
         boardData.seed = if (settings.seed <= 0) Random.nextInt(1, 3000) else settings.seed
         currentSeed *= boardData.seed
@@ -69,6 +43,18 @@ class BoardMaze (private val settings: SettingsData = SettingsData(), private va
         hereCell.visited = true
 
         board[settings.endY][settings.endX].end = true
+    }
+
+    private fun boardSetUp() {
+        board.forEachIndexed { rowIndex, row ->
+            row.forEachIndexed { colIndex, cell ->
+                cell.position = rowIndex * cols + colIndex
+                cell.coord = Pair(rowIndex, colIndex)
+            }
+        }
+        hereCell = board[0][0]
+        hereCell.here = true
+        hereCell.visited = true
     }
 
     private fun pathSetUp() {
@@ -88,18 +74,6 @@ class BoardMaze (private val settings: SettingsData = SettingsData(), private va
                 cell.visited = false
             }
         }
-    }
-
-    private fun boardSetUp() {
-        board.forEachIndexed { rowIndex, row ->
-            row.forEachIndexed { colIndex, cell ->
-                cell.position = rowIndex * cols + colIndex
-                cell.coord = Pair(rowIndex, colIndex)
-            }
-        }
-        hereCell = board[0][0]
-        hereCell.here = true
-        hereCell.visited = true
     }
 
     private fun pathSelector(row:Int, col:Int) {
@@ -125,25 +99,21 @@ class BoardMaze (private val settings: SettingsData = SettingsData(), private va
 
             when (availablePaths[Random(currentSeed).nextInt(0, availablePaths.size)]) {
                 PATH.TOP -> {
-//                    Log.d("chandra", "random path ${PATH.TOP.name} size ${availablePaths.size}")
                     board[row][col].top = true
                     board[row - 1][col].bottom = true
                     stack.push(Pair(row - 1, col))
                 }
                 PATH.LEFT -> {
-//                    Log.d("chandra", "random path ${PATH.LEFT.name} size ${availablePaths.size}")
                     board[row][col].left = true
                     board[row][col - 1].right = true
                     stack.push(Pair(row, col - 1))
                 }
                 PATH.RIGHT -> {
-//                    Log.d("chandra", "random path ${PATH.RIGHT.name} size ${availablePaths.size}")
                     board[row][col].right = true
                     board[row][col + 1].left = true
                     stack.push(Pair(row, col + 1))
                 }
                 PATH.BOTTOM -> {
-//                    Log.d("chandra", "random path ${PATH.BOTTOM.name} size ${availablePaths.size}")
                     board[row][col].bottom = true
                     board[row + 1][col].top = true
                     stack.push(Pair(row + 1, col))
@@ -156,6 +126,21 @@ class BoardMaze (private val settings: SettingsData = SettingsData(), private va
             }
         }
     }
+
+    fun dragToNextPath(row: Int, col: Int){
+        if((row == hereCell.coord.first) xor (col == hereCell.coord.second) ){
+            if(row == hereCell.coord.first-1){
+                moveUp()
+            }else if(row == hereCell.coord.first+1){
+                moveDown()
+            }else if (col == hereCell.coord.second-1){
+                moveLeft()
+            }else if (col == hereCell.coord.second+1){
+                moveRight()
+            }
+        }
+    }
+
     fun moveUp(){
         Log.d("chandra", "move up")
         if (hereCell.top) {
@@ -182,6 +167,7 @@ class BoardMaze (private val settings: SettingsData = SettingsData(), private va
             boardData.missSteps++
         }
     }
+
     fun moveLeft(){
         Log.d("chandra", "move left")
         if(hereCell.left) {
