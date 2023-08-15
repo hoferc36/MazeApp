@@ -16,13 +16,13 @@ class SettingsData{
             }
             field = value
         }
-    var buttonToggle: Boolean = true
+    var buttonToggle: Boolean = false
     var startY: Int = 0
     var startX: Int = 0
     var endY: Int = height-1
     var endX: Int = width-1
     var seed: Int = 0
-    var corridor: Boolean = true
+    var corridor: Boolean = false
     override fun toString(): String {
         return "settings: id=$id, height=$height, width=$width, buttonToggle=$buttonToggle, start=$startY, $startX, end=$endY, $endX, seed=$seed, corridor=$corridor"
     }

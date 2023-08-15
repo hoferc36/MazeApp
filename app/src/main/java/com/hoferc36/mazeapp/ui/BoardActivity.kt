@@ -63,11 +63,14 @@ class BoardActivity : AppCompatActivity() {
         cellCreation()
         gestureDetector = GestureDetectorCompat(this, GestureListener1())
 
-        player.setOnLongClickListener{view ->
-            val data = ClipData.newPlainText("","")
-            val shadow = View.DragShadowBuilder(view)
-            view.startDragAndDrop(data, shadow, view, 0)
-            true
+        player.setOnTouchListener { view, motionEvent ->
+            if(motionEvent.action == MotionEvent.ACTION_MOVE) {
+                val data = ClipData.newPlainText("", "")
+                val shadow = View.DragShadowBuilder(view)
+                view.startDragAndDrop(data, shadow, view, 0)
+                true
+            }
+            false
         }
 
         garage.setOnDragListener(DragListener1())
