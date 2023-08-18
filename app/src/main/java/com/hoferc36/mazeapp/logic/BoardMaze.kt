@@ -1,6 +1,5 @@
 package com.hoferc36.mazeapp.logic
 
-import android.util.Log
 import com.hoferc36.mazeapp.objects.*
 import com.hoferc36.mazeapp.ui.*
 import java.util.Stack
@@ -14,17 +13,15 @@ class BoardMaze (private val settings: SettingsData = SettingsData(), private va
     }
 
     val boardData = BoardData()
-    val rows:Int = settings.height
-    val cols:Int = settings.width
 
-    val board: Array<Array<CellPieces>> = Array(rows) { Array(cols) { CellPieces() } }
+    val board: Array<Array<CellPieces>> = Array(settings.rows) { Array(settings.cols) { CellPieces() } }
 
     private val stack: Stack<Pair<Int, Int>> = Stack<Pair<Int, Int>>()
     private var visitedCellCount = 0
 
     private var hereCell = CellPieces()
 
-    private var currentSeed = (2029L + rows - cols)
+    private var currentSeed = (2029L + settings.rows - settings.cols)
     private var revisitedCorridor: Boolean = false
 
     var startTime = 0L
@@ -48,7 +45,7 @@ class BoardMaze (private val settings: SettingsData = SettingsData(), private va
     private fun boardSetUp() {
         board.forEachIndexed { rowIndex, row ->
             row.forEachIndexed { colIndex, cell ->
-                cell.position = rowIndex * cols + colIndex
+                cell.position = rowIndex * settings.cols + colIndex
                 cell.coord = Pair(rowIndex, colIndex)
             }
         }
@@ -60,7 +57,7 @@ class BoardMaze (private val settings: SettingsData = SettingsData(), private va
     private fun pathSetUp() {
         stack.push(hereCell.coord)
         visitedCellCount = 1
-        while (visitedCellCount < rows * cols) {
+        while (visitedCellCount < settings.rows * settings.cols) {
             pathSelector(hereCell.coord.first,hereCell.coord.second)
             hereCell.here = false
             hereCell = board[stack.peek().first][stack.peek().second]
@@ -82,13 +79,13 @@ class BoardMaze (private val settings: SettingsData = SettingsData(), private va
         if (row > 0 && !board[row - 1][col].visited) {
             availablePaths.add(PATH.TOP)
         }
-        if (row < rows-1 && !board[row + 1][col].visited) {
+        if (row < settings.rows-1 && !board[row + 1][col].visited) {
             availablePaths.add(PATH.BOTTOM)
         }
         if (col > 0 && !board[row][col - 1].visited) {
             availablePaths.add(PATH.LEFT)
         }
-        if (col < cols-1 && !board[row][col + 1].visited) {
+        if (col < settings.cols-1 && !board[row][col + 1].visited) {
             availablePaths.add(PATH.RIGHT)
         }
 
@@ -142,7 +139,7 @@ class BoardMaze (private val settings: SettingsData = SettingsData(), private va
     }
 
     fun moveUp(){
-        Log.d("chandra", "move up")
+//        Log.d("chandra", "move up")
         if (hereCell.top) {
             if(board[hereCell.coord.first-1][hereCell.coord.second].visited) {
                 if (settings.corridor) {
@@ -169,7 +166,7 @@ class BoardMaze (private val settings: SettingsData = SettingsData(), private va
     }
 
     fun moveLeft(){
-        Log.d("chandra", "move left")
+//        Log.d("chandra", "move left")
         if(hereCell.left) {
             if (board[hereCell.coord.first][hereCell.coord.second-1].visited){
                 if (settings.corridor) {
@@ -195,7 +192,7 @@ class BoardMaze (private val settings: SettingsData = SettingsData(), private va
         }
     }
     fun moveRight(){
-        Log.d("chandra", "move right")
+//        Log.d("chandra", "move right")
         if(hereCell.right){
             if (board[hereCell.coord.first][hereCell.coord.second+1].visited){
                 if (settings.corridor) {
@@ -222,7 +219,7 @@ class BoardMaze (private val settings: SettingsData = SettingsData(), private va
     }
 
     fun moveDown(){
-        Log.d("chandra", "move down")
+//        Log.d("chandra", "move down")
         if(hereCell.bottom){
             if(board[hereCell.coord.first+1][hereCell.coord.second].visited) {
                 if (settings.corridor) {
@@ -248,7 +245,6 @@ class BoardMaze (private val settings: SettingsData = SettingsData(), private va
         }
     }
     private fun moveCharacter(newRow:Int, newCol:Int){
-        Log.d("chandra", "move $newRow $newCol")
         if (!timerStarted){
             startTime = System.currentTimeMillis()
             timerStarted = true
@@ -262,7 +258,7 @@ class BoardMaze (private val settings: SettingsData = SettingsData(), private va
             boardData.totalMoves++
             endTime = System.currentTimeMillis()
             boardData.timeTaken = endTime - startTime
-            //TODO moins off off app time
+            //TODO minus off off-app time
             activity.endGame()
         }
         activity.moveCharacter(newRow, newCol)

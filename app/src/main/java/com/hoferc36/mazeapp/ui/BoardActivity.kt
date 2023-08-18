@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
@@ -27,12 +26,6 @@ class BoardActivity : AppCompatActivity() {
 
     private lateinit var boardMaze: BoardMaze
 
-    private var isButtonOn: Boolean = false
-    private lateinit var upButton: Button
-    private lateinit var leftButton: Button
-    private lateinit var rightButton: Button
-    private lateinit var downButton: Button
-
     private var isEndGame: Boolean = false
 
     private var cellSize = 0
@@ -48,12 +41,13 @@ class BoardActivity : AppCompatActivity() {
         setContentView(bind.board1)
 
         database = DatabaseHelper(applicationContext)
+        database.savesLookUp()
 
-        val settingId = intent.getLongExtra("mazeSettings", 1)
-        settings  = database.searchForSettings(settingId) ?: SettingsData()
+        settings = database.settingsSearch(database.saves1.settingsId)
 
-        val username = intent.getStringExtra("previousUser")
-        user = if(username != null) database.searchForUser(username) else null
+        user = if(database.saves1.user != "NULL") {
+            database.userSearch(database.saves1.user)
+        } else null
 
         garage = bind.garageView
         player = bind.playerView
@@ -68,7 +62,7 @@ class BoardActivity : AppCompatActivity() {
                 val data = ClipData.newPlainText("", "")
                 val shadow = View.DragShadowBuilder(view)
                 view.startDragAndDrop(data, shadow, view, 0)
-                true
+//                true
             }
             false
         }
@@ -76,13 +70,12 @@ class BoardActivity : AppCompatActivity() {
         garage.setOnDragListener(DragListener1())
     }
 
-
-    inner class DragListener1(): View.OnDragListener{
+    inner class DragListener1: View.OnDragListener{
         override fun onDrag(view: View?, dragEvent: DragEvent?): Boolean {
             when(dragEvent!!.action){
                 DragEvent.ACTION_DRAG_ENTERED->{
                     val row = ((view!!.y - marginPixelHeight) / cellSize).toInt()
-                    val col = ((view!!.x - marginPixelWidth) / cellSize).toInt()
+                    val col = ((view.x - marginPixelWidth) / cellSize).toInt()
                     boardMaze.dragToNextPath(row, col)
                 }
                 DragEvent.ACTION_DRAG_EXITED->{
@@ -106,14 +99,13 @@ class BoardActivity : AppCompatActivity() {
         isEndGame = true
         if (user != null ) {
             user!!.wins++
-            database.updateUser(user!!.name, user!!)
+            database.userUpdate(user!!.name, user!!)
         }
+        //TODO add device wins
+        database.savesUpdateWins(database.saves1.wins++)
 
         val intent = Intent(this, WinActivity::class.java)
         intent.putExtra("boardData", boardMaze.boardData)
-        if(user != null) {
-            intent.putExtra("previousUser", user!!.name)
-        }
         startActivity(intent)
         finish()
     }
@@ -126,8 +118,8 @@ class BoardActivity : AppCompatActivity() {
             with(builder) {
                 setTitle("Warning")
                 setMessage("Do you want to return to leave map?")
-                setPositiveButton("Yes") { dialog, which -> super.finish() }
-                setNegativeButton("No"){ dialog, which -> dialog.dismiss() }
+                setPositiveButton("Yes") { _, _ -> super.finish() }
+                setNegativeButton("No"){ dialog, _ -> dialog.dismiss() }
                 show()
             }
         }
@@ -164,16 +156,16 @@ class BoardActivity : AppCompatActivity() {
         val marginDP = 8
         val marginPixel = marginDP * (displayMetrics.densityDpi/160)
 
-        val heightButtons = if(isButtonOn) 70 * (displayMetrics.densityDpi/ 160) else 0
+        val heightButtons = if(settings.buttonToggle) 70 * (displayMetrics.densityDpi/ 160) else 0
 
-        val heightRow = (displayMetrics.heightPixels - marginPixel*2 - heightButtons*3) / boardMaze.rows
-        val widthCol = (displayMetrics.widthPixels - marginPixel*2) / boardMaze.cols
+        val heightRow = (displayMetrics.heightPixels - marginPixel*2 - heightButtons*3) / settings.rows
+        val widthCol = (displayMetrics.widthPixels - marginPixel*2) / settings.cols
         cellSize = if (widthCol < heightRow) widthCol else heightRow
         cellSize = if(cellSize<25) 25 else cellSize
 
         //centre maze
-        marginPixelWidth =  (displayMetrics.widthPixels - cellSize*boardMaze.cols)/2
-        marginPixelHeight =  (displayMetrics.heightPixels - heightButtons*3 - cellSize*boardMaze.rows)/2
+        marginPixelWidth =  (displayMetrics.widthPixels - cellSize*settings.cols)/2
+        marginPixelHeight =  (displayMetrics.heightPixels - heightButtons*3 - cellSize*settings.rows)/2
 //        Log.d("chandra", "mdp:$marginDP mp:$marginP w:$displayMetrics.widthPixels cw:$cellSize")//maxWidth
 
         boardMaze.board.forEach {row ->
@@ -188,7 +180,7 @@ class BoardActivity : AppCompatActivity() {
                 val cellForeground = ImageView(this)
                 cellForeground.minimumHeight = cellSize
                 cellForeground.minimumWidth = cellSize
-                cellForeground.contentDescription = "r:${cell.coord.first} c:${cell.coord.second}"
+                cellForeground.contentDescription = "r:${cell.coord.first} c:${cell.coord.second}"//TODO check if needed
                 cellForeground.y = 1F * cellSize * cell.coord.first + marginPixelHeight
                 cellForeground.x = 1F * cellSize * cell.coord.second + marginPixelWidth
                 bind.boardForeground.addView(cellForeground)
@@ -199,7 +191,7 @@ class BoardActivity : AppCompatActivity() {
 
         garage.minimumHeight = cellSize
         garage.minimumWidth = cellSize
-        garage.contentDescription = "garage"
+        garage.contentDescription = "garage"//TODO check if needed
         garage.y = 1F * cellSize * settings.endY + marginPixelHeight
         garage.x = 1F * cellSize * settings.endX + marginPixelWidth
 
@@ -295,42 +287,29 @@ class BoardActivity : AppCompatActivity() {
     }
 
     private fun buttonSetUp() {
-        isButtonOn = settings.buttonToggle
+        val upButton = bind.buttonUp
+        val leftButton = bind.buttonLeft
+        val rightButton = bind.buttonRight
+        val downButton = bind.buttonDown
 
-        upButton = bind.buttonUp
-        if (isButtonOn) {
+        if (settings.buttonToggle) {
             upButton.visibility = View.VISIBLE
-            upButton.setOnClickListener {
-                boardMaze.moveUp()
-            }
-        } else upButton.visibility = View.GONE
+            upButton.setOnClickListener { boardMaze.moveUp() }
 
-
-        leftButton = bind.buttonLeft
-        if (isButtonOn) {
             leftButton.visibility = View.VISIBLE
-            leftButton.setOnClickListener {
-                boardMaze.moveLeft()
-            }
-        }else leftButton.visibility = View.GONE
+            leftButton.setOnClickListener { boardMaze.moveLeft() }
 
-
-        rightButton = bind.buttonRight
-        if (isButtonOn) {
             rightButton.visibility = View.VISIBLE
-            rightButton.setOnClickListener {
-                boardMaze.moveRight()
-            }
-        } else rightButton.visibility = View.GONE
+            rightButton.setOnClickListener { boardMaze.moveRight() }
 
-
-        downButton = bind.buttonDown
-        if (isButtonOn){
             downButton.visibility = View.VISIBLE
-            downButton.setOnClickListener {
-                boardMaze.moveDown()
-            }
-        } else downButton.visibility = View.GONE
+            downButton.setOnClickListener { boardMaze.moveDown() }
+        } else {
+            upButton.visibility = View.GONE
+            leftButton.visibility = View.GONE
+            rightButton.visibility = View.GONE
+            downButton.visibility = View.GONE
+        }
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {

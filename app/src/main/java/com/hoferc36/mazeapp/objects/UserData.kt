@@ -1,7 +1,7 @@
 package com.hoferc36.mazeapp.objects
 
 class UserData (var name: String = "Peter Parker"){
-    var id:Int = -1//TODO change to Long
+    var id:Long = -1
     var wins:Int = 0
     var settingsId: Long = 1
 

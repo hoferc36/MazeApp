@@ -1,6 +1,5 @@
 package com.hoferc36.mazeapp.ui
 
-import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -18,105 +17,77 @@ class MainActivity : AppCompatActivity() {
     private lateinit var buttonSettings: Button
     private lateinit var buttonLogin: Button
 
-    //TODO make user and setting accessible from each page
-    private var user: UserData? = null//TODO add default user instead of null
-    private var settings: SettingsData = SettingsData()
-    //TODO added a new table to the database that keeps what user is on
-    // and what settings are being used
-
-    private val REQUEST_LOGIN = 1
-    private val REQUEST_SETTINGS = 2
-
+    private var user: UserData? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d("chandra", "on create main")
         super.onCreate(savedInstanceState)
         bind = ActivityMainBinding.inflate(layoutInflater)
         setContentView(bind.main1)
 
         database = DatabaseHelper(applicationContext)
+        database.savesLookUp()
 
-        Log.d("chandra", "saved retrieved ${savedInstanceState != null}")
-        if(savedInstanceState != null) {
-            val settingsId = savedInstanceState.getLong("settingsSaved", 1)
-            settings = database.searchForSettings(settingsId) ?: SettingsData()
+        user = if(database.saves1.user != "NULL") {
+             database.userSearch(database.saves1.user)
+        } else null
 
-            val username = savedInstanceState.getString("userName")
-            user = if (username != null) database.searchForUser(username) else null
-            if(user != null){
-                settings = database.searchForSettings(user!!.settingsId) ?: SettingsData()
-            }
-            settings.id = database.addSettings(settings)
-        }
+//        Log.d("chandra", "add user hi")
+//        if(database.userAdd("hi") != -1L) {
+//            Log.d("chandra", "search user hi")
+//            user = database.userSearch("hi")
+//            if(user != null) {
+//                Log.d("chandra", "update hi to saves")
+//                if (database.savesUpdateUser(user!!.name)){
+//                    Log.d("chandra", "success update hi to saves")
+//                    database.saves1.user = user!!.name
+//                }
+//            }
+//        }
+//        database.saves1.user = "NULL"
+//        database.saves1.user = "hi"
+//        database.saves1.user = "NULL"
+
+        //TODO wins need to be displayed
 
         buttonMaze = bind.buttonMaze
         buttonMaze.setOnClickListener {
             val intent = Intent(this, BoardActivity::class.java)
-            intent.putExtra("mazeSettings", settings.id)
-            if(user != null) {
-                intent.putExtra("previousUser", user!!.name)
-            }
             startActivity(intent)
         }
 
         buttonSettings = bind.buttonSettings
         buttonSettings.setOnClickListener {
             val intent = Intent(this, SettingsActivity::class.java)
-            intent.putExtra("previousSettings", settings.id)
-            if(user != null) {
-                intent.putExtra("previousUser", user!!.name)
-            }
-            startActivityForResult(intent, REQUEST_SETTINGS)
+            startActivity(intent)
         }
 
         buttonLogin = bind.buttonLogin
         buttonLogin.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
-            if(user != null) {
-                intent.putExtra("previousUser", user!!.name)
-            }
-            startActivityForResult(intent, REQUEST_LOGIN)
+            startActivity(intent)
         }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_LOGIN){
-            user = if(resultCode == Activity.RESULT_OK){
-                val username = data!!.getStringExtra("userData")
-                if(username != null) database.searchForUser(username) else null
-            }else null
-        }else if (requestCode == REQUEST_SETTINGS){
-            if(resultCode == Activity.RESULT_OK){
-                val settingsId = data!!.getLongExtra("settingsData", 1)
-                settings = database.searchForSettings(settingsId) ?: SettingsData()
-            }
-        }
+        Log.d("chandra", "done on create main")
     }
 
     override fun onResume() {
+        Log.d("chandra", "onResume main")
         super.onResume()
+        database.savesLookUp()
         checkUser()
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putLong("settingsSaved", settings.id)
-        if (user != null) {
-            outState.putString("userName", user!!.name)
-        }
+        Log.d("chandra", "done onResume main")
     }
 
     private fun checkUser() {
-        user = if (user != null && user!!.name != "") database.searchForUser(user!!.name) else null
-        if(user != null){
-            settings =database.searchForSettings(user!!.settingsId) ?: SettingsData()
-        }
+        user = if(database.saves1.user != "NULL") {
+            database.userSearch(database.saves1.user)
+        } else null
         if (user != null) {
             bind.textViewUserData.text = user!!.toString()
             bind.buttonLogin.text = "Logout"
         } else {
             bind.textViewUserData.text = "No User Data"
-            bind.buttonLogin.text = "Login" //R.string.button_login.toString() nope change others
+            bind.buttonLogin.text = "Login"
         }
     }
 }

@@ -9,8 +9,6 @@ class CellPieces {
 
     var visited:Boolean = false
     var here:Boolean = false
-//    var dead:Boolean = false
-
     var start:Boolean = false
     var end:Boolean = false
 
