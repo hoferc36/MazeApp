@@ -1,0 +1,64 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:viewportHeight="50"
+    android:viewportWidth="50"
+    android:height="10dp"
+    android:width="10dp"
+    >
+    <path android:fillColor="@color/unvisited_cell"
+        android:pathData="M0,0 L0,50 50,50 50,0"/>
+<!--    <path android:fillColor="@color/grass"-->
+<!--        android:strokeColor="@color/black"-->
+<!--        android:strokeWidth="0.05"-->
+<!--        android:pathData="M 16,21 c0,0 0,-6 -4,-11 c0,0 3,2 6,8-->
+<!--                                    c0,0 0,-6 -2,-12 c0,0 4,6 4,13-->
+<!--                                    c0,0 1,-5 5,-9 c0,0 -3,5 -3,11"></path>-->
+    <path android:fillColor="@color/grass"
+        android:strokeColor="@color/black"
+        android:strokeWidth="0.05"
+        android:pathData="M 12,29 c0,0 0,-6 -4,-11 c0,0 3,2 6,8
+                                    c0,0 0,-6 -2,-12 c0,0 4,6 4,13
+                                    c0,0 1,-5 5,-9 c0,0 -3,5 -3,11"></path>
+<!--    <path android:fillColor="@color/grass"-->
+<!--        android:strokeColor="@color/black"-->
+<!--        android:strokeWidth="0.05"-->
+<!--        android:pathData="M 39,42 c0,0 0,-6 -4,-11 c0,0 3,2 6,8-->
+<!--                                    c0,0 0,-6 -2,-12 c0,0 4,6 4,13-->
+<!--                                    c0,0 1,-5 5,-9 c0,0 -3,5 -3,11"></path>-->
+    <path android:fillColor="@color/grass"
+        android:strokeColor="@color/black"
+        android:strokeWidth="0.05"
+        android:pathData="M 25,24 c0,0 0,-6 -4,-11 c0,0 3,2 6,8
+                                    c0,0 0,-6 -2,-12 c0,0 4,6 4,13
+                                    c0,0 1,-5 5,-9 c0,0 -3,5 -3,11"></path>
+    <path android:fillColor="@color/grass"
+        android:strokeColor="@color/black"
+        android:strokeWidth="0.05"
+        android:pathData="M 38,40 c0,0 0,-6 -4,-11 c0,0 3,2 6,8
+                                    c0,0 0,-6 -2,-12 c0,0 4,6 4,13
+                                    c0,0 1,-5 5,-9 c0,0 -3,5 -3,11"></path>
+    <path android:fillColor="@color/grass"
+        android:strokeColor="@color/black"
+        android:strokeWidth="0.05"
+        android:pathData="M 5,16 c0,0 0,-6 -4,-11 c0,0 3,2 6,8
+                                    c0,0 0,-6 -2,-12 c0,0 4,6 4,13
+                                    c0,0 1,-5 5,-9 c0,0 -3,5 -3,11"></path>
+    <path android:fillColor="@color/grass"
+        android:strokeColor="@color/black"
+        android:strokeWidth="0.05"
+        android:pathData="M 4,47 c0,0 0,-6 -4,-11 c0,0 3,2 6,8
+                                    c0,0 0,-6 -2,-12 c0,0 4,6 4,13
+                                    c0,0 1,-5 5,-9 c0,0 -3,5 -3,11"></path>
+    <path android:fillColor="@color/grass"
+        android:strokeColor="@color/black"
+        android:strokeWidth="0.05"
+        android:pathData="M 35,15 c0,0 0,-6 -4,-11 c0,0 3,2 6,8
+                                    c0,0 0,-6 -2,-12 c0,0 4,6 4,13
+                                    c0,0 1,-5 5,-9 c0,0 -3,5 -3,11"></path>
+    <path android:fillColor="@color/grass"
+        android:strokeColor="@color/black"
+        android:strokeWidth="0.05"
+        android:pathData="M 19,41 c0,0 0,-6 -4,-11 c0,0 3,2 6,8
+                                    c0,0 0,-6 -2,-12 c0,0 4,6 4,13
+                                    c0,0 1,-5 5,-9 c0,0 -3,5 -3,11"></path>
+
+</vector>

@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
+import androidx.core.graphics.drawable.toDrawable
 import androidx.core.view.GestureDetectorCompat
 import com.hoferc36.mazeapp.DatabaseHelper
 import com.hoferc36.mazeapp.logic.*
@@ -146,8 +147,10 @@ class BoardActivity : AppCompatActivity() {
             cellBackground.setBackgroundResource(R.color.start_cell)
         }else if(cell.visited){
             cellBackground.setBackgroundResource(R.color.visited_cell)
+            cellBackground.setBackgroundResource(R.drawable.grass_cut)
         }else{
             cellBackground.setBackgroundResource(R.color.unvisited_cell)
+            cellBackground.setBackgroundResource(R.drawable.grass)
         }
     }
 

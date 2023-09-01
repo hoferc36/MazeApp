@@ -38,8 +38,10 @@
     <color name="border">#FF000000</color>
 
     <!--maze colors-->
-    <color name="unvisited_cell">#465623</color>
-    <color name="visited_cell">#86A64B</color>
+    <color name="unvisited_cell">#8E990F</color>
+    <color name="visited_cell">#245E11</color>
+    <color name="grass">#63800D</color>
+    <color name="grass_cut">#02710C</color>
     <color name="end_cell">#338080</color>
     <color name="start_cell">#4C3380</color>
     <color name="dead_cell">#803333</color>

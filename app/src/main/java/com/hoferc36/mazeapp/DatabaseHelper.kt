@@ -66,7 +66,6 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
     }
 
     fun savesUpdateUser(user:String): Boolean {
-        Log.d("chandra", "saves updating user database")
         savesLookUp()
         val db = this.writableDatabase
 
@@ -79,12 +78,10 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
         if(count != -1){
             saves1.user = user
         }
-        Log.d("chandra", "done saves updating user database")
         return count != -1
     }
 
     fun savesUpdateSettings(settings:Long):Boolean{
-        Log.d("chandra", "saves updating settings database")
         savesLookUp()
         val db = this.writableDatabase
 
@@ -97,12 +94,10 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
         if(count != -1){
             saves1.settingsId = settings
         }
-        Log.d("chandra", "done saves updating settings database")
         return count != -1
     }
 
     fun savesUpdateWins(wins:Int):Boolean{
-        Log.d("chandra", "saves updating wins database")
         savesLookUp()
         val db = this.writableDatabase
 
@@ -116,12 +111,10 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
         if(count != -1){
             saves1.wins = wins
         }
-        Log.d("chandra", "done saves updating wins database")
         return count != -1
     }
 
     fun savesLookUp(): SavesData{
-        Log.d("chandra", "saves lookup database")
         val savesList = savesListRetriever()
         return if(savesList.isEmpty()) {
             val db = this.writableDatabase
@@ -136,17 +129,14 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
 //            val newRowId =
                 db.insert(TABLE_SAVESDATA, null, contValues)
             db.close()
-            Log.d("chandra", "done new saves lookup database")
             SavesData()
         } else {
             saves1 = savesList[0]
-            Log.d("chandra", "done old saves lookup database")
             savesList[0]
         }
     }
 
     private fun savesListRetriever():ArrayList<SavesData>{
-        Log.d("chandra", "saves list database")
         val savesList: ArrayList<SavesData> = ArrayList()
         val selectQuery = "SELECT * FROM $TABLE_SAVESDATA"
         val db = this.readableDatabase
@@ -169,12 +159,10 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
         }
         cursor.close()
         db.close()
-        Log.d("chandra", "done saves list database")
         return savesList
     }
 
     fun userSearch(name: String):UserData?{
-        Log.d("chandra", "user search database")
         val userList = userListRetriever()
         var user:UserData? = null
         if (userList.size > 0) {
@@ -184,13 +172,10 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
                 }
             }
         }
-        Log.d("chandra", "done user search database")
         return user
     }
 
     fun userAdd(username: String): Long{
-        Log.d("chandra", "user add database")
-
         return if(userSearch(username) == null) {
             val db = this.writableDatabase
 
@@ -202,14 +187,11 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
 
             val newRowId = db.insert(TABLE_USERDATA, null, contValues)
             db.close()
-
-            Log.d("chandra", "done user add database")
             newRowId
         }else -1L
     }
 
     fun userUpdate(name: String, newUserData: UserData):Boolean{
-        Log.d("chandra", "user update database")
         val oldUserData = userSearch(name)
         if(oldUserData != null) {
             val db = this.writableDatabase
@@ -222,15 +204,12 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
 
             val count = db.update(TABLE_USERDATA,contValues, "$USER_ID = ${oldUserData.id}", null)
             db.close()
-            Log.d("chandra", "done user update database")
             return count != -1
         }
-        Log.d("chandra", "done fail user update database")
         return false
     }
 
     private fun userListRetriever():ArrayList<UserData>{
-        Log.d("chandra", "user list database")
         val userList: ArrayList<UserData> = ArrayList()
         val selectQuery = "SELECT * FROM $TABLE_USERDATA"
         val db = this.readableDatabase
@@ -254,12 +233,10 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
         }
         cursor.close()
         db.close()
-        Log.d("chandra", "done user list database")
         return userList
     }
 
     fun settingsSearch(id: Long):SettingsData{
-        Log.d("chandra", "settings search database")
         val settingsList = settingsListRetriever()
         var settings= SettingsData()
 
@@ -269,15 +246,13 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
                     settings = it
                 }
             }
-        }else{
+        }else {
             settingsAdd(SettingsData())
         }
-        Log.d("chandra", "done settings search database")
         return settings
     }
 
     fun settingsAdd(settings:SettingsData): Long{
-        Log.d("chandra", "settings add database")
         if(settingsListRetriever().size > 0){
             val firstSettings = SettingsData()
             val db = this.writableDatabase
@@ -296,7 +271,6 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
 
             db.insert(TABLE_SETTINGS, null, contValues)
             db.close()
-            Log.d("chandra", "first settings add database")
         }
 
         var results = if(settings.id != 1L){
@@ -321,13 +295,10 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
             results = db.insert(TABLE_SETTINGS, null, contValues)
             db.close()
         }
-
-        Log.d("chandra", "done settings add database")
         return results
     }
 
     fun settingsSearchForIdentical(settings: SettingsData): Long {
-        Log.d("chandra", "settings twin database")
         val settingsList = settingsListRetriever()
 
         if (settingsList.size > 0) {
@@ -339,12 +310,10 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
         }else{
             settingsAdd(SettingsData())
         }
-        Log.d("chandra", "done settings twin database")
         return -1L
     }
 
     private fun settingsListRetriever():ArrayList<SettingsData>{
-        Log.d("chandra", "settings list database")
         val settingsList: ArrayList<SettingsData> = ArrayList()
         val selectQuery = "SELECT * FROM $TABLE_SETTINGS"
         val db = this.readableDatabase
@@ -367,7 +336,6 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
                     endX = cursor.getInt(8)
                     seed = cursor.getInt(9)
                 }
-//                Log.d("chandra", "get all settings $settings")
 
                 settingsList.add(settings)
                 settings = SettingsData()
@@ -376,7 +344,6 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
         }
         cursor.close()
         db.close()
-        Log.d("chandra", "done settings list database")
         return settingsList
     }
 }
